@@ -3,7 +3,17 @@
 if (args.Length >= 1) {
     if (args[0] == "read") {
         IDatabase<Cheep> db = new CSVDatabase<Cheep>();
-        var cheeps = db.Read(2);
+        IEnumerable<Cheep> cheeps;
+
+        if (args.Length >= 2 && int.TryParse(args[1], out int count))
+        {
+            cheeps = db.Read(count);
+        }
+        else
+        {
+            cheeps = db.Read();
+        }
+
         foreach (Cheep cheep in cheeps)
         {
             string author = cheep.Author;
