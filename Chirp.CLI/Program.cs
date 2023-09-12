@@ -1,6 +1,18 @@
-﻿if (args.Length >= 1) {
+﻿using SimpleDB;
+
+if (args.Length >= 1) {
     if (args[0] == "read") {
-        ReadCheeps();
+        IDatabase<Cheep> db = new CSVDatabase<Cheep>();
+        var cheeps = db.Read(2);
+        foreach (Cheep cheep in cheeps)
+        {
+            string author = cheep.Author;
+            string message = cheep.Message;
+            DateTimeOffset date = DateTimeOffset.FromUnixTimeSeconds(cheep.Timestamp).ToLocalTime();
+
+            Console.WriteLine($"{author} @ {date.ToString("MM\\/dd\\/yy HH:mm:ss")}: {message}");
+        }
+        //ReadCheeps();
     }
     if (args[0] == "cheep") {
         StoreCheep();
@@ -227,9 +239,11 @@ void ReadCheeps() {
 }
 
 void StoreCheep() {
-    string cheep = "";
+    //string cheep = "";
 
     for (uint i = 1; i < args.Length; i++) {
         
     }
 }
+
+public record Cheep(string Author, string Message, long Timestamp);
