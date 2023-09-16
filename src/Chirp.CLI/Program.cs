@@ -1,9 +1,9 @@
 ﻿using SimpleDB;
 
-internal class Program
+public class Program
 {
     public record Cheep(string Author, string Message, long Timestamp);
-
+    
     private static void Main(string[] args)
     {
         IDatabase<Cheep> db = new CSVDatabase<Cheep>();
@@ -22,21 +22,14 @@ internal class Program
                 {
                     cheeps = db.Read();
                 }
+                UserInterface.PrintCheeps(cheeps);
 
-                foreach (Cheep cheep in cheeps)
-                {
-                    string author = cheep.Author;
-                    string message = cheep.Message;
-                    DateTimeOffset date = DateTimeOffset.FromUnixTimeSeconds(cheep.Timestamp).ToLocalTime();
-
-                    Console.WriteLine($"{author} @ {date:MM\\/dd\\/yy HH:mm:ss}: {message}");
-                }
             }
             else if (args[0] == "cheep")
             {
                 if (args.Length < 2)
                 {
-                    Console.WriteLine("Use argument: 'cheep <message>'");
+                    UserInterface.PrintMessage("Use argument: 'cheep <message>'");
                     return;
                 }
 
@@ -49,7 +42,7 @@ internal class Program
         }
         else
         {
-            Console.WriteLine("Use argument: 'read' or 'cheep'");
+            UserInterface.PrintMessage("Use argument: 'read' or 'cheep'");
             return;
         }
     }
