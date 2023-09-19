@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.002.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chirp", "Chirp.CLI\Chirp.csproj", "{48170ED1-FB63-4D63-9A81-537A1F636FAA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleDB", "SimpleDB\SimpleDB.csproj", "{4EBB3A23-269D-44E7-A346-2461567A8800}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{48170ED1-FB63-4D63-9A81-537A1F636FAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48170ED1-FB63-4D63-9A81-537A1F636FAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48170ED1-FB63-4D63-9A81-537A1F636FAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48170ED1-FB63-4D63-9A81-537A1F636FAA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4EBB3A23-269D-44E7-A346-2461567A8800}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4EBB3A23-269D-44E7-A346-2461567A8800}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4EBB3A23-269D-44E7-A346-2461567A8800}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4EBB3A23-269D-44E7-A346-2461567A8800}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {59B92BFF-A4C6-4387-A556-9ABDB1905B14}
+	EndGlobalSection
+EndGlobal
