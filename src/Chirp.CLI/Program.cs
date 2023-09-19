@@ -22,14 +22,15 @@ public class Program
                 {
                     cheeps = db.Read();
                 }
-                UserInterface.PrintCheeps(cheeps);
 
+                UserInterface.PrintCheeps(cheeps);
+                return;
             }
             else if (args[0] == "cheep")
             {
                 if (args.Length < 2)
                 {
-                    UserInterface.PrintMessage("Use argument: 'cheep <message>'");
+                    UserInterface.PrintMessage("Use argument: 'cheep <MESSAGE>'");
                     return;
                 }
 
@@ -38,12 +39,10 @@ public class Program
                 long Timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 
                 db.Store(new Cheep(Author, Message, Timestamp));
+                return;
             }
         }
-        else
-        {
-            UserInterface.PrintMessage("Use argument: 'read' or 'cheep'");
-            return;
-        }
+        UserInterface.PrintMessage("Use argument: 'read <COUNT>' or 'cheep <MESSAGE>'");
+        return;
     }
 }
