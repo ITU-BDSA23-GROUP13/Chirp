@@ -1,6 +1,8 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 
 using CommandLine;
+using CommandLine.Text;
 
 namespace QuickStart
 {
@@ -8,11 +10,12 @@ namespace QuickStart
     {
         public class Options
         {
-            [Option('n', "name", Required = true, HelpText = "Your name")]
-            public string? Name { get; set; }
 
-            [Option('a', "age", Required = true, HelpText = "Your age")]
-            public int Age { get; set; }
+            [Option('r', "read", Required = false, HelpText = "Read Cheeps")]
+            public int? CheepCount { get; set; }
+
+            [Option('c', "cheep", Required = false, HelpText = "Cheep a Cheep")]
+            public string? CheepMessage { get; set; }
         }
     }
 }
