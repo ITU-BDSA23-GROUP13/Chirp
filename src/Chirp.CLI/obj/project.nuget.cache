@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "YYin/9+gft24tzGp5xeALHUa//5VUqc4Zl12wrcJkXVz+pIHsxIZwq4FrEKjuwAcxaO2s0KXG9W2BVjtxw1gig==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\cope\\OneDrive - ITU\\Documents\\C#\\GitHub\\Chirp\\src\\Chirp.CLI\\Chirp.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\cope\\.nuget\\packages\\csvhelper\\30.0.1\\csvhelper.30.0.1.nupkg.sha512"
+  ],
+  "logs": []
+}

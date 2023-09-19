@@ -1,0 +1,15 @@
+C:\Users\cope\OneDrive - ITU\Documents\C#\GitHub\Chirp\bin\Debug\net7.0\Chirp.exe
+C:\Users\cope\OneDrive - ITU\Documents\C#\GitHub\Chirp\bin\Debug\net7.0\Chirp.deps.json
+C:\Users\cope\OneDrive - ITU\Documents\C#\GitHub\Chirp\bin\Debug\net7.0\Chirp.runtimeconfig.json
+C:\Users\cope\OneDrive - ITU\Documents\C#\GitHub\Chirp\bin\Debug\net7.0\Chirp.dll
+C:\Users\cope\OneDrive - ITU\Documents\C#\GitHub\Chirp\bin\Debug\net7.0\Chirp.pdb
+C:\Users\cope\OneDrive - ITU\Documents\C#\GitHub\Chirp\obj\Debug\net7.0\Chirp.csproj.AssemblyReference.cache
+C:\Users\cope\OneDrive - ITU\Documents\C#\GitHub\Chirp\obj\Debug\net7.0\Chirp.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\cope\OneDrive - ITU\Documents\C#\GitHub\Chirp\obj\Debug\net7.0\Chirp.AssemblyInfoInputs.cache
+C:\Users\cope\OneDrive - ITU\Documents\C#\GitHub\Chirp\obj\Debug\net7.0\Chirp.AssemblyInfo.cs
+C:\Users\cope\OneDrive - ITU\Documents\C#\GitHub\Chirp\obj\Debug\net7.0\Chirp.csproj.CoreCompileInputs.cache
+C:\Users\cope\OneDrive - ITU\Documents\C#\GitHub\Chirp\obj\Debug\net7.0\Chirp.dll
+C:\Users\cope\OneDrive - ITU\Documents\C#\GitHub\Chirp\obj\Debug\net7.0\refint\Chirp.dll
+C:\Users\cope\OneDrive - ITU\Documents\C#\GitHub\Chirp\obj\Debug\net7.0\Chirp.pdb
+C:\Users\cope\OneDrive - ITU\Documents\C#\GitHub\Chirp\obj\Debug\net7.0\Chirp.genruntimeconfig.cache
+C:\Users\cope\OneDrive - ITU\Documents\C#\GitHub\Chirp\obj\Debug\net7.0\ref\Chirp.dll
