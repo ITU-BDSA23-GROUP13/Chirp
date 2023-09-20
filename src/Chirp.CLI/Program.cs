@@ -6,7 +6,7 @@ public class Program
     
     private static void Main(string[] args)
     {
-        IDatabase<Cheep> db = new CSVDatabase<Cheep>();
+        IDatabase db = CSVDatabase.Instance();
 
         if (args.Length >= 1)
         {
@@ -16,11 +16,11 @@ public class Program
 
                 if (args.Length >= 2 && int.TryParse(args[1], out int count))
                 {
-                    cheeps = db.Read(count);
+                    cheeps = db.Read<Cheep>(count);
                 }
                 else
                 {
-                    cheeps = db.Read();
+                    cheeps = db.Read<Cheep>();
                 }
 
                 UserInterface.PrintCheeps(cheeps);
@@ -38,7 +38,7 @@ public class Program
                 string Message = args[1];
                 long Timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 
-                db.Store(new Cheep(Author, Message, Timestamp));
+                db.Store<Cheep>(new Cheep(Author, Message, Timestamp));
                 return;
             }
         }
