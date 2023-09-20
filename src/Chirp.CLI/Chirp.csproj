@@ -2,6 +2,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SimpleDB\SimpleDB.csproj" />
+    <ProjectReference Include="..\..\test\Chirp.CLI.Client.Tests\Chirp.CLI.Client.Tests.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommandLineParser" Version="2.9.1" />
   </ItemGroup>
 
   <PropertyGroup>

@@ -2,8 +2,6 @@ using static Program;
 
 public static class UserInterface
 {
-
-    
     public static void PrintCheeps(IEnumerable<Cheep> cheeps)
     {
         foreach (Cheep cheep in cheeps)
@@ -16,7 +14,8 @@ public static class UserInterface
         }
     }
 
-    public static void PrintMessage(string message){
+    public static void PrintMessage(string message)
+    {
         Console.WriteLine(message);
     }
 }
