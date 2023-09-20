@@ -11,7 +11,8 @@ public class CSVDatabase : IDatabase
     private static CsvConfiguration config;
     private static CSVDatabase instance = new CSVDatabase();
 
-    static CSVDatabase() {
+    static CSVDatabase()
+    {
         config = new CsvConfiguration(CultureInfo.InvariantCulture);
         config.InjectionOptions = InjectionOptions.Escape;
     }
@@ -22,7 +23,8 @@ public class CSVDatabase : IDatabase
     public static CSVDatabase Instance()
         => instance;
 
-    public IEnumerable<T> Read<T>(int limit = int.MaxValue) {
+    public IEnumerable<T> Read<T>(int limit = int.MaxValue)
+    {
         string path = getPath<T>();
         ensureFileExists(path);
         using (var reader = new StreamReader(path))
@@ -32,7 +34,8 @@ public class CSVDatabase : IDatabase
         }
     }
 
-    public void Store<T>(T record) {
+    public void Store<T>(T record)
+    {
         string path = getPath<T>();
         ensureFileExists(path);
         using (var writer = File.AppendText(path))
@@ -43,12 +46,14 @@ public class CSVDatabase : IDatabase
         }
     }
 
-    private static string getPath<T>() {
+    private static string getPath<T>()
+    {
         string fileName = "test";
         return dir + fileName + ext;
     }
 
-    private static void ensureFileExists(string path) {
+    private static void ensureFileExists(string path)
+    {
         if (!File.Exists(path))
         {
             File.Create(path);

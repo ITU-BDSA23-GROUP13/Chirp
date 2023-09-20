@@ -1,6 +1,4 @@
 ﻿using SimpleDB;
-using QuickStart;
-using CommandLine;
 
 public class Program
 {
@@ -8,7 +6,7 @@ public class Program
 
     private static void Main(string[] args)
     {
-        Parser.Default.ParseArguments<QuickStart.CommandLine.Options>(args)
+        Parser.Default.ParseArguments<CommandLine.Options>(args)
         .WithParsed(options =>
         {
             IDatabase db = CSVDatabase.Instance();
