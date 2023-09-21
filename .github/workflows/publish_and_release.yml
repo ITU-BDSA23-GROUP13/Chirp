@@ -24,9 +24,9 @@ jobs:
       - name: Test
         run: dotnet test --no-build --verbosity normal
       - name: Publish for Windows
-        run: dotnet publish src\Chirp.CLI\Chirp.csproj --no-build --no-self-contained --framework net7.0 --runtime win-x64 --configuration Release --verbosity normal --output Chirp-v0.0.0-win-x64
+        run: dotnet publish src/Chirp.CLI/Chirp.csproj --no-build --no-self-contained --framework net7.0 --runtime win-x64 --configuration Release --verbosity normal --output Chirp-v0.0.0-win-x64
       - name: Zip
-        run: tar czvf "Chirp-v0.0.0-win-x64.zip" ".\Chirp-v0.0.0-win-x64"
+        run: tar czvf "Chirp-v0.0.0-win-x64.zip" "./Chirp-v0.0.0-win-x64"
       - name: Github Release
         uses: softprops/action-gh-release@v1
         with: 
