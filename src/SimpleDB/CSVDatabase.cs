@@ -42,6 +42,7 @@ public class CSVDatabase : IDatabase
         using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
         {
             csv.WriteRecord<T>(record);
+            writer.WriteLine();
             writer.Flush();
         }
     }

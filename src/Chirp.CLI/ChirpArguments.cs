@@ -1,10 +1,6 @@
-using System;
-using System.ComponentModel.DataAnnotations;
-
 using CommandLine;
-using CommandLine.Text;
 
-class CommandLine
+class ChirpArguments
 {
     public class Options
     {
