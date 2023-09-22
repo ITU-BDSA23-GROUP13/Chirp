@@ -1,8 +1,8 @@
 namespace SimpleDB;
 
-public interface IDatabase
+public interface IDatabase<T>
 {
-    public IEnumerable<T> Read<T>(int limit = int.MaxValue);
+    public IEnumerable<T> Read(int limit = int.MaxValue);
 
-    public void Store<T>(T record);
+    public void Store(T record);
 }
