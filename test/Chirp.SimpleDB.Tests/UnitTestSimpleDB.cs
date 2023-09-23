@@ -8,11 +8,15 @@ public class UnitTestSimpleDB
 {
 
     /*
-    private readonly CSVDatabase _simpleDB;
+
+       //     IDatabase db = CSVDatabase.Instance();
+    // 
+    // private readonly CSVDatabase _simpleDB;
+    private readonly CSVDatabase _csvDB;
 
     public UnitTestSimpleDB()
     {
-        _simpleDB = new CSVDatabase();
+        _csvDB = new CSVDatabase();
     }
     */
 
@@ -22,7 +26,7 @@ public class UnitTestSimpleDB
         // Arrange
 
         // Act
-        //    var resultx = _simpleDB.CSVDatabase.getPath("Indifferent");
+        //    var resultx = _csvDB.CSVDatabase.getPath("Indifferent");
         var result = "./csvdata/" + "Test" + ".csv";
 
         // Assert
@@ -30,7 +34,6 @@ public class UnitTestSimpleDB
 
         Assert.Equal(result, constructedOutput);
     }
-
 
     [Fact]
     public void UnitTestSimpleDBgetPath2()

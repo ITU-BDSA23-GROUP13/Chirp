@@ -1,29 +1,28 @@
+using System;
+using static Program;
+using Xunit;
+
 namespace Chirp.CLI.Client.Tests;
 
 public class UnitTest1
 {
-    /*
+    public record Cheep(string Author, string Message, long Timestamp);
+
     [Fact]
-    public void UnitTestPrintCheeps()
-    // Test UserInterface.PrintCheeps()
+    public void UnitTestTestMethodINUserInterface()
+    // To be deleted when methods start returning values to test
 
+    // Test UserInterface.TestRunUnitTest1()
     {
-        var UI = new Userinterface();
-        var c = new cheep;
-
         // Arrange
-        string author = cheep.Author;
-        string message = cheep.Message;
-        DateTimeOffset date = DateTimeOffset.FromUnixTimeSeconds(cheep.Timestamp).ToLocalTime();
-
+        var input = "This is a message!";
         // Act
-        var c = $"{author} @ {date:MM\\/dd\\/yy HH:mm:ss}: {message}";
-        var result = UI(author, message, date);
-
+        var result = UserInterface.TestRunUnitTest1(input);
         // Assert
-        Assert.Equals(result, c);
+        Assert.Equal(result, "******" + input);
+
     }
-    */
+
 
     [Fact]
     public void UnitTestPrintMessage()
@@ -32,9 +31,36 @@ public class UnitTest1
         // Arrange
         //var input = "This is a message!";
         // Act
+        //var result = UserInterface.PrintMessage("******"); // Cannot assign void to an implicitly-typed variable (CS0815)
         var result = false;
         // Assert
         Assert.False(result);
     }
+
+
+    [Theory]
+    [InlineData(1000000000)]
+    [InlineData(2000000000)]
+    [InlineData(3000000000)]
+
+    public void UnitTestPrintCheeps(long TS)
+    // Test UserInterface.PrintCheeps(TS)
+    {
+        // Arrange
+        string author = "TEST";
+        string message = "******";
+        long ts = TS;
+
+        // 
+        var c = new Cheep(author, message, ts);
+        //var result = UserInterface.PrintMessage(c);  // Cannot assign void to an implicitly-typed variable (CS0815)
+        //var result = UserInterface.PrintMessage(author, message, date);
+
+        var result = new Cheep(author, message, ts); // To be replaced with something meaningfull
+
+        // Assert
+        Assert.Equal(result, c);
+    }
+
 }
 

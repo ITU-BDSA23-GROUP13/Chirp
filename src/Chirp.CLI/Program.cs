@@ -10,11 +10,12 @@ public class Program
         Parser.Default.ParseArguments<ChirpArguments.Options>(args)
         .WithParsed(options =>
         {
-            IDatabase db = CSVDatabase.Instance();
+            IDatabase<Cheep> db = CsvDatabase<Cheep>.Instance("cheeps");
+
             //Read cheeps
             if (options.CheepCount != null)
             {
-                var cheeps = db.Read<Cheep>(options.CheepCount.Value);
+                var cheeps = db.Read(options.CheepCount.Value);
                 UserInterface.PrintCheeps(cheeps);
             }
 
@@ -25,11 +26,10 @@ public class Program
                 string Message = options.CheepMessage;
                 long Timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 
-                db.Store<Cheep>(new Cheep(Author, Message, Timestamp));
+                db.Store(new Cheep(Author, Message, Timestamp));
 
                 UserInterface.PrintMessage($"Cheeped a cheep! The cheep is: {options.CheepMessage}");
             }
-
         })
         .WithNotParsed(errors =>
         {
