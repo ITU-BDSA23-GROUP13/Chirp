@@ -6,11 +6,12 @@ namespace SimpleDB;
 
 public class CsvDatabase<T> : IDatabase<T>
 {
+    // Default directory and extension for CSV files.
     private const string dir = "./csvdata/";
     private const string ext = ".csv";
 
     private static CsvConfiguration defaultConfig;
-    private static readonly Dictionary<FileInfo, CsvDatabase<T>> instances;
+    private static readonly Dictionary<string, CsvDatabase<T>> instances;
 
     private readonly FileInfo file;
 
@@ -18,34 +19,42 @@ public class CsvDatabase<T> : IDatabase<T>
     {
         defaultConfig = new CsvConfiguration(CultureInfo.InvariantCulture);
         defaultConfig.InjectionOptions = InjectionOptions.Escape;
-        instances = new Dictionary<FileInfo, CsvDatabase<T>>();
+        instances = new Dictionary<string, CsvDatabase<T>>();
     }
 
-    /// <summary> Use CSVDatabase.Instance() instead. </summary>
-    private CsvDatabase(string fileName)
+    /// <summary> Use CSVDatabase.Instance(file) instead. </summary>
+    private CsvDatabase(FileInfo file)
     {
-        this.file = getFileInfo(fileName);
+        this.file = file;
     }
 
-    public static CsvDatabase<T> Instance(string fileName)
+    public static CsvDatabase<T> Instance(FileInfo file)
     {
-        FileInfo file = getFileInfo(fileName);
+        string filePath = file.FullName;
 
-        if (instances.TryGetValue(file, out CsvDatabase<T>? db))
+        if (instances.TryGetValue(filePath, out CsvDatabase<T>? db))
         {
             return db;
         }
         else
         {
-            db = new CsvDatabase<T>(fileName);
-            instances.Add(file, db);
+            db = new CsvDatabase<T>(file);
+            instances.Add(filePath, db);
             return db;
         }
     }
 
+    public static CsvDatabase<T> Instance(string fileName)
+    {
+        FileInfo file = new FileInfo(dir + fileName + ext);
+
+        return CsvDatabase<T>.Instance(file);
+    }
+
     public IEnumerable<T> Read(int limit = int.MaxValue)
     {
-        ensureFileExists(file.FullName);
+        if (!file.Exists) return Enumerable.Empty<T>();
+
         using (var reader = new StreamReader(file.FullName))
         using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
         {
@@ -55,7 +64,8 @@ public class CsvDatabase<T> : IDatabase<T>
 
     public void Store(T record)
     {
-        ensureFileExists(file.FullName);
+        if (!file.Exists) file.Create().Flush();
+
         using (var writer = File.AppendText(file.FullName))
         using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
         {
@@ -65,16 +75,5 @@ public class CsvDatabase<T> : IDatabase<T>
         }
     }
 
-    private static FileInfo getFileInfo(string fileName)
-    {
-        return new FileInfo(dir + fileName + ext);
-    }
-
-    private static void ensureFileExists(string path)
-    {
-        if (!File.Exists(path))
-        {
-            File.Create(path);
-        }
-    }
+    public FileInfo GetFile() => file;
 }
