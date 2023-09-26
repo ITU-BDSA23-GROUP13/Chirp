@@ -1,10 +1,18 @@
 using static Program;
+using System.Collections.Generic;
+using Xunit;
+using Xunit.Abstractions;
+using System;
+using Microsoft.VisualStudio.TestPlatform.Utilities;
+using Microsoft.VisualBasic;
+
 
 namespace Chirp.CLI.Client.Tests;
 
 public class UnitTest1
 {
     public record Cheep(string Author, string Message, long Timestamp);
+
 
     [Fact]
     public void UnitTestTestMethodINUserInterface()
@@ -27,12 +35,11 @@ public class UnitTest1
     // Test UserInterface.PrintMessage()
     {
         // Arrange
-        //var input = "This is a message!";
+        var input = "This is a message!";
         // Act
-        //var result = UserInterface.PrintMessage("******"); // Cannot assign void to an implicitly-typed variable (CS0815)
-        var result = false;
+        //------------- var result = UserInterface.PrintMessage(input); // Cannot assign void to an implicitly-typed variable (CS0815)
         // Assert
-        Assert.False(result);
+        //------------- Assert.Equal(result, "");
     }
 
     [Theory]
@@ -40,7 +47,7 @@ public class UnitTest1
     [InlineData(2000000000)]
     [InlineData(3000000000)]
 
-    public void UnitTestPrintCheeps(long TS)
+        public void UnitTestPrintCheeps(long TS)
     // Test UserInterface.PrintCheeps(TS)
     {
         // Arrange
@@ -48,7 +55,7 @@ public class UnitTest1
         string message = "******";
         long ts = TS;
 
-        // 
+        //Act
         var c = new Cheep(author, message, ts);
         //var result = UserInterface.PrintMessage(c);  // Cannot assign void to an implicitly-typed variable (CS0815)
         //var result = UserInterface.PrintMessage(author, message, date);
@@ -59,5 +66,37 @@ public class UnitTest1
         Assert.Equal(result, c);
     }
 
-}
 
+using System.Collections.Generic;
+using System.IO;
+using Xunit;
+
+namespace Chirp.CLI.Client.Tests
+{
+    public class UnitTest1
+    {
+        public record Cheep(string Author, string Message, long Timestamp);
+
+                [Fact]
+        public void PrintCheeps_PrintsCheepsCorrectly()
+        {
+            // Arrange
+            var cheeps = new List<Cheep>
+            {
+                new Cheep("User1", "Hello", 1632632400)
+        };
+            var expectedOutput = "User1 @ 09/26/21 00:00:00: Hello\r\n";
+
+            using (var sw = new StringWriter())
+            {
+                Console.SetOut(sw);
+
+                // Act
+                UserInterface.PrintCheeps(cheeps);
+
+                // Assert
+                Assert.Equal(expectedOutput, sw.ToString());
+            }
+        }
+    }
+}
