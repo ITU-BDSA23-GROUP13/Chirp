@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Release
+      - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: 7.0.x
@@ -22,14 +22,74 @@ jobs:
         run: dotnet build --no-restore
       - name: Test
         run: dotnet test --no-build --verbosity normal
+
       - name: Publish for Windows
-        run: dotnet publish src/Chirp.CLI/Chirp.csproj --no-self-contained --framework net7.0 --runtime win-x64 --configuration Release --verbosity normal --output Chirp-v0.0.0-win-x64
-      - name: Zip
-        run: tar czvf "Chirp-v0.0.0-win-x64.zip" "./Chirp-v0.0.0-win-x64"
-      - name: Github Release
+        shell: bash
+        run: |
+          #Defining variables
+          tag=$(git describe --tags --abbrev=0)
+          release_name="Chirp-$tag-win-x64"
+          echo Git tag: $tag
+          echo Release name: $release_name
+          
+          #Build program
+          dotnet publish src/Chirp.CLI/Chirp.csproj --framework net7.0 --runtime win-x64 -p:PublishSingleFile=true --no-self-contained --configuration Release --verbosity normal --output "$release_name"
+
+          #Pack files
+          7z a -tzip "${release_name}.zip" "./${release_name}/*"
+          echo Files in directory -----
+          dir
+
+          #Delete output directory
+          rm -r "$release_name"
+          echo Files in directory -----
+          dir
+      - name: Publish for Linux
+        shell: bash
+        run: |
+          #Defining variables
+          tag=$(git describe --tags --abbrev=0)
+          release_name=Chirp-$tag-linux-x64
+          echo Git tag: $tag
+          echo Release name: $release_name
+
+          #Build program
+          dotnet publish src/Chirp.CLI/Chirp.csproj --framework net7.0 --runtime win-x64 -p:PublishSingleFile=true --no-self-contained --configuration Release --verbosity normal --output "$release_name"
+
+          #Pack files
+          7z a -tzip "${release_name}.zip" "./${release_name}/*"
+          echo Files in directory -----
+          dir
+
+          #Delete output directory
+          rm -r "$release_name"
+          echo Files in directory -----
+          dir
+      - name: Publish for macOS
+        shell: bash
+        run: |
+          #Defining variables
+          tag=$(git describe --tags --abbrev=0)
+          release_name="Chirp-$tag-osx-x64"
+          echo Git tag: $tag
+          echo Release name: $release_name
+
+          #Build program
+          dotnet publish src/Chirp.CLI/Chirp.csproj --framework net7.0 --runtime win-x64 -p:PublishSingleFile=true --no-self-contained --configuration Release --verbosity normal --output "$release_name"
+
+          #Pack files
+          7z a -tzip "${release_name}.zip" "./${release_name}/*"
+          echo Files in directory -----
+          dir
+
+          #Delete output directory
+          rm -r "$release_name"
+          echo Files in directory -----
+          dir
+      - name: Publish
         uses: softprops/action-gh-release@v1
-        with: 
-          files: "Chirp-v0.0.0-win-x64.zip"
+        with:
+          files: |
+            Chirp-*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      

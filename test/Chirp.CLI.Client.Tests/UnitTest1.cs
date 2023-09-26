@@ -30,6 +30,7 @@ public class UnitTest1
     }
 
 
+<<<<<<< HEAD
     [Fact]
     public void UnitTestPrintMessage()
     // Test UserInterface.PrintMessage()
@@ -42,6 +43,8 @@ public class UnitTest1
         //------------- Assert.Equal(result, "");
     }
 
+=======
+>>>>>>> 412d33f49a1e28f55a79541f6409966c3d66c851
     [Theory]
     [InlineData(1000000000)]
     [InlineData(2000000000)]
@@ -66,6 +69,7 @@ public class UnitTest1
         Assert.Equal(result, c);
     }
 
+<<<<<<< HEAD
 
 using System.Collections.Generic;
 using System.IO;
@@ -99,4 +103,6 @@ namespace Chirp.CLI.Client.Tests
             }
         }
     }
+=======
+>>>>>>> 412d33f49a1e28f55a79541f6409966c3d66c851
 }
