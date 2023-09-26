@@ -37,10 +37,11 @@ jobs:
 
           #Pack files
           7z a -tzip "${release_name}.zip" "./${release_name}/*"
+          dir
 
           #Delete output directory
           rm -r "$release_name"
-
+          dir
       - name: Publish for Linux
         shell: bash
         run: |
@@ -55,10 +56,11 @@ jobs:
 
           #Pack files
           7z a -tzip "${release_name}.zip" "./${release_name}/*"
+          dir
 
           #Delete output directory
           rm -r "$release_name"
-
+          dir
       - name: Publish for macOS
         shell: bash
         run: |
@@ -73,10 +75,11 @@ jobs:
 
           #Pack files
           7z a -tzip "${release_name}.zip" "./${release_name}/*"
+          dir
 
           #Delete output directory
           rm -r "$release_name"
-
+          dir
       - name: Publish
         uses: softprops/action-gh-release@v1
         with:
