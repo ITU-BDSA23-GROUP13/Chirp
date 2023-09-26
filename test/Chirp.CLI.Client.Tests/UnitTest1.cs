@@ -22,19 +22,6 @@ public class UnitTest1
     }
 
 
-    [Fact]
-    public void UnitTestPrintMessage()
-    // Test UserInterface.PrintMessage()
-    {
-        // Arrange
-        //var input = "This is a message!";
-        // Act
-        //var result = UserInterface.PrintMessage("******"); // Cannot assign void to an implicitly-typed variable (CS0815)
-        var result = false;
-        // Assert
-        Assert.False(result);
-    }
-
     [Theory]
     [InlineData(1000000000)]
     [InlineData(2000000000)]
@@ -60,4 +47,3 @@ public class UnitTest1
     }
 
 }
-
