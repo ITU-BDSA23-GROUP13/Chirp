@@ -37,10 +37,12 @@ jobs:
 
           #Pack files
           7z a -tzip "${release_name}.zip" "./${release_name}/*"
+          echo Files in directory -----
           dir
 
           #Delete output directory
           rm -r "$release_name"
+          echo Files in directory -----
           dir
       - name: Publish for Linux
         shell: bash
@@ -56,10 +58,12 @@ jobs:
 
           #Pack files
           7z a -tzip "${release_name}.zip" "./${release_name}/*"
+          echo Files in directory -----
           dir
 
           #Delete output directory
           rm -r "$release_name"
+          echo Files in directory -----
           dir
       - name: Publish for macOS
         shell: bash
@@ -75,15 +79,17 @@ jobs:
 
           #Pack files
           7z a -tzip "${release_name}.zip" "./${release_name}/*"
+          echo Files in directory -----
           dir
 
           #Delete output directory
           rm -r "$release_name"
+          echo Files in directory -----
           dir
       - name: Publish
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            "Chirp-*"
+            Chirp-*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
