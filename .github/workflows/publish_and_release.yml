@@ -31,7 +31,7 @@ jobs:
           release_name="Chirp-$tag-win-x64"
 
           #Build program
-          dotnet publish src/Chirp.CLI/Chirp.csproj --framework net7.0 --runtime win-x64 --no-self-contained --configuration Release --verbosity normal --output Chirp-v0.0.0-win-x64
+          dotnet publish src/Chirp.CLI/Chirp.csproj --framework net7.0 --runtime win-x64 --no-self-contained --configuration Release --verbosity normal --output "$release_name"
 
           #Pack files
           7z a -tzip "${release_name}.zip" "./${release_name}/*"
@@ -47,7 +47,7 @@ jobs:
           linux_filename=Chirp-$tag-linux-x64
 
           #Build program
-          dotnet publish src/Chirp.CLI/Chirp.csproj --framework net7.0 --runtime win-x64 --no-self-contained --configuration Release --verbosity normal --output Chirp-v0.0.0-win-x64
+          dotnet publish src/Chirp.CLI/Chirp.csproj --framework net7.0 --runtime win-x64 --no-self-contained --configuration Release --verbosity normal --output "$release_name"
 
           #Pack files
           7z a -tzip "${release_name}.zip" "./${release_name}/*"
@@ -63,7 +63,7 @@ jobs:
           release_name="chirp-$tag-osx-x64"
 
           #Build program
-          dotnet publish src/Chirp.CLI/Chirp.csproj --framework net7.0 --runtime win-x64 --no-self-contained --configuration Release --verbosity normal --output Chirp-v0.0.0-win-x64
+          dotnet publish src/Chirp.CLI/Chirp.csproj --framework net7.0 --runtime win-x64 --no-self-contained --configuration Release --verbosity normal --output "$release_name"
 
           #Pack files
           7z a -tzip "${release_name}.zip" "./${release_name}/*"
