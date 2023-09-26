@@ -29,7 +29,9 @@ jobs:
           #Defining variables
           tag=$(git describe --tags --abbrev=0)
           release_name="Chirp-$tag-win-x64"
-
+          echo $tag
+          echo $release_name
+          
           #Build program
           dotnet publish src/Chirp.CLI/Chirp.csproj --framework net7.0 --runtime win-x64 --no-self-contained --configuration Release --verbosity normal --output "$release_name"
 
