@@ -64,7 +64,11 @@ public class CsvDatabase<T> : IDatabase<T>
 
     public void Store(T record)
     {
-        if (!file.Exists) file.Create().Flush();
+        if (!file.Exists)
+        {
+            file.Directory?.Create();
+            file.Create().Flush(); // NOTE: Might be unnecessary?
+        }
 
         using (var writer = File.AppendText(file.FullName))
         using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
