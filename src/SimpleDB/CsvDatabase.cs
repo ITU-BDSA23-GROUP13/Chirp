@@ -11,21 +11,25 @@ public class CsvDatabase<T> : IDatabase<T>
     private const string ext = ".csv";
 
     private static CsvConfiguration defaultConfig;
+    /// <summary> Maps file paths to database instances. </summary>
     private static readonly Dictionary<string, CsvDatabase<T>> instances;
 
     private readonly FileInfo file;
+    private readonly CsvConfiguration config;
 
     static CsvDatabase()
     {
         defaultConfig = new CsvConfiguration(CultureInfo.InvariantCulture);
+        defaultConfig.HasHeaderRecord = false;
         defaultConfig.InjectionOptions = InjectionOptions.Escape;
         instances = new Dictionary<string, CsvDatabase<T>>();
     }
 
     /// <summary> Use CSVDatabase.Instance(file) instead. </summary>
-    private CsvDatabase(FileInfo file)
+    private CsvDatabase(FileInfo file, CsvConfiguration? config = null)
     {
         this.file = file;
+        this.config = config ?? defaultConfig;
     }
 
     public static CsvDatabase<T> Instance(FileInfo file)
@@ -56,7 +60,7 @@ public class CsvDatabase<T> : IDatabase<T>
         if (!file.Exists) return Enumerable.Empty<T>();
 
         using (var reader = new StreamReader(file.FullName))
-        using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+        using (var csv = new CsvReader(reader, defaultConfig))
         {
             return csv.GetRecords<T>().Take(limit).ToList();
         }
@@ -72,7 +76,7 @@ public class CsvDatabase<T> : IDatabase<T>
 
         const bool shouldAppend = true;
         using (var writer = new StreamWriter(file.FullName, shouldAppend))
-        using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+        using (var csv = new CsvWriter(writer, defaultConfig))
         {
             csv.WriteRecord<T>(record);
             writer.WriteLine();
