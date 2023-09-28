@@ -66,11 +66,12 @@ public class CsvDatabase<T> : IDatabase<T>
     {
         if (!file.Exists)
         {
+            // Create directory. The file itself is created by the StreamWriter if missing.
             file.Directory?.Create();
-            file.Create().Flush(); // NOTE: Might be unnecessary?
         }
 
-        using (var writer = File.AppendText(file.FullName))
+        const bool shouldAppend = true;
+        using (var writer = new StreamWriter(file.FullName, shouldAppend))
         using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
         {
             csv.WriteRecord<T>(record);
