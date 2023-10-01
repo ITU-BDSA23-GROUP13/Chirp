@@ -55,14 +55,14 @@ public class CsvDatabase<T> : IDatabase<T>
         return CsvDatabase<T>.Instance(file);
     }
 
-    public IEnumerable<T> Read(int limit = int.MaxValue)
+    public IEnumerable<T> Read(int count = int.MaxValue)
     {
         if (!file.Exists) return Enumerable.Empty<T>();
 
         using (var reader = new StreamReader(file.FullName))
         using (var csv = new CsvReader(reader, defaultConfig))
         {
-            return csv.GetRecords<T>().Take(limit).ToList();
+            return csv.GetRecords<T>().Take(count).ToList();
         }
     }
 
@@ -81,6 +81,35 @@ public class CsvDatabase<T> : IDatabase<T>
             csv.WriteRecord<T>(record);
             writer.WriteLine();
             writer.Flush();
+        }
+    }
+
+    public void Store(IEnumerable<T> records)
+    {
+        if (!file.Exists)
+        {
+            file.Directory?.Create();
+        }
+
+        const bool shouldAppend = true;
+        using (var writer = new StreamWriter(file.FullName, shouldAppend))
+        using (var csv = new CsvWriter(writer, defaultConfig))
+        {
+            csv.WriteRecords<T>(records);
+            writer.WriteLine();
+            writer.Flush();
+        }
+    }
+
+    public void DeleteAll()
+    {
+        if (!file.Exists) return;
+
+        file.Delete();
+
+        using (var newFile = file.Create())
+        {
+            newFile.Flush();
         }
     }
 
