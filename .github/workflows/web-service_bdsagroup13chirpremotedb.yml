@@ -6,7 +6,8 @@ name: Build and deploy ASP.Net Core app to Azure Web App - bdsagroup13chirpremot
 on:
   push:
     branches:
-      - Web-service
+      - WebAPI
+      - main
   workflow_dispatch:
 
 jobs:
