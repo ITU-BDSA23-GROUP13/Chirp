@@ -1,6 +1,8 @@
 ﻿using SimpleDB;
 using CommandLine;
 
+namespace Chirp.CLI;
+
 public class Program
 {
     public record Cheep(string Author, string Message, long Timestamp);

@@ -15,7 +15,7 @@ public class Program
 
         app.MapGet("/", () => "Hello World!");
         app.MapGet("/cheeps", () => db.Read().Select(cheep => cheep.ToString()).Aggregate((a, b) => $"{a}\n{b}"));
-        app.MapPost("/cheep", (Cheep cheep) => db.Store(cheep));
+        app.MapPost("/cheep", () => db.Store(new Cheep("Author", "Message", 0)));
 
         app.Run();
     }
