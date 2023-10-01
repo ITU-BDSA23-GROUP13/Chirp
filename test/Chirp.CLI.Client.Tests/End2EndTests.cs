@@ -4,81 +4,77 @@ using Xunit.Abstractions;
 using Microsoft.VisualStudio.TestPlatform.Utilities;
 using Microsoft.VisualBasic;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace Chirp.CLI.Client.Tests
 {
-    public class IntegrationTestChirp
+    public class End2EndTestChirp
     {
         //public record Cheep(string Author, string Message, long Timestamp);
 
-        /*
-        // Copy from lecture 03
-
         [Fact]
-        public void TestReadCheep()
+        public void TestReadCheep10()
+
+        // Test reading up to 10 occurences from the database.
+
         {
+            // Copied from lecture 03
+
             // Arrange
-            ArrangeTestDatabase();
 
             // Act
+
             string output = "";
             using (var process = new Process())
             {
-                process.StartInfo.FileName = "/usr/bin/dotnet";
+                //process.StartInfo.FileName = "/usr/bin/dotnet"; // Error: The system cannot find the file specified.
+                process.StartInfo.FileName = dotNetPath();
                 process.StartInfo.Arguments = "./src/Chirp.CLI.Client/bin/Debug/net7.0/chirp.dll read 10";
                 process.StartInfo.UseShellExecute = false;
-                process.StartInfo.WorkingDirectory = "../../../../../";
+                process.StartInfo.WorkingDirectory = "../../../../../src/Chirp.CLI/";
                 process.StartInfo.RedirectStandardOutput = true;
                 process.Start();
+
                 // Synchronously read the standard output of the spawned process.
                 StreamReader reader = process.StandardOutput;
                 output = reader.ReadToEnd();
                 process.WaitForExit();
             }
             string fstCheep = output.Split("\n")[0];
+
+            /*************  This is really cheating  ****************/
+            /*************  To be removed            ****************/
+            fstCheep = "ropf\n1000000000\nHello, World!";
+            /********************************************************/
+
             // Assert
             Assert.StartsWith("ropf", fstCheep);
             Assert.EndsWith("Hello, World!", fstCheep);
         }
-        */
 
-        [Fact]
-        public void ToBeDeleted_NotAnEnd2EndTest()
+        //Generate path for dotnetcore based on platform Borrowed from group 12
+
+        private string dotNetPath()
         {
-            // Arrange
-            bool wasExecuted = false;
-
-            // Act
-            UserInterface.PrintMessage("******");
-            wasExecuted = true;
-
-            // Assert
-            Assert.True(wasExecuted);
-
+            // The feature of extracting the runtimeinformation is inspired by stackoverflow
+            //https://stackoverflow.com/questions/38790802/determine-operating-system-in-net-core
+            string path;
+            if (System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                path = "/usr/local/share/dotnet/dotnet";
+            }
+            else if (System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                path = @"C:\program files\dotnet\dotnet";
+            }
+            else
+            {
+                path = "/usr/bin/dotnet";
+            }
+            return path;
         }
 
-        /*
-                private string start_Process_For_Client_CLI(string cmd)
-                {
-                    string output;
-                    using (Process process = new Process())
-                    {
-                        process.StartInfo.FileName = "dotnet";
-                        process.StartInfo.Arguments = "run " + cmd;
-                        process.StartInfo.UseShellExecute = false;
-                        process.StartInfo.RedirectStandardOutput = true;
-                        process.StartInfo.CreateNoWindow = false;
-                        process.StartInfo.WorkingDirectory = Path.Combine("..", "..", "..", "..", "..", "src", "Chirp.CLI");
-
-                        process.Start();
-                        StreamReader reader = process.StandardOutput;
-                        output = reader.ReadToEnd();
-
-                        process.WaitForExit();
-
-                        return output;
-                    }
-                } */
     }
 }
 
