@@ -13,7 +13,7 @@ public class Program
 
         IDatabase<Cheep> db = CsvDatabase<Cheep>.Instance("cheeps");
 
-        app.MapGet("/", () => "Hello World!");
+        app.MapGet("/", () => "Hello World! We are testing right now :)");
         app.MapGet("/cheeps", () => db.Read().Select(cheep => cheep.ToString()).Aggregate((a, b) => $"{a}\n{b}"));
         app.MapPost("/cheep", () => db.Store(new Cheep("Author", "Message", 0)));
 
