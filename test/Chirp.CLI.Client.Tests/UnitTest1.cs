@@ -1,15 +1,9 @@
-using static Program;
-using Xunit;
-using Xunit.Abstractions;
-using Microsoft.VisualStudio.TestPlatform.Utilities;
-using Microsoft.VisualBasic;
+using static Chirp.CLI.Program;
 
 namespace Chirp.CLI.Client.Tests
 {
     public class UnitTest1
     {
-        public record Cheep(string Author, string Message, long Timestamp);
-
         //[Fact]
         public void PrintCheeps_PrintsCheepsCorrectly()
         {
