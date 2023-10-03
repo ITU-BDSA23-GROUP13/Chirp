@@ -1,5 +1,4 @@
-
-using static Program;
+using static Chirp.CLI.Program;
 
 public static class UserInterface
 {
