@@ -18,11 +18,4 @@ public static class UserInterface
     {
         Console.WriteLine(message);
     }
-
-    public static string TestRunUnitTest1(string testString)
-
-    // To be deleted - TestRunUnitTest1 is constructed to return a value to the unit test
-    {
-        return "******" + testString;
-    }
 }
