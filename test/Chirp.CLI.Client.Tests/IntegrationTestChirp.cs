@@ -33,7 +33,7 @@ namespace Chirp.CLI.Client.Tests
             // Arrange
             bool wasExecuted = false;
             // var expectedOutput = "User1 @ 09/26/21 00:00:00 Output er for kort!\r\n";
-            var expectedOutput = "Output er for kort!\r\n";
+            var expectedOutput = "Output er for kort!" + Environment.NewLine;
 
             // Act
             using (var sw = new StringWriter())
