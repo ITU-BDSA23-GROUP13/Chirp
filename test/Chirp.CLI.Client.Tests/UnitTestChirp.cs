@@ -1,5 +1,4 @@
 using static Chirp.CLI.Program;
-using static Program;
 using Xunit;
 using Xunit.Abstractions;
 using Microsoft.VisualStudio.TestPlatform.Utilities;

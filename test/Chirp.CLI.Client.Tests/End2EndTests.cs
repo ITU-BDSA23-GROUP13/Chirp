@@ -1,4 +1,4 @@
-using static Program;
+using static Chirp.CLI.Program;
 using Xunit;
 using Xunit.Abstractions;
 using Microsoft.VisualStudio.TestPlatform.Utilities;
