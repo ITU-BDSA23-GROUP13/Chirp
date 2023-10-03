@@ -1,4 +1,4 @@
-using static Program;
+using static Chirp.CLI.Program;
 using SimpleDB;
 
 namespace Chirp.SimpleDB.Tests;

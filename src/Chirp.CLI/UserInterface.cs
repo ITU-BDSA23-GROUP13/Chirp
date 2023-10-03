@@ -1,3 +1,4 @@
+
 using static Program;
 
 public static class UserInterface
@@ -18,5 +19,4 @@ public static class UserInterface
     {
         Console.WriteLine(message);
     }
-
 }

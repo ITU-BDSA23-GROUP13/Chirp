@@ -1,3 +1,4 @@
+using static Chirp.CLI.Program;
 using static Program;
 using Xunit;
 using Xunit.Abstractions;
@@ -8,21 +9,7 @@ namespace Chirp.CLI.Client.Tests
 {
     public class UnitTest1
     {
-        public record Cheep(string Author, string Message, long Timestamp);
-
-        [Fact]
-        public void ToBeDeleted_NoTest()
-        {
-            // Arrange
-
-            // Act
-            var test = true;
-            // Assert
-            Assert.True(test);
-
-        }
         //[Fact]
-        /*
         public void PrintCheeps_PrintsCheepsCorrectly()
         {
             // Arrange
@@ -43,6 +30,6 @@ namespace Chirp.CLI.Client.Tests
                 Assert.Equal(expectedOutput, sw.ToString());
             }
         }
-        */
     }
 }
+
