@@ -54,7 +54,7 @@ jobs:
           echo Release name: $release_name
 
           #Build program
-          dotnet publish src/Chirp.CLI/Chirp.csproj --framework net7.0 --runtime win-x64 -p:PublishSingleFile=true --no-self-contained --configuration Release --verbosity normal --output "$release_name"
+          dotnet publish src/Chirp.CLI/Chirp.csproj --framework net7.0 --runtime linux-x64 -p:PublishSingleFile=true --no-self-contained --configuration Release --verbosity normal --output "$release_name"
 
           #Pack files
           7z a -tzip "${release_name}.zip" "./${release_name}/*"
@@ -75,7 +75,7 @@ jobs:
           echo Release name: $release_name
 
           #Build program
-          dotnet publish src/Chirp.CLI/Chirp.csproj --framework net7.0 --runtime win-x64 -p:PublishSingleFile=true --no-self-contained --configuration Release --verbosity normal --output "$release_name"
+          dotnet publish src/Chirp.CLI/Chirp.csproj --framework net7.0 --runtime osx-x64 -p:PublishSingleFile=true --no-self-contained --configuration Release --verbosity normal --output "$release_name"
 
           #Pack files
           7z a -tzip "${release_name}.zip" "./${release_name}/*"
