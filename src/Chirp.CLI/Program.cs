@@ -18,20 +18,18 @@ public static class Program
 
     private static void Main(string[] args)
     {
+        var client = new HttpClient();
+        client.BaseAddress = new Uri(serverBaseAddress);
+
         /*
          * NOTE: async functions does not seem to work with CommandLineParser,
          * so we run the networking synchronously, which is okay because there
          * is not other work to do in the meantime anyway.
          */
 
-        Parser.Default.ParseArguments<ChirpArguments.Options>(args)
-        .WithParsedAsync(async (ChirpArguments.Options options) =>
-        {
-            var client = new HttpClient();
-            client.BaseAddress = new Uri(serverBaseAddress);
-
-            //Read cheeps
-            if (options.CheepCount is not null)
+        Parser.Default.ParseArguments<ReadOptions, CheepOptions>(args)
+        .MapResult(
+            async (ReadOptions options) =>
             {
                 HttpResponseMessage response;
                 try
@@ -68,11 +66,9 @@ public static class Program
                 }
                 cheeps.Sort((a, b) => DateTime.Compare(a.TimestampAsDateTime, b.TimestampAsDateTime));
 
-                UserInterface.PrintCheeps(cheeps.Take((int) options.CheepCount));
-            }
-
-            //Cheep a cheep
-            if (!string.IsNullOrWhiteSpace(options.CheepMessage))
+                UserInterface.PrintCheeps(options.CheepCount is null ? cheeps : cheeps.Take((int) options.CheepCount));
+            },
+            async (CheepOptions options) =>
             {
                 string Author = Environment.UserName;
                 string Message = options.CheepMessage;
@@ -101,12 +97,12 @@ public static class Program
                     UserInterface.PrintMessage(e.Message);
                     return;
                 }
+            },
+            async (errors) =>
+            {
+                Console.WriteLine("Invalid command-line arguments.");
+                await Task.CompletedTask;
             }
-        }).Result
-        .WithNotParsed(errors =>
-        {
-            // Handle parsing errors if any
-            Console.WriteLine("Invalid command-line arguments.");
-        });
+        ).Wait();
     }
 }
