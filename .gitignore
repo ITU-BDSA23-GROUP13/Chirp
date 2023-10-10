@@ -31,3 +31,5 @@ bld/
 .history/
 
 # End of https://www.toptal.com/developers/gitignore/api/csharp
+
+shell.nix
