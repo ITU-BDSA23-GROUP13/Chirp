@@ -15,6 +15,9 @@ public class PublicModel : PageModel
 
     public ActionResult OnGet()
     {
+        Console.WriteLine("p");
+        _service.test();
+        
         Cheeps = _service.GetCheeps();
         return Page();
     }

@@ -1,16 +1,25 @@
+namespace Chirp.Razor;
+
 public record CheepViewModel(string Author, string Message, string Timestamp);
 
 public interface ICheepService
 {
     public List<CheepViewModel> GetCheeps();
     public List<CheepViewModel> GetCheepsFromAuthor(string author);
+    void test();
 }
 
 public class CheepService : ICheepService
 {
+    public void test()
+    {
+        DBFacade.RunDB();
+    }
+    
     // These would normally be loaded from a database for example
     private static readonly List<CheepViewModel> _cheeps = new()
         {
+            
             new CheepViewModel("Helge", "Hello, BDSA students!", UnixTimeStampToDateTimeString(1690892208)),
             new CheepViewModel("Rasmus", "Hej, velkommen til kurset.", UnixTimeStampToDateTimeString(1690895308)),
         };
