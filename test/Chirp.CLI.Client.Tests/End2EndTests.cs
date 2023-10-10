@@ -29,8 +29,8 @@ namespace Chirp.CLI.Client.Tests
             using (var process = new Process())
             {
                 //process.StartInfo.FileName = "/usr/bin/dotnet"; // Error: The system cannot find the file specified.
-                process.StartInfo.FileName = dotNetPath();
-                process.StartInfo.Arguments = "run ./bin/Debug/net7.0/Chirp.exe --read 10";
+                process.StartInfo.FileName = "dotnet"; //dotNetPath();
+                process.StartInfo.Arguments = "run ./bin/Debug/net7.0/Chirp.exe read 10";
                 process.StartInfo.UseShellExecute = false;
                 process.StartInfo.WorkingDirectory = "../../../../../src/Chirp.CLI/";
                 process.StartInfo.RedirectStandardOutput = true;
@@ -73,4 +73,3 @@ namespace Chirp.CLI.Client.Tests
 
     }
 }
-

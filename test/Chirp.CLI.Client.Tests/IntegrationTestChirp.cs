@@ -50,9 +50,9 @@ namespace Chirp.CLI.Client.Tests
         }
 
         [Theory]
-        [InlineData("User1", "Output er for kort!", 1632600000, "User1 @ 09/25/21 22:00:00: Output er for kort!\r\n")]
-        [InlineData("User2", "Output er for kort!", 1632600000, "User2 @ 09/25/21 22:00:00: Output er for kort!\r\n")]
-        [InlineData("User3", "Output er for kort!", 1632600000, "User3 @ 09/25/21 22:00:00: Output er for kort!\r\n")]
+        [InlineData("User1", "Output er for kort!", 1632600000, "User1 @ 09/25/21 22:00:00: Output er for kort!")]
+        [InlineData("User2", "Output er for kort!", 1632600000, "User2 @ 09/25/21 22:00:00: Output er for kort!")]
+        [InlineData("User3", "Output er for kort!", 1632600000, "User3 @ 09/25/21 22:00:00: Output er for kort!")]
         public void UserInterfacePrintCheepsTest1(string Author, string message, long TimeStamp, string expectedOutput)
         {
             // Arrange
@@ -69,7 +69,7 @@ namespace Chirp.CLI.Client.Tests
 
                 // Assert
                 Assert.True(wasExecuted);
-                Assert.Equal(sw.ToString(), expectedOutput);
+                Assert.Equal(expectedOutput + Environment.NewLine, sw.ToString());
             }
         }
     }
