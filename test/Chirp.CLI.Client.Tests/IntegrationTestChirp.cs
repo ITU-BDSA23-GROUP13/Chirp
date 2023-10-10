@@ -32,7 +32,7 @@ namespace Chirp.CLI.Client.Tests
         {
             // Arrange
             bool wasExecuted = false;
-            // var expectedOutput = "User1 @ 09/26/21 00:00:00 Output er for kort!\r\n";
+
             var expectedOutput = "Output er for kort!" + Environment.NewLine;
 
             // Act
@@ -43,14 +43,34 @@ namespace Chirp.CLI.Client.Tests
                 UserInterface.PrintMessage("Output er for kort!");
                 wasExecuted = true;
 
-                var x = sw.ToString();
-
                 // Assert
                 Assert.True(wasExecuted);
                 Assert.Equal(expectedOutput, sw.ToString());
             }
         }
 
-    }
+        [Theory]
+        [InlineData("User1", "Output er for kort!", 1632600000, "User1 @ 09/25/21 22:00:00: Output er for kort!\r\n")]
+        [InlineData("User2", "Output er for kort!", 1632600000, "User2 @ 09/25/21 22:00:00: Output er for kort!\r\n")]
+        [InlineData("User3", "Output er for kort!", 1632600000, "User3 @ 09/25/21 22:00:00: Output er for kort!\r\n")]
+        public void UserInterfacePrintCheepsTest1(string Author, string message, long TimeStamp, string expectedOutput)
+        {
+            // Arrange
+            bool wasExecuted = false;
+            var cheeps = new List<Program.Cheep>();
+            cheeps.Add(new Program.Cheep(Author, message, TimeStamp));
 
+            // Act
+            using (var sw = new StringWriter())
+            {
+                Console.SetOut(sw);
+                UserInterface.PrintCheeps(cheeps);
+                wasExecuted = true;
+
+                // Assert
+                Assert.True(wasExecuted);
+                Assert.Equal(sw.ToString(), expectedOutput);
+            }
+        }
+    }
 }
