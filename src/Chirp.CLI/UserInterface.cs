@@ -10,10 +10,10 @@ public static class UserInterface
         {
             string author = cheep.Author;
             string message = cheep.Message;
-            DateTimeOffset date = DateTimeOffset.FromUnixTimeSeconds(cheep.Timestamp).ToLocalTime();
+            DateTimeOffset date = DateTimeOffset.FromUnixTimeSeconds(cheep.Timestamp);
 
             // https://learn.microsoft.com/en-us/dotnet/standard/base-types/standard-date-and-time-format-strings?redirectedfrom=MSDN
-            Console.WriteLine($"{author} @ {date.ToString(@"MM\/dd\/yy HH:mm:ss", CultureInfo.CreateSpecificCulture("en-US"))}: {message}");
+            Console.WriteLine($"{author} @ {date.ToString(@"MM\/dd\/yy HH:mm:ss", CultureInfo.InvariantCulture)}: {message}");
         }
     }
 

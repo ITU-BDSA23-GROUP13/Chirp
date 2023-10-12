@@ -1,8 +1,4 @@
 using static Chirp.CLI.Program;
-using Xunit;
-using Xunit.Abstractions;
-using Microsoft.VisualStudio.TestPlatform.Utilities;
-using Microsoft.VisualBasic;
 
 namespace Chirp.CLI.Client.Tests
 {
@@ -31,4 +27,3 @@ namespace Chirp.CLI.Client.Tests
         }
     }
 }
-
