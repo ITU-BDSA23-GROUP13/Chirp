@@ -1,3 +1,5 @@
+using System.Globalization;
+
 using static Chirp.CLI.Program;
 
 public static class UserInterface
@@ -8,9 +10,10 @@ public static class UserInterface
         {
             string author = cheep.Author;
             string message = cheep.Message;
-            DateTimeOffset date = DateTimeOffset.FromUnixTimeSeconds(cheep.Timestamp).ToLocalTime();
+            DateTimeOffset date = DateTimeOffset.FromUnixTimeSeconds(cheep.Timestamp);
 
-            Console.WriteLine($"{author} @ {date:MM\\/dd\\/yy HH:mm:ss}: {message}");
+            // https://learn.microsoft.com/en-us/dotnet/standard/base-types/standard-date-and-time-format-strings?redirectedfrom=MSDN
+            Console.WriteLine($"{author} @ {date.ToString(@"MM\/dd\/yy HH:mm:ss", CultureInfo.InvariantCulture)}: {message}");
         }
     }
 
