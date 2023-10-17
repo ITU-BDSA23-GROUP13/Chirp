@@ -1,0 +1,1 @@
+public record CheepDTO(string name, string Author, DateTime Timestamp);
