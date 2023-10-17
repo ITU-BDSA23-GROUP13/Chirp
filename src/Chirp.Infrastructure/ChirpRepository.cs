@@ -4,27 +4,61 @@ namespace Chirp.Infrastructure;
 
 public class ChirpRepository : IChirpRepository
 {
-    public void Create(Guid id, CheepDTO entity)
+    private CheepContext context = new();
+
+    public void CreateAuthor(Guid id, AuthorDTO author)
     {
         throw new NotImplementedException();
     }
 
-    public void Delete(Guid id)
+    public void CreateCheep(Guid id, CheepDTO cheepDTO)
+    {
+        var cheep = new Cheep
+        {
+            AuthorName = cheepDTO.Author,
+            Text = cheepDTO.Text,
+            Timestamp = cheepDTO.Timestamp,
+        };
+            
+        context.Add(cheep);
+    }
+
+    public void DeleteAuthor(Guid id)
     {
         throw new NotImplementedException();
     }
 
-    public IReadOnlyCollection<CheepDTO> Read()
+    public void DeleteCheep(Guid id)
     {
         throw new NotImplementedException();
     }
 
-    public CheepDTO Read(Guid id)
+    public AuthorDTO ReadAuthor(Guid id)
     {
         throw new NotImplementedException();
     }
 
-    public void Update(CheepDTO entity)
+    public IReadOnlyCollection<AuthorDTO> ReadAuthors()
+    {
+        throw new NotImplementedException();
+    }
+
+    public CheepDTO ReadCheep(Guid id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IReadOnlyCollection<CheepDTO> ReadCheeps()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void UpdateAuthor(AuthorDTO author)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void UpdateCheep(CheepDTO cheep)
     {
         throw new NotImplementedException();
     }

@@ -11,5 +11,6 @@ public class CheepDTO
     [StringLength(160, MinimumLength = 5)]
     public required string Text   { get; set; }
 
-    public DateTime Timestamp { get; set; }
+    [Required]
+    public required DateTime Timestamp { get; set; }
 }
