@@ -11,7 +11,7 @@ public class AuthorDTO
     [Required]
     [EmailAddress]
     public required string Email { get; set; }
-
-    [Required]
-    public required List<CheepDTO> Cheeps { get; set; }
+    
+    /*[Required]
+    public required List<CheepDTO> Cheeps { get; set; }*/
 }

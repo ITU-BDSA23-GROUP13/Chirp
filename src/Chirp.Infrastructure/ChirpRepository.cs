@@ -4,7 +4,7 @@ namespace Chirp.Infrastructure;
 
 public class ChirpRepository : IChirpRepository
 {
-    private ChirpContext context = new();
+    private static ChirpContext context = new();
 
     public void CreateAuthor(Guid id, AuthorDTO authorDTO)
     {
@@ -23,7 +23,7 @@ public class ChirpRepository : IChirpRepository
             Id = id.ToString(),
             AuthorId = GetAuthorIdFromName(cheepDTO.Author.Name).ToString(),
             Text = cheepDTO.Text,
-            Timestamp = ((DateTimeOffset) cheepDTO.Timestamp).ToUnixTimeSeconds(),
+            Timestamp = cheepDTO.Timestamp.ToUnixTimeSeconds(),
         };
             
         context.Add(cheep);
@@ -59,7 +59,12 @@ public class ChirpRepository : IChirpRepository
 
     public AuthorDTO ReadAuthor(Guid id)
     {
-        throw new NotImplementedException();
+        var author = context.Authors.Where(a => a.Id == id.ToString()).First();
+        return new AuthorDTO
+        {
+            Name = author.Name,
+            Email = author.Email,
+        };
     }
 
     public Guid GetAuthorIdFromName(string name)
