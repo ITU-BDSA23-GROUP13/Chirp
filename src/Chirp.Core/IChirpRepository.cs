@@ -8,8 +8,12 @@ public interface IChirpRepository {
     IReadOnlyCollection<CheepDTO> ReadCheeps();
     IReadOnlyCollection<AuthorDTO> ReadAuthors();
 
+    IReadOnlyCollection<CheepDTO> ReadCheepsFromAuthor(Guid authorId);
+
     CheepDTO ReadCheep(Guid id);
     AuthorDTO ReadAuthor(Guid id);
+
+    Guid GetAuthorIdFromName(string name);
 
     void UpdateCheep(CheepDTO cheep);
     void UpdateAuthor(AuthorDTO author);
