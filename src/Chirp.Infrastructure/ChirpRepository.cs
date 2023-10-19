@@ -14,6 +14,7 @@ public class ChirpRepository : IChirpRepository
             Name = authorDTO.Name,
             Email = authorDTO.Email,
         };
+        context.Add(author);
     }
 
     public void CreateCheep(Guid id, CheepDTO cheepDTO)
@@ -25,7 +26,6 @@ public class ChirpRepository : IChirpRepository
             Text = cheepDTO.Text,
             Timestamp = cheepDTO.Timestamp.ToUnixTimeSeconds(),
         };
-            
         context.Add(cheep);
     }
 
