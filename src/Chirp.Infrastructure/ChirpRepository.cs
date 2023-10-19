@@ -36,7 +36,15 @@ public class ChirpRepository : IChirpRepository
 
     public IReadOnlyCollection<CheepDTO> ReadCheeps()
     {
-        throw new NotImplementedException();
+        var cheeps = context.Cheeps.Select(c =>
+            new CheepDTO
+            {
+                Author = ReadAuthor(Guid.Parse(c.AuthorId)),
+                Text = c.Text,
+                Timestamp = DateTimeOffset.FromUnixTimeSeconds(c.Timestamp),
+            }
+        );
+        return cheeps.ToList();
     }
 
     public IReadOnlyCollection<CheepDTO> ReadCheepsFromAuthor(Guid authorId)

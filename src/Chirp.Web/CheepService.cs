@@ -3,7 +3,7 @@ using Chirp.Infrastructure;
 
 namespace Chirp.Razor;
 
-public record CheepViewModel(string Author, string Message, DateTime Timestamp);
+public record CheepViewModel(string Author, string Message, DateTimeOffset Timestamp);
 
 public interface ICheepService
 {
@@ -17,7 +17,8 @@ public class CheepService : ICheepService
 
     public List<CheepViewModel> GetCheeps()
     {
-        throw new NotImplementedException();
+        var cheeps = chirpRepository.ReadCheeps();
+        return cheeps.Select(c => new CheepViewModel(c.Author.Name, c.Text, c.Timestamp)).ToList();
     }
 
     public List<CheepViewModel> GetCheepsFromAuthor(string author)
