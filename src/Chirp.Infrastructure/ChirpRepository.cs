@@ -1,95 +1,92 @@
+using Microsoft.EntityFrameworkCore;
 using Chirp.Core;
 
 namespace Chirp.Infrastructure;
 
 public class ChirpRepository : IChirpRepository
 {
-    private static ChirpContext context = new();
+    private readonly ChirpContext context = new();
 
-    public void CreateAuthor(Guid id, AuthorDTO authorDTO)
-    {
-        var author = new Author
-        {
-            Id = id.ToString(),
-            Name = authorDTO.Name,
-            Email = authorDTO.Email,
-        };
-        context.Add(author);
-    }
+    //public async Task CreateCheep(Guid id, CheepDTO cheepDTO)
+    //{
+    //    var authorId = await GetAuthorIdFromName(cheepDTO.Author.Name);
+    //    var cheep = new Cheep
+    //    {
+    //        Id = id.ToString(),
+    //        AuthorId = authorId.ToString(),
+    //        Text = cheepDTO.Text,
+    //        Timestamp = cheepDTO.Timestamp.ToUnixTimeSeconds(),
+    //    };
+    //    await context.AddAsync(cheep);
+    //}
 
-    public void CreateCheep(Guid id, CheepDTO cheepDTO)
-    {
-        var cheep = new Cheep
-        {
-            Id = id.ToString(),
-            AuthorId = GetAuthorIdFromName(cheepDTO.Author.Name).ToString(),
-            Text = cheepDTO.Text,
-            Timestamp = cheepDTO.Timestamp.ToUnixTimeSeconds(),
-        };
-        context.Add(cheep);
-    }
+    //public async Task CreateAuthor(Guid id, AuthorDTO authorDTO)
+    //{
+    //    var author = new Author
+    //    {
+    //        Id = id.ToString(),
+    //        Name = authorDTO.Name,
+    //        Email = authorDTO.Email,
+    //    };
+    //    await context.AddAsync(author);
+    //}
 
-    public IReadOnlyCollection<AuthorDTO> ReadAuthors()
+    public async Task<IReadOnlyCollection<CheepDTO>> ReadCheeps()
     {
-        throw new NotImplementedException();
-    }
-
-    public IReadOnlyCollection<CheepDTO> ReadCheeps()
-    {
-        var cheeps = context.Cheeps.Select(c =>
+        return await context.Cheep.Select(c =>
             new CheepDTO
             {
-                Author = ReadAuthor(Guid.Parse(c.AuthorId)),
+                Author = "Test",//await ReadAuthor(Guid.Parse(c.AuthorId));
                 Text = c.Text,
-                Timestamp = DateTimeOffset.FromUnixTimeSeconds(c.Timestamp),
+                Timestamp = c.Timestamp,
             }
-        );
-        return cheeps.ToList();
+        )
+        .ToListAsync();
     }
 
-    public IReadOnlyCollection<CheepDTO> ReadCheepsFromAuthor(Guid authorId)
+    //public Task<IReadOnlyCollection<AuthorDTO>> ReadAuthors()
+    //{
+    //    throw new NotImplementedException();
+    //}
+
+    public Task<IReadOnlyCollection<CheepDTO>> ReadCheepsFromAuthor(ulong authorId)
     {
         throw new NotImplementedException();
     }
 
-    public CheepDTO ReadCheep(Guid id)
+    //public Task<CheepDTO> ReadCheep(Guid id)
+    //{
+    //    throw new NotImplementedException();
+    //}
+
+    //public Task<AuthorDTO> ReadAuthor(Guid id)
+    //{
+    //    throw new NotImplementedException();
+    //}
+
+    public Task<ulong> GetAuthorIdFromName(string name)
     {
-        throw new NotImplementedException();
+        var author = context.Author.Where(a => a.Name == name).First();
+        return Task.Run(() => author.Id);//() => Guid.Parse(author.Id));
     }
 
-    public AuthorDTO ReadAuthor(Guid id)
-    {
-        var author = context.Authors.Where(a => a.Id == id.ToString()).First();
-        return new AuthorDTO
-        {
-            Name = author.Name,
-            Email = author.Email,
-        };
-    }
+    //public Task UpdateAuthor(AuthorDTO author)
+    //{
+    //    throw new NotImplementedException();
+    //}
 
-    public Guid GetAuthorIdFromName(string name)
-    {
-        var author = context.Authors.Where(a => a.Name == name).First();
-        return Guid.Parse(author.Id);
-    }
+    //public Task UpdateCheep(CheepDTO cheep)
+    //{
+    //    throw new NotImplementedException();
+    //}
 
-    public void UpdateAuthor(AuthorDTO author)
-    {
-        throw new NotImplementedException();
-    }
+    //public Task DeleteCheep(Guid id)
+    //{
+    //    throw new NotImplementedException();
+    //}
 
-    public void UpdateCheep(CheepDTO cheep)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void DeleteCheep(Guid id)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void DeleteAuthor(Guid id)
-    {
-        throw new NotImplementedException();
-    }
+    //public Task DeleteAuthor(Guid id)
+    //{
+    //    throw new NotImplementedException();
+    //}
 }

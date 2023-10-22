@@ -7,24 +7,24 @@ public record CheepViewModel(string Author, string Message, DateTimeOffset Times
 
 public interface ICheepService
 {
-    public List<CheepViewModel> GetCheeps();
-    public List<CheepViewModel> GetCheepsFromAuthor(string author);
+    public Task<List<CheepViewModel>> GetCheeps();
+    public Task<List<CheepViewModel>> GetCheepsFromAuthor(string author);
 }
 
 public class CheepService : ICheepService
 {
     private IChirpRepository chirpRepository = new ChirpRepository();
 
-    public List<CheepViewModel> GetCheeps()
+    public async Task<List<CheepViewModel>> GetCheeps()
     {
-        var cheeps = chirpRepository.ReadCheeps();
-        return cheeps.Select(c => new CheepViewModel(c.Author.Name, c.Text, c.Timestamp)).ToList();
+        var cheeps = await chirpRepository.ReadCheeps();
+        return cheeps.Select(c => new CheepViewModel(c.Author, c.Text, DateTimeOffset.FromUnixTimeSeconds(c.Timestamp))).ToList();
     }
 
-    public List<CheepViewModel> GetCheepsFromAuthor(string author)
+    public async Task<List<CheepViewModel>> GetCheepsFromAuthor(string author)
     {
-        var authorId = chirpRepository.GetAuthorIdFromName(author);
-        var cheeps = chirpRepository.ReadCheepsFromAuthor(authorId);
-        return cheeps.Select(c => new CheepViewModel(c.Author.Name, c.Text, c.Timestamp)).ToList();
+        var authorId = await chirpRepository.GetAuthorIdFromName(author);
+        var cheeps = await chirpRepository.ReadCheepsFromAuthor(authorId);
+        return cheeps.Select(c => new CheepViewModel(c.Author, c.Text, DateTimeOffset.FromUnixTimeSeconds(c.Timestamp))).ToList();
     }
 }

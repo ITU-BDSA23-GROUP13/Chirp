@@ -2,23 +2,23 @@ namespace Chirp.Core;
 
 public interface IChirpRepository {
 
-    void CreateCheep(Guid id, CheepDTO cheep);
-    void CreateAuthor(Guid id, AuthorDTO author);
+    //Task CreateCheep(Guid id, CheepDTO cheep);
+    //Task CreateAuthor(Guid id, AuthorDTO author);
 
-    IReadOnlyCollection<CheepDTO> ReadCheeps();
-    IReadOnlyCollection<AuthorDTO> ReadAuthors();
+    Task<IReadOnlyCollection<CheepDTO>> ReadCheeps();
+    //Task<IReadOnlyCollection<AuthorDTO>> ReadAuthors();
 
-    IReadOnlyCollection<CheepDTO> ReadCheepsFromAuthor(Guid authorId);
+    Task<IReadOnlyCollection<CheepDTO>> ReadCheepsFromAuthor(ulong authorId);
 
-    CheepDTO ReadCheep(Guid id);
-    AuthorDTO ReadAuthor(Guid id);
+    //Task<CheepDTO> ReadCheep(Guid id);
+    //Task<AuthorDTO> ReadAuthor(Guid id);
 
-    Guid GetAuthorIdFromName(string name);
+    Task<ulong> GetAuthorIdFromName(string name);
 
-    void UpdateCheep(CheepDTO cheep);
-    void UpdateAuthor(AuthorDTO author);
+    //Task UpdateCheep(CheepDTO cheep);
+    //Task UpdateAuthor(AuthorDTO author);
 
-    void DeleteCheep(Guid id);
-    void DeleteAuthor(Guid id);
+    //Task DeleteCheep(Guid id);
+    //Task DeleteAuthor(Guid id);
 
 }

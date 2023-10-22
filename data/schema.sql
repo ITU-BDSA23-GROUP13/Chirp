@@ -1,15 +1,15 @@
-drop table if exists user;
-create table user (
-  user_id integer primary key autoincrement,
-  username string not null,
-  email string not null,
-  pw_hash string not null
+DROP TABLE IF EXISTS Author;
+CREATE TABLE Author (
+    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+    Name STRING NOT NULL,
+    Email STRING NOT NULL,
+    PwHash STRING NOT NULL
 );
 
-drop table if exists message;
-create table message (
-  message_id integer primary key autoincrement,
-  author_id integer not null,
-  text string not null,
-  pub_date integer
+DROP TABLE IF EXISTS Cheep;
+CREATE TABLE Cheep (
+    Id INTEGER PRIMARY KEY AUTOINCREMENT,
+    AuthorId INTEGER NOT NULL,
+    Text STRING NOT NULL,
+    Timestamp INTEGER
 );

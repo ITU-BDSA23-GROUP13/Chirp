@@ -13,11 +13,11 @@ public class PublicModel : PageModel
         _service = service;
     }
 
-    public ActionResult OnGet()
+    public async Task<ActionResult> OnGet()
     {
         Console.WriteLine("p");
         
-        Cheeps = _service.GetCheeps();
+        Cheeps = await _service.GetCheeps();
         return Page();
     }
 }

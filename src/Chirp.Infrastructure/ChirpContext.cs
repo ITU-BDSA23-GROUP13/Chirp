@@ -1,22 +1,42 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Runtime.InteropServices;
+
+using Microsoft.EntityFrameworkCore;
 
 namespace Chirp.Infrastructure;
 
 public class ChirpContext : DbContext
 {
-    public DbSet<Cheep> Cheeps { get; set; }
-    public DbSet<Author> Authors { get; set; }
+    public DbSet<Cheep> Cheep { get; set; }
+    public DbSet<Author> Author { get; set; }
 
     public string DBPath { get; }
 
     public ChirpContext() : base()
     {
-        var path = Environment.GetEnvironmentVariable("CHIRP_DB") ?? Path.GetTempPath();
-        DBPath = Path.Join(path, "chirp.db");
+        DBPath = Environment.GetEnvironmentVariable("CHIRP_DB") ?? Path.Join(GetDefaultDBPath(), "chirp.db");
+    }
+
+    private string GetDefaultDBPath()
+    {
+        string path;
+
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            path = Path.GetTempPath();
+        else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            path = Path.GetTempPath();
+        else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            path = "/tmp";
+        else
+            throw new Exception("OS not supported");
+
+        return path;
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder options)
-        => options.UseSqlite($"Data Source={DBPath}");
+    {
+        Console.WriteLine($"Using DB at {DBPath}");
+        options.UseSqlite($"Data Source={DBPath}");
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
