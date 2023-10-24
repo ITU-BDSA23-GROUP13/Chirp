@@ -5,19 +5,17 @@ namespace Chirp.Razor.Pages;
 
 public class PublicModel : PageModel
 {
-    private readonly ICheepService _service;
+    private readonly ICheepService service;
     public List<CheepViewModel> Cheeps { get; set; }
 
     public PublicModel(ICheepService service)
     {
-        _service = service;
+        this.service = service;
     }
 
     public async Task<ActionResult> OnGet()
     {
-        Console.WriteLine("p");
-        
-        Cheeps = await _service.GetCheeps();
+        Cheeps = await service.GetCheeps();
         return Page();
     }
 }
