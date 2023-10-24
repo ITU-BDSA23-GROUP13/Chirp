@@ -31,7 +31,7 @@ public class CheepService : ICheepService
         }
         catch
         {
-            return new List<CheepViewModel>;
+            return new List<CheepViewModel>();
         }
     }
 }
