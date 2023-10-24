@@ -7,6 +7,11 @@ public class ChirpRepository : IChirpRepository
 {
     private readonly ChirpContext context = new();
 
+    public ChirpRepository()
+    {
+        DbInitializer.SeedDatabase(context);
+    }
+
     //public async Task CreateCheep(Guid id, CheepDTO cheepDTO)
     //{
     //    var authorId = await GetAuthorIdFromName(cheepDTO.Author.Name);
