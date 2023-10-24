@@ -22,6 +22,12 @@ jobs:
           dotnet-version: '7.x'
           include-prerelease: true
 
+      - name: Run database schema
+        run: sqlite3 /tmp/chirp.db < data/schema.sql
+
+      - name: Run database dump
+        run: sqlite3 /tmp/chirp.db < data/dump.sql
+        
       - name: Build with dotnet
         run: dotnet build src/Chirp.Web/Chirp.Web.csproj --configuration Release
 
