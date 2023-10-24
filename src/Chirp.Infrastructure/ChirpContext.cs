@@ -41,7 +41,7 @@ public class ChirpContext : DbContext
         }
         else
         {
-            Console.WriteLine($"Could not find Sqlite DB at {DBPath}... Trying creates new one.");
+            Console.WriteLine($"Could not find Sqlite DB at {DBPath}... Trying to create a new one.");
             var dir = Path.GetDirectoryName(DBPath);
             if (dir is null)
             {
@@ -70,5 +70,7 @@ public class ChirpContext : DbContext
         modelBuilder.Entity<Author>().Property(a => a.Name).IsRequired().HasMaxLength(50);
         modelBuilder.Entity<Author>().HasIndex(a => a.Email).IsUnique();
         modelBuilder.Entity<Author>().Property(a => a.Email).IsRequired();
+        
+        
     }
 }
