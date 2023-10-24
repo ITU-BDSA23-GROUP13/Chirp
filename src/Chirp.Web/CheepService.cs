@@ -23,8 +23,15 @@ public class CheepService : ICheepService
 
     public async Task<List<CheepViewModel>> GetCheepsFromAuthor(string author)
     {
-        var authorId = await chirpRepository.GetAuthorIdFromName(author);
-        var cheeps = await chirpRepository.ReadCheepsFromAuthor(authorId);
-        return cheeps.Select(c => new CheepViewModel(c.Author, c.Text, DateTimeOffset.FromUnixTimeSeconds(c.Timestamp))).ToList();
+        try
+        {
+            var authorId = await chirpRepository.GetAuthorIdFromName(author);
+            var cheeps = await chirpRepository.ReadCheepsFromAuthor(authorId);
+            return cheeps.Select(c => new CheepViewModel(c.Author, c.Text, DateTimeOffset.FromUnixTimeSeconds(c.Timestamp))).ToList();
+        }
+        catch
+        {
+            return new List<CheepViewModel>();
+        }
     }
 }
