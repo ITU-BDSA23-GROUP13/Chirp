@@ -34,12 +34,30 @@ public class ChirpContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder options)
     {
-        Console.WriteLine($"Using DB at {DBPath}");
+
+        if (File.Exists(DBPath)) 
+        {
+            Console.WriteLine($"Found Sqlite DB at {DBPath}");
+        }
+        else
+        {
+            Console.WriteLine($"Could not find Sqlite DB at {DBPath}... Trying creates new one.");
+            var dir = Path.GetDirectoryName(DBPath);
+            if (dir is null)
+            {
+                throw new Exception("Could not get directory name from DBPath. Directory was either ROOT or null.");
+            }
+            Directory.CreateDirectory(dir);
+            File.Create(DBPath).Close();
+        }
+
         options.UseSqlite($"Data Source={DBPath}");
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        Database.MigrateAsync();
+
         // Cheep
         modelBuilder.Entity<Cheep>().HasKey(c => c.Id);
         modelBuilder.Entity<Cheep>().Property(c => c.AuthorId).IsRequired();
