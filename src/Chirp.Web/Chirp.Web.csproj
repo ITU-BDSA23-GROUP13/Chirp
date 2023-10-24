@@ -10,4 +10,9 @@
     <PackageReference Include="Microsoft.Data.Sqlite" Version="7.0.11" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Chirp.Infrastructure\Chirp.Infrastructure.csproj" />
+    <ProjectReference Include="..\Chirp.Core\Chirp.Core.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -10,7 +10,7 @@ jobs:
     permissions:
       contents: write
     env:
-      PROJECT_FILE: "src/Chirp.Razor/Chirp.Razor.csproj"
+      PROJECT_FILE: "src/Chirp.Web/Chirp.Web.csproj"
     steps:
       - name: Checkout
         uses: actions/checkout@v3
