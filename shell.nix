@@ -2,10 +2,10 @@
 pkgs.mkShell {
   nativeBuildInputs = with pkgs; [
     # Dotnet
-    dotnet-sdk_7
-    dotnet-aspnetcore_7
+    #dotnet-sdk_7
+    #dotnet-aspnetcore_7
     # Azure
-    azure-cli
+    #azure-cli
     # Python3
     python3
     # Sqlite

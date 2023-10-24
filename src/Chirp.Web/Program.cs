@@ -9,7 +9,6 @@ internal class Program
         builder.Services.AddRazorPages();
         builder.Services.AddSingleton<ICheepService, CheepService>();
 
-
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
