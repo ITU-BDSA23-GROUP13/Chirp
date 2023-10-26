@@ -13,9 +13,9 @@ public class UserTimelineModel : PageModel
         this.service = service;
     }
 
-    public async Task<ActionResult> OnGet(string author)
+    public async Task<ActionResult> OnGet(string author, [FromQuery(Name = "page")] int page)
     {
-        Cheeps = await service.GetCheepsFromAuthor(author);
+        Cheeps = await service.GetCheepsFromAuthor(author, page);
         return Page();
     }
 }

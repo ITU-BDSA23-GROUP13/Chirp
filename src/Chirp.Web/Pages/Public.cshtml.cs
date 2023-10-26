@@ -13,9 +13,9 @@ public class PublicModel : PageModel
         this.service = service;
     }
 
-    public async Task<ActionResult> OnGet()
+    public async Task<ActionResult> OnGet([FromQuery(Name = "page")] int page = 1)
     {
-        Cheeps = await service.GetCheeps();
+        Cheeps = await service.GetCheeps(page);
         return Page();
     }
 }
