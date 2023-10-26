@@ -8,12 +8,12 @@ public record CheepViewModel(string Author, string Message, DateTimeOffset Times
 public interface ICheepService
 {
     public Task<List<CheepViewModel>> GetCheeps(int page);
-    public Task<List<CheepViewModel>> GetCheepsFromAuthor(string author);
+    public Task<List<CheepViewModel>> GetCheepsFromAuthor(string author, int page);
 }
 
 public class CheepService : ICheepService
 {
-    private int pageSize = 32;
+    private readonly int pageSize = 32;
     private IChirpRepository chirpRepository = new ChirpRepository();
 
     public async Task<List<CheepViewModel>> GetCheeps(int page)
@@ -27,13 +27,17 @@ public class CheepService : ICheepService
             .ToList();
     }
 
-    public async Task<List<CheepViewModel>> GetCheepsFromAuthor(string author)
+    public async Task<List<CheepViewModel>> GetCheepsFromAuthor(string author, int page)
     {
         try
         {
             var authorId = await chirpRepository.GetAuthorIdFromName(author);
             var cheeps = await chirpRepository.ReadCheepsFromAuthor(authorId);
-            return cheeps.Select(c => new CheepViewModel(c.Author, c.Text, DateTimeOffset.FromUnixTimeSeconds(c.Timestamp))).ToList();
+            return cheeps.OrderByDescending(cheep => cheep.Timestamp)
+                .Skip((page-1) * pageSize)
+                .Take(pageSize)
+                .Select(c => new CheepViewModel(c.Author, c.Text, DateTimeOffset.FromUnixTimeSeconds(c.Timestamp)))
+                .ToList();
         }
         catch
         {
