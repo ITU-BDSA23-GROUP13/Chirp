@@ -7,6 +7,11 @@ public class ChirpRepository : IChirpRepository
 {
     private readonly ChirpContext context = new();
 
+    public ChirpRepository()
+    {
+        DbInitializer.SeedDatabase(context);
+    }
+
     //public async Task CreateCheep(Guid id, CheepDTO cheepDTO)
     //{
     //    var authorId = await GetAuthorIdFromName(cheepDTO.Author.Name);
@@ -52,9 +57,18 @@ public class ChirpRepository : IChirpRepository
     //    throw new NotImplementedException();
     //}
 
-    public Task<IReadOnlyCollection<CheepDTO>> ReadCheepsFromAuthor(ulong authorId)
+    public async Task<IReadOnlyCollection<CheepDTO>> ReadCheepsFromAuthor(ulong authorId)
     {
-        throw new NotImplementedException();
+        return await context.Cheep
+            .Where(c => c.AuthorId == authorId)
+            .Select(c => new CheepDTO
+                {
+                    Author = c.Author.Name,
+                    Text = c.Text,
+                    Timestamp = c.Timestamp,
+                }
+            )
+            .ToListAsync();
     }
 
     //public Task<CheepDTO> ReadCheep(Guid id)
@@ -72,10 +86,10 @@ public class ChirpRepository : IChirpRepository
     //    };
     //}
 
-    public Task<ulong> GetAuthorIdFromName(string name)
+    public async Task<ulong> GetAuthorIdFromName(string name)
     {
-        var author = context.Author.Where(a => a.Name == name).First();
-        return Task.Run(() => author.Id);
+        var author = await context.Author.Where(a => a.Name == name).FirstAsync();
+        return author.Id;
     }
 
     //public Task UpdateAuthor(AuthorDTO author)
