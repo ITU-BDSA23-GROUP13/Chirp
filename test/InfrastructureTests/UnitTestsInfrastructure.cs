@@ -1,12 +1,13 @@
-//hello
-
 public class UnitTests
 
-// Web
+// Infrastructure
 
 {
+    /************************
+        Dummy test
+    *************************/
     [Fact]
-    public void NinetynineIsNotPrime()
+    public void NinetynineIsNotPrime() // Dummy test
     {
         // Arrange
         var input = 99;
@@ -15,5 +16,6 @@ public class UnitTests
         // Assert
         Assert.False(result);
     }
+
 
 }
