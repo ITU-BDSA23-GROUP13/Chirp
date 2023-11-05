@@ -2,16 +2,16 @@ namespace Core.Tests;
 
 //hello 2
 
-public class UnitTestCore
+public class IntegrationTestCore
 
 // Core
 
 {
     [Fact]
-    public void NinetynineIsNotPrime() // Dummy test
+    public void IntegrationTestCoreDummy() // Dummy test
     {
         // Arrange
-        //var input = 99;
+        // var input = 99;
         // Act
         var result = false;
         // Assert

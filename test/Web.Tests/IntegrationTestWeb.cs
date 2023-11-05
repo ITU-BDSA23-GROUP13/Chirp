@@ -1,14 +1,12 @@
 namespace Core.Tests;
 
-//hello 2
-
-public class UnitTestCore
+public class IntegrationTestWeb
 
 // Core
 
 {
     [Fact]
-    public void NinetynineIsNotPrime() // Dummy test
+    public void IntegrationTestDummyWeb() // Dummy test
     {
         // Arrange
         //var input = 99;

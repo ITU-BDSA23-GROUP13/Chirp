@@ -62,11 +62,11 @@ public class ChirpRepository : IChirpRepository
         return await context.Cheep
             .Where(c => c.AuthorId == authorId)
             .Select(c => new CheepDTO
-                {
-                    Author = c.Author.Name,
-                    Text = c.Text,
-                    Timestamp = c.Timestamp,
-                }
+            {
+                Author = c.Author.Name,
+                Text = c.Text,
+                Timestamp = c.Timestamp,
+            }
             )
             .ToListAsync();
     }
@@ -89,7 +89,10 @@ public class ChirpRepository : IChirpRepository
     public async Task<ulong> GetAuthorIdFromName(string name)
     {
         var author = await context.Author.Where(a => a.Name == name).FirstAsync();
-        return author.Id;
+        if (author == null)
+            return 0;
+        else
+            return author.Id;
     }
 
     //public Task UpdateAuthor(AuthorDTO author)

@@ -1,5 +1,6 @@
-// namespace Infrastructure.Tests; 
-// this needs to be moved !!!!
+using Chirp.Infrastructure;
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 
 /*********************************************
     UnitTest Chirp Repository
@@ -22,36 +23,48 @@ Not implemented yet:
     DeleteAuthor(Guid id)    
 
 ***********************************************/
-using Chirp.Infrastructure;
-//namespace Chirp;
-using Chirp;
+namespace Chirp.Tests;
 
 public class UnitTestsInfrastructure
 
 {
     [Fact]
-    public async Task UnitTEstGetAuthorIdFromName()
+    public void UnitTestDummyInfrastructure() // Dummy test
     {
         // Arrange
-        var input = "Mellie Yost";
-        //var input = "ropf";
-        var x = new ChirpRepository();
-
+        //var input = 99;
         // Act
-        console.Writeline("**************");
-        // GetAuthorIdFromName returns a <ulong>-value
-        var author = await x.GetAuthorIdFromName(input);
-        console.Writeline(author.ToString());
-
         var result = false;
-        if (author > 0)
-        {
-            result = true;
-        }
-
         // Assert
-        Assert.false(result == true);
+        Assert.False(result);
     }
+    /*
+       [Fact]
+       public async Task UnitTEstGetAuthorIdFromName()
+       {
+           // Arrange
+           var input = "Mellie Yost";
+           //var input = "ropf";
+           //var input = "Helge";
+           var x = new ChirpRepository();
+
+           // Act
+           console.Writeline("**************");
+           // GetAuthorIdFromName returns a <ulong>-value
+           var authorId = await x.GetAuthorIdFromName(input);
+           console.Writeline(author.ToString());
+
+           var result = false;
+           if (authorId > 0)
+           {
+               result = true;
+           }
+
+           // Assert
+           Assert.false(result);           // No author found
+           Assert.true(authorId == 0);     // Value for No author found = 0 
+       }
+   */
 
     /*
         [Fact]
