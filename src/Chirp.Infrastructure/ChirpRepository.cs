@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Chirp.Core;
+using System.Reflection.Metadata;
 
 namespace Chirp.Infrastructure;
 
@@ -56,6 +57,22 @@ public class ChirpRepository : IChirpRepository
     //{
     //    throw new NotImplementedException();
     //}
+
+    /*
+
+    public int ReadNumberOfCheeps() // Not great -cope
+    // Remove if too much disturbance
+    {
+        return context.Cheep.Count();
+    }
+
+    public int ReadNumberOfPagesOfCheeps()
+    // Remove if too much disturbance
+    {
+        return context.Cheep.Count() / 32; // Pagesize i defined where? Can I extract it -cope
+                                           // pageSize is AssemblyDefinitionHandle in Chirp.Web.CheepService.cs
+    }
+    */
 
     public async Task<IReadOnlyCollection<CheepDTO>> ReadCheepsFromAuthor(ulong authorId)
     {

@@ -77,4 +77,23 @@ public class UnitTestWeb
         Assert.False(result);
     }
 
+    [Fact]
+    public void DummyTestFluentAssertion() // Dummy test
+
+    //  https://medium.com/p/87c2e087c6d#62e8
+
+    //  Testing with fluent Assertion
+
+    // To be deleted after constidering whether this information is useful
+    {
+        string actual = "ABCDEFGHI";
+
+        // Without Fluent Assertion
+        Assert.True(actual.StartsWith("AB") && actual.EndsWith("HI"), "string does not start with AB and ends with HI");
+
+        // With Fluent Assertion
+        //actual.Should().StartWith("AB").And.EndWith("HI");
+
+    }
 }
+

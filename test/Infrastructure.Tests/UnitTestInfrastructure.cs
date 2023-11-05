@@ -39,6 +39,34 @@ public class UnitTestsInfrastructure
         Assert.False(result);
     }
     /*
+    public void UnitTestReadNumberOfCheeps()
+    // Remove if too much disturbance
+    {
+        // Arrange
+        var x = new ChirpRepository();
+        var CountCheeps = 99;
+        // Act
+        var result = ReadNumberOfCheeps();
+        // Assert
+        Assert.False(result == CountCheeps);
+
+    }
+
+    public int UnitTestReadNumberOfPagesOfCheeps()
+    // Remove if too much disturbance
+    {
+        // Arrange
+        var x = new ChirpRepository();
+        var CountPages = 9;
+        // Act
+        var result = ReadNumberOfPagesOfCheeps();
+        // Assert
+        Assert.False(result == CountPages);
+
+
+    }
+    */
+    /*
        [Fact]
        public async Task UnitTEstGetAuthorIdFromName()
        {
@@ -49,10 +77,8 @@ public class UnitTestsInfrastructure
            var x = new ChirpRepository();
 
            // Act
-           console.Writeline("**************");
            // GetAuthorIdFromName returns a <ulong>-value
            var authorId = await x.GetAuthorIdFromName(input);
-           console.Writeline(author.ToString());
 
            var result = false;
            if (authorId > 0)
