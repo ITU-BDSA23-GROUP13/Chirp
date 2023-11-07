@@ -1,3 +1,5 @@
+namespace Tests;
+
 //hello
 
 public class End2End
@@ -9,7 +11,7 @@ public class End2End
         // Arrange
         var input = 99;
         // Act
-        var result = _primeService.IsPrime(input);
+        var result = IsPrime(input);
         // Assert
         Assert.False(result);
 

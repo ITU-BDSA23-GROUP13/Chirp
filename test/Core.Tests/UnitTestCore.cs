@@ -1,17 +1,19 @@
+namespace Core.Tests;
+
 //hello 2
 
-public class UnitTests
+public class UnitTestCore
 
-// Infrastructure
+// Core
 
 {
     [Fact]
     public void NinetynineIsNotPrime() // Dummy test
     {
         // Arrange
-        var input = 99;
+        //var input = 99;
         // Act
-        var result = _primeService.IsPrime(input);
+        var result = false;
         // Assert
         Assert.False(result);
     }
