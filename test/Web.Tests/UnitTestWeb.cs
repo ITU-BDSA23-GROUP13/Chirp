@@ -2,8 +2,6 @@ namespace Web.Tests;
 
 public class UnitTestWeb
 
-// Infrastructure
-
 {
     /************************
         Dummy test
@@ -12,7 +10,7 @@ public class UnitTestWeb
     public void NinetynineIsNotPrime() // Dummy test
     {
         // Arrange
-        var input = 99;
+        //var input = 99;
         // Act
         var result = false;
         // Assert
@@ -28,7 +26,7 @@ public class UnitTestWeb
         // DB is running
 
         // Arrange
-        var input = 99;
+        //var input = 99;
         // Act
         var result = false;
         // Assert
@@ -41,7 +39,7 @@ public class UnitTestWeb
         // Failure running DB
 
         // Arrange
-        var input = 99;
+        //var input = 99;
         // Act
         var result = false;
         // Assert
@@ -58,7 +56,7 @@ public class UnitTestWeb
         // Cheeps are extracted
 
         // Arrange
-        var input = 99;
+        //var input = 99;
         // Act
         var result = false;
         // Assert
@@ -72,11 +70,30 @@ public class UnitTestWeb
         // The wrong Cheeps are extracted
 
         // Arrange
-        var input = 99;
+        //var input = 99;
         // Act
         var result = false;
         // Assert
         Assert.False(result);
     }
 
+    [Fact]
+    public void DummyTestFluentAssertion() // Dummy test
+
+    //  https://medium.com/p/87c2e087c6d#62e8
+
+    //  Testing with fluent Assertion
+
+    // To be deleted after constidering whether this information is useful
+    {
+        string actual = "ABCDEFGHI";
+
+        // Without Fluent Assertion
+        Assert.True(actual.StartsWith("AB") && actual.EndsWith("HI"), "string does not start with AB and ends with HI");
+
+        // With Fluent Assertion
+        //actual.Should().StartWith("AB").And.EndWith("HI");
+
+    }
 }
+

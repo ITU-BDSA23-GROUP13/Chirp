@@ -1,12 +1,16 @@
 namespace Chirp.Core;
 
-public interface IChirpRepository {
+public interface IChirpRepository
+{
 
     //Task CreateCheep(Guid id, CheepDTO cheep);
     //Task CreateAuthor(Guid id, AuthorDTO author);
 
     Task<IReadOnlyCollection<CheepDTO>> ReadCheeps();
     //Task<IReadOnlyCollection<AuthorDTO>> ReadAuthors();
+
+    //int ReadNumberOfCheeps();
+    //int ReadNumberOfPagesOfCheeps();
 
     Task<IReadOnlyCollection<CheepDTO>> ReadCheepsFromAuthor(ulong authorId);
 
