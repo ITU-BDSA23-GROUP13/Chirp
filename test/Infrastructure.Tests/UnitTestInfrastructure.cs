@@ -1,4 +1,5 @@
 using Chirp.Infrastructure;
+
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 
@@ -28,17 +29,8 @@ namespace Chirp.Tests;
 public class UnitTestsInfrastructure
 
 {
-    [Fact]
-    public void UnitTestDummyInfrastructure() // Dummy test
-    {
-        // Arrange
-        //var input = 99;
-        // Act
-        var result = false;
-        // Assert
-        Assert.False(result);
-    }
     /*
+    [Fact]
     public void UnitTestReadNumberOfCheeps()
     // Remove if too much disturbance
     {
@@ -52,6 +44,7 @@ public class UnitTestsInfrastructure
 
     }
 
+    [Fact]
     public int UnitTestReadNumberOfPagesOfCheeps()
     // Remove if too much disturbance
     {
@@ -62,89 +55,69 @@ public class UnitTestsInfrastructure
         var result = ReadNumberOfPagesOfCheeps();
         // Assert
         Assert.False(result == CountPages);
-
-
     }
     */
+
+    [Fact]
+    public async Task UnitTestGetAuthorIdFromName()
+    {
+        // Arrange
+        var input = "Mellie Yost";
+        //var input = "ropf";
+        //var input = "Helge";
+        var cR = new ChirpRepository();
+
+        // Act
+        // GetAuthorIdFromName returns a <ulong>-value
+        var _ = await cR.GetAuthorIdFromName(input);
+    }
+
+    [Fact]
+    public async Task NotUnitTEstGetAuthorIdFromName() // Dummy test
+    {
+        // Arrange
+        var input = "XXXX";
+        var cR = new ChirpRepository();
+        // Act
+        // var msg = await cR.GetAuthorIdFromName(input);
+        Func<Task> action = async () => await cR.GetAuthorIdFromName(input);
+
+        // Assert
+        var ex = await Assert.ThrowsAsync<InvalidOperationException>(action);
+        Assert.Contains("Sequence contains no elements.", ex.Message);
+    }
     /*
-       [Fact]
-       public async Task UnitTEstGetAuthorIdFromName()
-       {
-           // Arrange
-           var input = "Mellie Yost";
-           //var input = "ropf";
-           //var input = "Helge";
-           var x = new ChirpRepository();
-
-           // Act
-           // GetAuthorIdFromName returns a <ulong>-value
-           var authorId = await x.GetAuthorIdFromName(input);
-
-           var result = false;
-           if (authorId > 0)
-           {
-               result = true;
-           }
-
-           // Assert
-           Assert.false(result);           // No author found
-           Assert.true(authorId == 0);     // Value for No author found = 0 
-       }
-   */
-
-    /*
-        [Fact]
-        public async Task NotUnitTEstGetAuthorIdFromName() // Dummy test
-        {
-            // Arrange
-            var input = "XXXX";
-            // Act
-            var author = GetAuthorIdFromName(input);
-
-            var result;
-            if (author == null)
+            [Fact]
+            public async Task UnitTestReadCheeps() // Dummy test
             {
-                result = false;
+                // Arrange
+                var input = 99;
+                // Act
+                var result = ReadCheeps();
+                // Assert
+                Assert.False(null(result));
             }
-            else
+
+            [Fact]
+            public async Task UnitTestChirpRepository() // Dummy test
             {
-                result = true;
+                // Arrange
+
+                // Act
+                var result = ChirpRepository();
+                // Assert
+                Assert.False(result);
             }
-            // Assert
-            Assert.False(result);
-        }
 
-        [Fact]
-        public async Task UnitTestReadCheeps() // Dummy test
-        {
-            // Arrange
-            var input = 99;
-            // Act
-            var result = ReadCheeps();
-            // Assert
-            Assert.False(null(result));
-        }
-
-        [Fact]
-        public async Task UnitTestChirpRepository() // Dummy test
-        {
-            // Arrange
-
-            // Act
-            var result = ChirpRepository();
-            // Assert
-            Assert.False(result);
-        }
-
-        [Fact]
-        public async Task UnitTestReadCheepsFromAuthor() // Dummy test
-        {
-            // Arrange
-            var input = 0;
-            // Act
-            var result = ReadCheepsFromAuthor(input);
-            // Assert
-            Assert.False(result);
-        }
-    */
+            [Fact]
+            public async Task UnitTestReadCheepsFromAuthor() // Dummy test
+            {
+                // Arrange
+                var input = 0;
+                // Act
+                var result = ReadCheepsFromAuthor(input);
+                // Assert
+                Assert.False(result);
+            }
+        */
 }
