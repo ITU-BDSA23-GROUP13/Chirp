@@ -226,3 +226,14 @@ li.topic {
   -webkit-border-radius: 5px;
   min-height: 20px;
 }
+
+ul#page-navigation{
+  margin-left: 5px;
+  padding: 0;
+  list-style:none;
+  display:flex;
+}
+
+ul#page-navigation li{
+  margin-right: 4px;
+}
