@@ -1,5 +1,4 @@
 using Chirp.Core;
-using Chirp.Infrastructure;
 
 namespace Chirp.Razor;
 
@@ -7,41 +6,35 @@ public record CheepViewModel(string Author, string Message, DateTimeOffset Times
 
 public interface ICheepService
 {
-    public Task<List<CheepViewModel>> GetCheeps(int page);
-    public Task<List<CheepViewModel>> GetCheepsFromAuthor(string author, int page);
+    public Task<List<CheepViewModel>> GetCheeps(uint page);
+    public Task<List<CheepViewModel>> GetCheepsFromAuthor(string author, uint page);
 }
 
 public class CheepService : ICheepService
 {
-    private readonly int pageSize = 32;
-    private IChirpRepository chirpRepository = new ChirpRepository();
+    private readonly uint pageSize = 32;
+    private readonly ICheepRepository cheepRepository;
+    private readonly IAuthorRepository authorRepository;
 
-    public async Task<List<CheepViewModel>> GetCheeps(int page)
+    public CheepService(ICheepRepository cheepRepository, IAuthorRepository authorRepository)
     {
-        var cheeps = await chirpRepository.ReadCheeps();
+        this.cheepRepository = cheepRepository;
+        this.authorRepository = authorRepository;
+    }
+
+    public async Task<List<CheepViewModel>> GetCheeps(uint page)
+    {
+        var cheeps = await cheepRepository.GetPageSortedBy(page, pageSize);
         return cheeps
-            .OrderByDescending(cheep => cheep.Timestamp)
-            .Skip((page-1) * pageSize)
-            .Take(pageSize)
-            .Select(c => new CheepViewModel(c.Author, c.Text, DateTimeOffset.FromUnixTimeSeconds(c.Timestamp)))
+            .Select(c => new CheepViewModel(c.Author, c.Text, DateTimeOffset.FromUnixTimeSeconds((long) c.Timestamp)))
             .ToList();
     }
 
-    public async Task<List<CheepViewModel>> GetCheepsFromAuthor(string author, int page)
+    public async Task<List<CheepViewModel>> GetCheepsFromAuthor(string author, uint page)
     {
-        try
-        {
-            var authorId = await chirpRepository.GetAuthorIdFromName(author);
-            var cheeps = await chirpRepository.ReadCheepsFromAuthor(authorId);
-            return cheeps.OrderByDescending(cheep => cheep.Timestamp)
-                .Skip((page-1) * pageSize)
-                .Take(pageSize)
-                .Select(c => new CheepViewModel(c.Author, c.Text, DateTimeOffset.FromUnixTimeSeconds(c.Timestamp)))
-                .ToList();
-        }
-        catch
-        {
-            return new List<CheepViewModel>();
-        }
+        var cheeps = await authorRepository.GetCheepsPageSortedBy(author, page, pageSize);
+        return cheeps
+            .Select(c => new CheepViewModel(c.Author, c.Text, DateTimeOffset.FromUnixTimeSeconds((long) c.Timestamp)))
+            .ToList();
     }
 }

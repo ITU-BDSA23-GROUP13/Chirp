@@ -1,4 +1,4 @@
-{ pkgs ? import (fetchTarball "https://github.com/NixOS/nixpkgs/archive/9b331a0ae55afbaeb3369d2e36c397b981c5ff28.tar.gz") {} }:
+{ pkgs ? import <nixpkgs> {} }: # import (fetchTarball "https://github.com/NixOS/nixpkgs/archive/9b331a0ae55afbaeb3369d2e36c397b981c5ff28.tar.gz") {} }:
 pkgs.mkShell {
   nativeBuildInputs = with pkgs; [
     # Dotnet

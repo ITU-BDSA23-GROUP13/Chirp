@@ -12,5 +12,5 @@ public class CheepDTO
     public required string Text   { get; set; }
 
     [Required]
-    public required long Timestamp { get; set; }
+    public required ulong Timestamp { get; set; }
 }
