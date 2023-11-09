@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Chirp.Infrastructure.Migrations
 {
     [DbContext(typeof(ChirpContext))]
-    [Migration("20231022231958_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20231107135719_NewMigrations")]
+    partial class NewMigrations
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,12 +36,6 @@ namespace Chirp.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Email")
-                        .IsUnique();
-
-                    b.HasIndex("Name")
-                        .IsUnique();
-
                     b.ToTable("Author");
                 });
 
@@ -64,7 +58,25 @@ namespace Chirp.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AuthorId");
+
                     b.ToTable("Cheep");
+                });
+
+            modelBuilder.Entity("Chirp.Infrastructure.Cheep", b =>
+                {
+                    b.HasOne("Chirp.Infrastructure.Author", "Author")
+                        .WithMany("Cheeps")
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Author");
+                });
+
+            modelBuilder.Entity("Chirp.Infrastructure.Author", b =>
+                {
+                    b.Navigation("Cheeps");
                 });
 #pragma warning restore 612, 618
         }

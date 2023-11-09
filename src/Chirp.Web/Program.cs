@@ -1,3 +1,6 @@
+using Chirp.Core;
+using Chirp.Infrastructure;
+
 namespace Chirp.Razor;
 
 internal class Program
@@ -7,7 +10,10 @@ internal class Program
         var builder = WebApplication.CreateBuilder(args);
         // Add services to the container.
         builder.Services.AddRazorPages();
-        builder.Services.AddSingleton<ICheepService, CheepService>();
+        builder.Services.AddScoped<ICheepService, CheepService>();
+        builder.Services.AddScoped<ICheepRepository, CheepRepository>();
+        builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
+        builder.Services.AddDbContext<ChirpContext>();
 
         var app = builder.Build();
 
@@ -25,6 +31,10 @@ internal class Program
         app.UseRouting();
 
         app.MapRazorPages();
+
+        using var serviceScope = app.Services.CreateScope();
+        var chirpContext = serviceScope.ServiceProvider.GetRequiredService<ChirpContext>();
+        DBInitializer.SeedDatabase(chirpContext);
 
         app.Run();
     }

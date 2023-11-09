@@ -5,7 +5,7 @@
 namespace Chirp.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class NewMigrations : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -37,29 +37,28 @@ namespace Chirp.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Cheep", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Cheep_Author_AuthorId",
+                        column: x => x.AuthorId,
+                        principalTable: "Author",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Author_Email",
-                table: "Author",
-                column: "Email",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Author_Name",
-                table: "Author",
-                column: "Name",
-                unique: true);
+                name: "IX_Cheep_AuthorId",
+                table: "Cheep",
+                column: "AuthorId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Author");
+                name: "Cheep");
 
             migrationBuilder.DropTable(
-                name: "Cheep");
+                name: "Author");
         }
     }
 }
