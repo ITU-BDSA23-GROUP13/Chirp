@@ -237,3 +237,11 @@ ul#page-navigation{
 ul#page-navigation li{
   margin-right: 4px;
 }
+
+div.page ul#page-navigation a{
+  text-decoration: none;
+}
+
+div.page li#currentPage a{
+  text-decoration: underline;
+}
