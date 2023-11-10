@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 namespace Chirp.Infrastructure;
 
 using static Chirp.Core.ICheepRepository;
-using static RepositoryUtils;
 
 public class CheepRepository : ICheepRepository
 {
@@ -47,9 +46,9 @@ public class CheepRepository : ICheepRepository
 
     public async Task<CheepDTO?> Get(ulong id)
     {
-        Cheep? cheep = await TryGetFirstAsyncElseNull(
-            context.Cheep.Where(c => c.Id == id)
-        );
+        Cheep? cheep = await context.Cheep
+            .Where(c => c.Id == id)
+            .FirstOrDefaultAsync();
 
         return cheep is null ? null : new CheepDTO
         {
@@ -61,9 +60,10 @@ public class CheepRepository : ICheepRepository
 
     public async Task<AuthorDTO?> GetAuthor(ulong id)
     {
-        Author? author = await TryGetFirstAsyncElseNull(
-            context.Cheep.Where(c => c.Id == id).Select(c => c.Author)
-        );
+        Author? author = await context.Cheep
+            .Where(c => c.Id == id)
+            .Select(c => c.Author)
+            .FirstOrDefaultAsync();
 
         return author is null ? null : new AuthorDTO
         {
@@ -74,16 +74,33 @@ public class CheepRepository : ICheepRepository
 
     public Task<string?> GetText(ulong id)
     {
-        return TryGetFirstAsyncElseNull(
-            context.Cheep.Where(c => c.Id == id).Select(c => c.Text)
-        );
+        return context.Cheep
+            .Where(c => c.Id == id)
+            .Select(c => c.Text)
+            .FirstOrDefaultAsync();
     }
 
     public Task<ulong?> GetTimestamp(ulong id)
     {
-        return TryGetFirstAsync(
-            context.Cheep.Where(c => c.Id == id).Select(c => (ulong?) c.Timestamp),
+        return FirstOrElseAsync(
+            context.Cheep
+                .Where(c => c.Id == id)
+                .Select(c => (ulong?) c.Timestamp),
             (ulong?) null
         );
+    }
+
+    // Async/await is unnesecary if you don't need to be to return back to the function after an await point. Here we simply return immediately after awaiting. https://stackoverflow.com/questions/38017016/async-task-then-await-task-vs-task-then-return-task
+    // Cannot return null instead of generic type because valuetypes/structs aren't stored as references. https://stackoverflow.com/questions/302096/how-can-i-return-null-from-a-generic-method-in-c
+    internal static Task<T> FirstOrElseAsync<T>(IQueryable<T> query, T def)
+    {
+        try
+        {
+            return query.FirstAsync();
+        }
+        catch (InvalidOperationException)
+        {
+            return Task.FromResult(def);
+        }
     }
 }

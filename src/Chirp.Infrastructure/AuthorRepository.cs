@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 namespace Chirp.Infrastructure;
 
 using static Chirp.Core.ICheepRepository;
-using static RepositoryUtils;
 
 public class AuthorRepository : IAuthorRepository
 {
@@ -19,7 +18,9 @@ public class AuthorRepository : IAuthorRepository
 
     public async Task<AuthorDTO?> Get(string name)
     {
-        var author = await TryGetFirstAsyncElseNull(context.Author.Where(a => a.Name == name));
+        Author? author = await context.Author
+            .Where(a => a.Name == name)
+            .FirstOrDefaultAsync();
 
         return author is null ? null : new AuthorDTO
         {
@@ -30,8 +31,27 @@ public class AuthorRepository : IAuthorRepository
 
     public async Task<string?> GetEmail(string name)
     {
-        var author = await TryGetFirstAsyncElseNull(context.Author.Where(a => a.Name == name));
+        Author? author = await context.Author
+            .Where(a => a.Name == name)
+            .FirstOrDefaultAsync();
         return author?.Email;
+    }
+
+    public async Task<IReadOnlyCollection<CheepDTO>?> GetCheeps(string name)
+    {
+        Author? author = await context.Author
+            .Where(a => a.Name == name)
+            .FirstOrDefaultAsync();
+
+        return author?.Cheeps
+            .Select(cheep =>
+                new CheepDTO
+                {
+                    Author = author.Name,
+                    Text = cheep.Text,
+                    Timestamp = (ulong) cheep.Timestamp,
+                })
+            .ToList();
     }
 
     public async Task<IList<CheepDTO>> GetCheepsPageSortedBy(string name, uint page, uint pageSize, Order order)
@@ -60,25 +80,13 @@ public class AuthorRepository : IAuthorRepository
 
     public async Task<uint?> GetCheepCount(string name)
     {
-        var cheeps = await context.Author.Where(a => a.Name == name).Select(a => a.Cheeps).FirstOrDefaultAsync();
+        var cheeps = await context.Author
+            .Where(a => a.Name == name)
+            .Select(a => a.Cheeps)
+            .FirstOrDefaultAsync();
 
         // https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/checked-and-unchecked
         return checked ((uint?) cheeps?.Count);
-    }
-
-    public async Task<IReadOnlyCollection<CheepDTO>?> GetCheeps(string name)
-    {
-        var author = await TryGetFirstAsyncElseNull(context.Author.Where(a => a.Name == name));
-
-        return author?.Cheeps
-            .Select(cheep =>
-                new CheepDTO
-                {
-                    Author = author.Name,
-                    Text = cheep.Text,
-                    Timestamp = (ulong) cheep.Timestamp,
-                })
-            .ToList();
     }
 
 }
