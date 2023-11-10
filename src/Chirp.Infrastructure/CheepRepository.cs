@@ -39,6 +39,11 @@ public class CheepRepository : ICheepRepository
             .ToListAsync();
     }
 
+    public async Task<uint> GetCount()
+    {
+        return (uint) await this.context.Cheep.CountAsync();
+    }
+
     public async Task<CheepDTO?> Get(ulong id)
     {
         Cheep? cheep = await TryGetFirstAsyncElseNull(

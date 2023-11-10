@@ -58,6 +58,11 @@ public class AuthorRepository : IAuthorRepository
             .ToListAsync();
     }
 
+    public async Task<uint?> GetCheepCount(string name)
+    {
+        return (uint) await this.context.Cheep.CountAsync();
+    }
+
     public async Task<IReadOnlyCollection<CheepDTO>?> GetCheeps(string name)
     {
         var author = await TryGetFirstAsyncElseNull(context.Author.Where(a => a.Name == name));
