@@ -19,7 +19,7 @@ public class AuthorRepository : IAuthorRepository
 
     public async Task<AuthorDTO?> Get(string name)
     {
-        Author? author = await TryGetFirstAsyncElseNull(context.Author.Where(a => a.Name == name));
+        var author = await TryGetFirstAsyncElseNull(context.Author.Where(a => a.Name == name));
 
         return author is null ? null : new AuthorDTO
         {
@@ -60,7 +60,10 @@ public class AuthorRepository : IAuthorRepository
 
     public async Task<uint?> GetCheepCount(string name)
     {
-        return (uint) await this.context.Cheep.CountAsync();
+        var cheeps = await context.Author.Where(a => a.Name == name).Select(a => a.Cheeps).FirstOrDefaultAsync();
+
+        // https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/checked-and-unchecked
+        return checked ((uint?) cheeps?.Count);
     }
 
     public async Task<IReadOnlyCollection<CheepDTO>?> GetCheeps(string name)

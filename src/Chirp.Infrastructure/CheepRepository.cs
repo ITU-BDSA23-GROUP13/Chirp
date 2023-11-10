@@ -41,7 +41,8 @@ public class CheepRepository : ICheepRepository
 
     public async Task<uint> GetCount()
     {
-        return (uint) await this.context.Cheep.CountAsync();
+        // https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/checked-and-unchecked
+        return checked ((uint) await this.context.Cheep.CountAsync());
     }
 
     public async Task<CheepDTO?> Get(ulong id)
