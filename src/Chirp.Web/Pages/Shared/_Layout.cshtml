@@ -13,6 +13,21 @@
         @RenderBody()
     </div>
     <div class=footer>
+        <ul id="page-navigation">
+            @{
+                //temporary numbers
+                double numberOfPages = 21;
+                double currentPage = 2;
+            }
+            @for(int i=0;i<numberOfPages; i++)
+            {
+                <li @(i == currentPage ? "id=currentPage" : "")>
+                    <a href="?page=@i">
+                        @i
+                    </a>
+                </li>
+            } 
+        </ul>
         Chirp &mdash; An ASP.NET Application
     </div>
 </div>
