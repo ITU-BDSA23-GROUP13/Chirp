@@ -1,150 +1,88 @@
-using Chirp.Infrastructure;
-using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
-
 /*********************************************
     UnitTest Chirp Repository
-**********************************************
-Tests units:
-    GetAuthorIdFromName(String author)
-    ReadCheeps()
-    ChirpRepository()
-    ReadCheepsFromAuthor(ulong authorId)
+**********************************************/
 
-Not implemented yet:
-    CreateCheep(Guid id, CheepDTO cheepDTO)
-    CreateAuthor(Guid id, AuthorDTO authorDTO)
-    ReadAuthors()
-    ReadCheep(Guid id)
-    ReadAuthor(ulong id)
-    UpdateAuthor(AuthorDTO author)
-    UpdateCheep(CheepDTO cheep)
-    DeleteCheep(Guid id)
-    DeleteAuthor(Guid id)    
+using Chirp.Infrastructure;
 
-***********************************************/
 namespace Chirp.Tests;
 
 public class UnitTestsInfrastructure
-
 {
+
     [Fact]
-    public void UnitTestDummyInfrastructure() // Dummy test
+    public async Task UnitTestGetExistingUser()
     {
         // Arrange
-        //var input = 99;
+        var authorRepository = new AuthorRepository(new ChirpContext());
+
         // Act
-        var result = false;
+        var author = await authorRepository.Get("Mellie Yost"); // Here we assume that there is a user with this name
+
         // Assert
-        Assert.False(result);
+        Assert.NotNull(author);
     }
-    /*
-    public void UnitTestReadNumberOfCheeps()
-    // Remove if too much disturbance
+
+    [Fact]
+    public async Task UnitTestGetNonexistingUser()
     {
         // Arrange
-        var x = new ChirpRepository();
-        var CountCheeps = 99;
-        // Act
-        var result = ReadNumberOfCheeps();
-        // Assert
-        Assert.False(result == CountCheeps);
+        var authorRepository = new AuthorRepository(new ChirpContext());
 
+        // Act
+        var author = await authorRepository.Get("UserThatDoesNotExist!"); // Here we assume that there are no users with this name
+
+        // Assert
+        Assert.Null(author);
     }
 
-    public int UnitTestReadNumberOfPagesOfCheeps()
-    // Remove if too much disturbance
+    [Fact]
+    public async Task UnitTestGetPageSortedBy()
     {
         // Arrange
-        var x = new ChirpRepository();
-        var CountPages = 9;
-        // Act
-        var result = ReadNumberOfPagesOfCheeps();
-        // Assert
-        Assert.False(result == CountPages);
+        var cheepRepository = new CheepRepository(new ChirpContext());
 
+        // Act
+        var author = await cheepRepository.GetPageSortedBy(1, 32, 0); // Here we assume that there are no users with this name
+
+        // Assert
+        Assert.NotNull(author);
+    }
+
+    [Fact]
+    public async Task UnitTestGetCount()
+    {
+        // Arrange
+        var cheepRepository = new CheepRepository(new ChirpContext());
+
+        // Act
+        var count = await cheepRepository.GetCount(); // Count has a value if there is a table
+
+        // Assert
+        Assert.True(count >= 0);
 
     }
-    */
-    /*
-       [Fact]
-       public async Task UnitTEstGetAuthorIdFromName()
-       {
-           // Arrange
-           var input = "Mellie Yost";
-           //var input = "ropf";
-           //var input = "Helge";
-           var x = new ChirpRepository();
 
-           // Act
-           // GetAuthorIdFromName returns a <ulong>-value
-           var authorId = await x.GetAuthorIdFromName(input);
+    [Theory]
+    [InlineData(7)]
+    [InlineData(70000000)]
 
-           var result = false;
-           if (authorId > 0)
-           {
-               result = true;
-           }
+    public async Task UnitTestGetText(ulong value)
+    {
+        // Arrange
+        var cheepRepository = new CheepRepository(new ChirpContext());
 
-           // Assert
-           Assert.false(result);           // No author found
-           Assert.true(authorId == 0);     // Value for No author found = 0 
-       }
-   */
+        // Act
+        string txt = await cheepRepository.GetText(value);
 
-    /*
-        [Fact]
-        public async Task NotUnitTEstGetAuthorIdFromName() // Dummy test
+        // Assert
+        if (txt == null)
         {
-            // Arrange
-            var input = "XXXX";
-            // Act
-            var author = GetAuthorIdFromName(input);
-
-            var result;
-            if (author == null)
-            {
-                result = false;
-            }
-            else
-            {
-                result = true;
-            }
-            // Assert
-            Assert.False(result);
+            Assert.Null(txt);
         }
-
-        [Fact]
-        public async Task UnitTestReadCheeps() // Dummy test
+        else
         {
-            // Arrange
-            var input = 99;
-            // Act
-            var result = ReadCheeps();
-            // Assert
-            Assert.False(null(result));
+            Assert.NotNull(txt); // 7 is a random number - can we extract a cheep id ?
         }
+    }
 
-        [Fact]
-        public async Task UnitTestChirpRepository() // Dummy test
-        {
-            // Arrange
-
-            // Act
-            var result = ChirpRepository();
-            // Assert
-            Assert.False(result);
-        }
-
-        [Fact]
-        public async Task UnitTestReadCheepsFromAuthor() // Dummy test
-        {
-            // Arrange
-            var input = 0;
-            // Act
-            var result = ReadCheepsFromAuthor(input);
-            // Assert
-            Assert.False(result);
-        }
-    */
 }
