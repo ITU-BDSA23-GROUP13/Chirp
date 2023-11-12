@@ -6,7 +6,8 @@ namespace Chirp.Razor.Pages;
 public class UserTimelineModel : PageModel
 {
     private readonly ICheepService service;
-    public required List<CheepViewModel> Cheeps { get; set; }
+    public List<CheepViewModel>? Cheeps { get; set; }
+    public uint? TotalCount { get; set; }
 
     public UserTimelineModel(ICheepService service)
     {
@@ -15,7 +16,19 @@ public class UserTimelineModel : PageModel
 
     public async Task<ActionResult> OnGet(string author, [FromQuery(Name = "page")] uint page)
     {
-        Cheeps = await service.GetCheepsFromAuthor(author, page);
+        var result = await service.GetCheepsAndTotalCountFromAuthor(author, page);
+
+        if (result is not null)
+        {
+            Cheeps = result.Value.Item1;
+            TotalCount = result.Value.Item2;
+
+            return Page();
+        }
+
+        Cheeps = null;
+        TotalCount = null;
+
         return Page();
     }
 }
