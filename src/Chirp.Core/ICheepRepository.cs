@@ -9,6 +9,7 @@ public interface ICheepRepository
     }
 
     public Task<IList<CheepDTO>> GetPageSortedBy(uint page, uint pageSize, Order order = Order.Newest);
+    public Task<uint> GetCount();
 
     public Task<CheepDTO?> Get(ulong id);
 
