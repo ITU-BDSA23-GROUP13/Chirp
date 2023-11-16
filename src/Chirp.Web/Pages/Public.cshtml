@@ -10,24 +10,34 @@
     <form method="post" action="/cheep">
         <div class="form-group">
             <label for="message">Message</label>
-            <input type="text" class="form-control" id="message" name="message" placeholder="What's poppin'?" />
+            <textarea name="message" id="message" cols="50" rows="5" placeholder="What's poppin'?"></textarea>
         </div>
-        <button type="submit" class="btn btn-primary">Cheep!</button>
+        <button type="submit" class="btn btn-primary">Cheep</button>
     </form>
 </div>
+
 <style>
     .form-control {
-        width: 80%;
-        height: 80px;
-        /* Adjust the percentage as needed */
-        max-width: 400px;
-        /* Optionally, set a maximum width */
+        width: 90%;
+        max-width: 800px;
+        height: 90px;
         text-align: left;
-        vertical-align: bottom;
-        /* Align text to the bottom */
+
+        box-sizing: border-box;
+        vertical-align: top;
+    }
+
+    .form-control::placeholder {
+        font-size: 1em;
+        color: #a92020;
+        font-weight: bold;
+        padding: 10px;
+        /* Adjust the padding as needed */
+        line-height: 1.5;
+        /* Adjust the line height as needed */
+
     }
 </style>
-
 
 @if (Model.Cheeps.Any())
 {
@@ -48,6 +58,6 @@
 }
 else
 {
-    <em>There are no cheeps so far.</em>
+    <em>There are no cheeps so far. Be the first to Cheep a Cheep!</em>
 }
 </div>
