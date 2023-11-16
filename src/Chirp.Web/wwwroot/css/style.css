@@ -246,3 +246,20 @@ div.page li#currentPage a{
   text-decoration: underline;
 }
 
+#CheepBox {
+  width: 90%;
+  max-width: 800px;
+  text-align: top;
+  vertical-align: top;
+}
+
+#CheepBox::placeholder {
+  font-size: 1.5em;
+  color: #a92020;
+  font-weight: bold;
+  padding: 10px;
+  /* Adjust the padding as needed */
+  line-height: 1.5;
+  /* Adjust the line height as needed */
+
+}

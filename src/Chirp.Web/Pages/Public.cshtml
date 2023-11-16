@@ -5,7 +5,8 @@
     Layout = "Shared/_Layout";
 }
 
-<div class="form-wrapper">
+<!-- The Cheep input field box -->
+<div id="CheepBox">
     <h2> Public Timeline </h2>
     <form method="post" action="/cheep">
         <div class="form-group">
@@ -16,28 +17,6 @@
     </form>
 </div>
 
-<style>
-    .form-control {
-        width: 90%;
-        max-width: 800px;
-        height: 90px;
-        text-align: left;
-
-        box-sizing: border-box;
-        vertical-align: top;
-    }
-
-    .form-control::placeholder {
-        font-size: 1em;
-        color: #a92020;
-        font-weight: bold;
-        padding: 10px;
-        /* Adjust the padding as needed */
-        line-height: 1.5;
-        /* Adjust the line height as needed */
-
-    }
-</style>
 
 @if (Model.Cheeps.Any())
 {
