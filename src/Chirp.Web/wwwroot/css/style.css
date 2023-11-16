@@ -245,3 +245,12 @@ div.page ul#page-navigation a{
 div.page li#currentPage a{
   text-decoration: underline;
 }
+
+.form-control {
+  width: 80%;
+  height: 100px;
+  /* Adjust the percentage as needed */
+  max-width: 400px;
+  /* Optionally, set a maximum width */
+  
+}
