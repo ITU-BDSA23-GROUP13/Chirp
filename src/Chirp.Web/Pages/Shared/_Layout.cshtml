@@ -1,36 +1,38 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <title>@ViewData["Title"]</title>
     <link href="/css/style.css" rel="stylesheet" type="text/css" />
     <link rel="icon" type="image/png" href="/favicon/favicon.ico">
 </head>
-<body>
-<div class=page>
-    <h1><img src="/images/icon1.png" alt="Icon1"/>Chirp!</h1>
 
-    <div class=body>
-        @RenderBody()
+<body>
+    <div class=page>
+        <h1><img src="/images/icon1.png" alt="Icon1" />Chirp!</h1>
+        <div class=body>
+            @RenderBody()
+        </div>
+        <div class=footer>
+            <ul id="page-navigation">
+                @{
+                    //temporary numbers
+                    double numberOfPages = 21;
+                    double currentPage = 1;
+                }
+                @for (int i = 0; i < numberOfPages; i++)
+                {
+                    <li @(i == currentPage ? "id=currentPage" : "")>
+                        <a href="?page=@i">
+                            @i
+                        </a>
+                    </li>
+                }
+            </ul>
+            Chirp &mdash; An ASP.NET Application
+        </div>
     </div>
-    <div class=footer>
-        <ul id="page-navigation">
-            @{
-                //temporary numbers
-                double numberOfPages = 21;
-                double currentPage = 2;
-            }
-            @for(int i=0;i<numberOfPages; i++)
-            {
-                <li @(i == currentPage ? "id=currentPage" : "")>
-                    <a href="?page=@i">
-                        @i
-                    </a>
-                </li>
-            } 
-        </ul>
-        Chirp &mdash; An ASP.NET Application
-    </div>
-</div>
 
 </body>
+
 </html>
