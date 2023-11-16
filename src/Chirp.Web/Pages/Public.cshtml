@@ -4,17 +4,6 @@
     ViewData["Title"] = "Chirp!";
     Layout = "Shared/_Layout";
 }
-<!--
-<div class="form-wrapper"></div>
-    <h2> Public Timeline </h2>
-
-    <form method="post" action="/cheep">
-        <div class="form-group">
-            <label for="message">Message</label>
-            <input type="text" class="form-control" id="message" name="message" placeholder="What's poppin'?" />
-        </div>
-        <button type="submit" class="btn btn-primary">Cheep</button>
--->
 
 <div class="form-wrapper">
     <h2> Public Timeline </h2>
@@ -23,9 +12,21 @@
             <label for="message">Message</label>
             <input type="text" class="form-control" id="message" name="message" placeholder="What's poppin'?" />
         </div>
-        <button type="submit" class="btn btn-primary">Cheep</button>
+        <button type="submit" class="btn btn-primary">Cheep!</button>
     </form>
 </div>
+<style>
+    .form-control {
+        width: 80%;
+        height: 80px;
+        /* Adjust the percentage as needed */
+        max-width: 400px;
+        /* Optionally, set a maximum width */
+        text-align: left;
+        vertical-align: bottom;
+        /* Align text to the bottom */
+    }
+</style>
 
 
 @if (Model.Cheeps.Any())
