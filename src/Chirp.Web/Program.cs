@@ -49,7 +49,7 @@ internal class Program
         builder.Services.AddAuthentication()
             .AddGitHub(options =>
             {
-                options.ClientId = "57d22a4e96859177858c";
+                options.ClientId     = "57d22a4e96859177858c";
                 options.ClientSecret = "48bb0666141265175c3346804855335b564d475c"; // Normally you would never make this visible in your repository history... but this is a university project, so we will hide it later.
             });
             // f1e958fd2497d14e71de2156136d8e1b8a976807
@@ -60,7 +60,7 @@ internal class Program
             options.Cookie.HttpOnly = true;
             options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
 
-            options.LoginPath = "/Identity/Account/Login";
+            options.LoginPath        = "/Identity/Account/Login";
             options.AccessDeniedPath = "/Identity/Account/AccessDenied";
             options.SlidingExpiration = true;
         });
@@ -86,8 +86,8 @@ internal class Program
 
         app.UseRouting();
 
-        //app.UseAuthentication();
-        //app.UseAuthorization();
+        app.UseAuthentication();
+        app.UseAuthorization();
 
         using var serviceScope = app.Services.CreateScope();
         var chirpContext = serviceScope.ServiceProvider.GetRequiredService<ChirpContext>();
