@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Chirp.Web.Pages;
 
+[AllowAnonymous]
 public class PublicModel : PageModel
 {
     private readonly ICheepService service;
@@ -15,8 +16,7 @@ public class PublicModel : PageModel
         this.service = service;
     }
 
-    [AllowAnonymous]
-    public async Task<ActionResult> OnGet([FromQuery(Name = "page")] uint page = 1)
+    public async Task<ActionResult> OnGetAsync([FromQuery(Name = "page")] uint page = 1)
     {
         var result = await service.GetCheepsAndTotalCount(page);
 
