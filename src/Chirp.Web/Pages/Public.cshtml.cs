@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Chirp.Razor.Pages;
+namespace Chirp.Web.Pages;
 
 public class PublicModel : PageModel
 {
@@ -14,6 +15,7 @@ public class PublicModel : PageModel
         this.service = service;
     }
 
+    [AllowAnonymous]
     public async Task<ActionResult> OnGet([FromQuery(Name = "page")] uint page = 1)
     {
         var result = await service.GetCheepsAndTotalCount(page);
