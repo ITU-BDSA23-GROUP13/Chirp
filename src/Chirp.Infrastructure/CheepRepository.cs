@@ -24,23 +24,29 @@ public class CheepRepository : ICheepRepository
             _ => throw new System.Diagnostics.UnreachableException(),
         };
 
-        return await cheeps
+        var list = await cheeps
             .Skip((int) ((page - 1) * pageSize))
             .Take((int) pageSize)
             .Select(c =>
                 new CheepDTO
                 {
-                    Author = c.Author.Name,
+                    Author = c.Author.UserName!,
                     Text = c.Text,
                     Timestamp = (ulong) c.Timestamp,
                 }
             )
             .ToListAsync();
+
+        if (list.Any(c => c.Author is null))
+            throw new System.NullReferenceException();
+
+        return list;
     }
 
     public async Task<uint> GetCount()
     {
         // https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/checked-and-unchecked
+        // We want this to throw an exception if the cast fails.
         return checked ((uint) await this.context.Cheep.CountAsync());
     }
 
@@ -52,7 +58,7 @@ public class CheepRepository : ICheepRepository
 
         return cheep is null ? null : new CheepDTO
         {
-            Author = cheep.Author.Name,
+            Author = cheep.Author.UserName ?? throw new System.NullReferenceException(),
             Text = cheep.Text,
             Timestamp = (ulong) cheep.Timestamp,
         };
@@ -67,8 +73,8 @@ public class CheepRepository : ICheepRepository
 
         return author is null ? null : new AuthorDTO
         {
-            Name = author.Name,
-            Email = author.Email,
+            Name = author.UserName ?? throw new System.NullReferenceException(),
+            Email = author.Email ?? throw new System.NullReferenceException(),
         };
     }
 
@@ -90,7 +96,7 @@ public class CheepRepository : ICheepRepository
         );
     }
 
-    // Async/await is unnesecary if you don't need to be to return back to the function after an await point. Here we simply return immediately after awaiting. https://stackoverflow.com/questions/38017016/async-task-then-await-task-vs-task-then-return-task
+    // Async/await is unnesecary if you don't need the control flow to return back to the function after an await point. Here we simply return immediately after creating the task, so we shouldn't use await and turn this into an async function, to minimize overhead. https://stackoverflow.com/questions/38017016/async-task-then-await-task-vs-task-then-return-task
     // Cannot return null instead of generic type because valuetypes/structs aren't stored as references. https://stackoverflow.com/questions/302096/how-can-i-return-null-from-a-generic-method-in-c
     internal static Task<T> FirstOrElseAsync<T>(IQueryable<T> query, T def)
     {

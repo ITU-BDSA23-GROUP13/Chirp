@@ -1,13 +1,16 @@
 using Chirp.Core;
 using Chirp.Infrastructure;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
-namespace Chirp.Razor;
+namespace Chirp.Web;
 
 internal class Program
 {
-    private static void Main(string[] args)
+    private static WebApplication buildApp(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+
         // Add services to the container.
         builder.Services.AddRazorPages();
         builder.Services.AddScoped<ICheepService, CheepService>();
@@ -15,12 +18,65 @@ internal class Program
         builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
         builder.Services.AddDbContext<ChirpContext>();
 
-        var app = builder.Build();
+        builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+        builder.Services.AddDefaultIdentity<Author>(options =>
+                options.SignIn.RequireConfirmedAccount = true)
+            .AddEntityFrameworkStores<ChirpContext>();
+        
+
+        builder.Services.Configure<IdentityOptions>(options =>
+        {
+            // Password settings.
+            options.Password.RequireDigit = true;
+            options.Password.RequireLowercase = true;
+            options.Password.RequireNonAlphanumeric = true;
+            options.Password.RequireUppercase = true;
+            options.Password.RequiredLength = 6;
+            options.Password.RequiredUniqueChars = 1;
+
+            // Lockout settings.
+            options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+            options.Lockout.MaxFailedAccessAttempts = 5;
+            options.Lockout.AllowedForNewUsers = true;
+
+            // User settings.
+            options.User.AllowedUserNameCharacters =
+            "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+            options.User.RequireUniqueEmail = false;
+        });
+
+        builder.Services.AddAuthentication()
+            .AddGitHub(options =>
+            {
+                options.ClientId = "57d22a4e96859177858c";
+                options.ClientSecret = "48bb0666141265175c3346804855335b564d475c";
+            });
+            // f1e958fd2497d14e71de2156136d8e1b8a976807
+
+        builder.Services.ConfigureApplicationCookie(options =>
+        {
+            // Cookie settings
+            options.Cookie.HttpOnly = true;
+            options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+
+            options.LoginPath = "/Identity/Account/Login";
+            options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+            options.SlidingExpiration = true;
+        });
+
+        return builder.Build();
+    }
+
+    private static void Main(string[] args)
+    {
+        var app = buildApp(args);
 
         // Configure the HTTP request pipeline.
         if (!app.Environment.IsDevelopment())
         {
             app.UseExceptionHandler("/Error");
+            app.UseDeveloperExceptionPage();
             // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             app.UseHsts();
         }
@@ -30,11 +86,14 @@ internal class Program
 
         app.UseRouting();
 
-        app.MapRazorPages();
+        //app.UseAuthentication();
+        //app.UseAuthorization();
 
         using var serviceScope = app.Services.CreateScope();
         var chirpContext = serviceScope.ServiceProvider.GetRequiredService<ChirpContext>();
         DBInitializer.SeedDatabase(chirpContext);
+
+        app.MapRazorPages();
 
         app.Run();
     }
