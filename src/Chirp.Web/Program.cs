@@ -50,7 +50,7 @@ internal class Program
             .AddGitHub(options =>
             {
                 options.ClientId = "57d22a4e96859177858c";
-                options.ClientSecret = "48bb0666141265175c3346804855335b564d475c";
+                options.ClientSecret = "48bb0666141265175c3346804855335b564d475c"; // Normally you would never make this visible in your repository history... but this is a university project, so we will hide it later.
             });
             // f1e958fd2497d14e71de2156136d8e1b8a976807
 
