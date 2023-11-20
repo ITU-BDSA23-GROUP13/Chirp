@@ -114,4 +114,15 @@ public class AuthorRepository : IAuthorRepository
         return checked ((uint?) cheeps?.Count);
     }
 
+    public async Task Put(AuthorDTO author)
+    {
+        await context.Author.AddAsync(new Author
+            {
+                Id = new Guid().ToString(),
+                UserName = author.Name,
+                Email = author.Email,
+                Cheeps = new(),
+            });
+    }
+
 }

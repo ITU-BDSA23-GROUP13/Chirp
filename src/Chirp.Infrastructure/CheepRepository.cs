@@ -50,10 +50,10 @@ public class CheepRepository : ICheepRepository
         return checked ((uint) await this.context.Cheep.CountAsync());
     }
 
-    public async Task<CheepDTO?> Get(ulong id)
+    public async Task<CheepDTO?> Get(Guid id)
     {
         Cheep? cheep = await context.Cheep
-            .Where(c => c.Id == id)
+            .Where(c => c.Id == id.ToString())
             .FirstOrDefaultAsync();
 
         return cheep is null ? null : new CheepDTO
@@ -64,10 +64,10 @@ public class CheepRepository : ICheepRepository
         };
     }
 
-    public async Task<AuthorDTO?> GetAuthor(ulong id)
+    public async Task<AuthorDTO?> GetAuthor(Guid id)
     {
         Author? author = await context.Cheep
-            .Where(c => c.Id == id)
+            .Where(c => c.Id == id.ToString())
             .Select(c => c.Author)
             .FirstOrDefaultAsync();
 
@@ -78,19 +78,19 @@ public class CheepRepository : ICheepRepository
         };
     }
 
-    public Task<string?> GetText(ulong id)
+    public Task<string?> GetText(Guid id)
     {
         return context.Cheep
-            .Where(c => c.Id == id)
+            .Where(c => c.Id == id.ToString())
             .Select(c => c.Text)
             .FirstOrDefaultAsync();
     }
 
-    public Task<ulong?> GetTimestamp(ulong id)
+    public Task<ulong?> GetTimestamp(Guid id)
     {
         return FirstOrElseAsync(
             context.Cheep
-                .Where(c => c.Id == id)
+                .Where(c => c.Id == id.ToString())
                 .Select(c => (ulong?) c.Timestamp),
             (ulong?) null
         );
@@ -108,5 +108,21 @@ public class CheepRepository : ICheepRepository
         {
             return Task.FromResult(def);
         }
+    }
+
+    public async Task Put(CheepDTO cheep)
+    {
+        var author = await context.Author.Where(a => a.UserName == cheep.Author).FirstOrDefaultAsync();
+
+        if (author is null)
+            throw new InvalidOperationException("Author does not exist.");
+
+        await context.Cheep.AddAsync(new Cheep
+           {
+                Id = new Guid().ToString(),
+                Author = author,
+                Text = cheep.Text,
+                Timestamp = checked ((long) cheep.Timestamp),
+            });
     }
 }
