@@ -1,5 +1,10 @@
 ﻿@page "/"
-@model Chirp.Razor.Pages.PublicModel
+@model Chirp.Web.Pages.PublicModel
+@using Microsoft.AspNetCore.Identity
+@using Chirp.Infrastructure
+@inject SignInManager<Author> SignInManager
+@inject UserManager<Author> UserManager
+
 @{
     ViewData["Title"] = "Chirp!";
     Layout = "Shared/_Layout";
@@ -8,6 +13,35 @@
 <!-- The Cheep input field box -->
 <div id="CheepBox">
     <h2> Public Timeline </h2>
+
+    <div class=navigation>
+        @if (SignInManager.IsSignedIn(User))
+        {
+        <div>
+            <a href="/@(User.Identity!.Name)">My timeline</a>
+            |
+            <a href="/">Public timeline</a>
+            |
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
+            |
+            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post" >
+                <button  type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+            </form>
+        </div>
+        }
+        else
+        {
+        <div>
+            <a href="/">Public timeline</a>
+            |
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+            |
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+        </div>
+        }
+    </div>
+
+    <!-->Cheep Box<-->
     <form method="post" action="/cheep">
         <div class="form-group">
             <label for="message">Message</label>
@@ -15,28 +49,26 @@
         </div>
         <button type="submit" class="btn btn-primary">Cheep</button>
     </form>
-</div>
 
-
-@if (Model.Cheeps.Any())
-{
-    <ul id="messagelist" class="cheeps">
-        @foreach (var cheep in Model.Cheeps)
-        {
-            <li>
-                <p>
-                    <strong>
-                        <a href="/@cheep.Author">@cheep.Author</a>
-                    </strong>
-                    @cheep.Message
-                    <small>&mdash; @cheep.Timestamp</small>
-                </p>
-            </li>
-        }
-    </ul>
-}
-else
-{
-    <em>There are no cheeps so far. Be the first to Cheep a Cheep!</em>
-}
+    @if (Model.Cheeps.Any())
+    {
+        <ul id="messagelist" class="cheeps">
+            @foreach (var cheep in Model.Cheeps)
+            {
+                <li>
+                    <p>
+                        <strong>
+                            <a href="/@cheep.Author">@cheep.Author</a>
+                        </strong>
+                        @cheep.Message
+                        <small>&mdash; @cheep.Timestamp</small>
+                    </p>
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <em>There are no cheeps so far.</em>
+    }
 </div>
