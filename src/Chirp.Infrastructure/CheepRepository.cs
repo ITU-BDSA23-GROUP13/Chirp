@@ -119,7 +119,6 @@ public class CheepRepository : ICheepRepository
 
         await context.Cheep.AddAsync(new Cheep
            {
-                Id = new Guid().ToString(),
                 Author = author,
                 Text = cheep.Text,
                 Timestamp = checked ((long) cheep.Timestamp),

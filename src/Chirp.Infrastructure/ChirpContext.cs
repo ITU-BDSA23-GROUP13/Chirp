@@ -53,6 +53,7 @@ public class ChirpContext : IdentityDbContext<Author>
         }
 
         options.UseSqlite($"Data Source={DBPath}");
+        options.EnableSensitiveDataLogging();
 
         base.OnConfiguring(options);
     }
@@ -62,16 +63,16 @@ public class ChirpContext : IdentityDbContext<Author>
         Database.MigrateAsync();
 
         // Cheep
-        //modelBuilder.Entity<Cheep>().HasKey(c => c.Id);
-        //modelBuilder.Entity<Cheep>().Property(c => c.Text).IsRequired().HasMaxLength(160);
-        //modelBuilder.Entity<Cheep>().Property(c => c.Timestamp).IsRequired();
+        modelBuilder.Entity<Cheep>().HasKey(c => c.Id);
+        modelBuilder.Entity<Cheep>().Property(c => c.Text).IsRequired().HasMaxLength(160);
+        modelBuilder.Entity<Cheep>().Property(c => c.Timestamp).IsRequired();
 
         // Author
-        //modelBuilder.Entity<Author>().HasKey(a => a.Id);
-        //modelBuilder.Entity<Author>().Property(a => a.Id).IsRequired();//.HasConversion<ulong>();
-        //modelBuilder.Entity<Author>().Property(a => a.UserName).IsRequired().HasMaxLength(50);
-        //modelBuilder.Entity<Author>().Property(a => a.Email).IsRequired();
-        //modelBuilder.Entity<Author>().HasMany(a => a.Cheeps).WithOne(c => c.Author).IsRequired(); // https://learn.microsoft.com/en-us/ef/core/modeling/relationships/one-to-many       
+        modelBuilder.Entity<Author>().HasKey(a => a.Id);
+        modelBuilder.Entity<Author>().Property(a => a.Id).IsRequired();//.HasConversion<ulong>();
+        modelBuilder.Entity<Author>().Property(a => a.UserName).IsRequired().HasMaxLength(50);
+        modelBuilder.Entity<Author>().Property(a => a.Email).IsRequired();
+        modelBuilder.Entity<Author>().HasMany(a => a.Cheeps).WithOne(c => c.Author).IsRequired(); // https://learn.microsoft.com/en-us/ef/core/modeling/relationships/one-to-many       
 
         base.OnModelCreating(modelBuilder);
     }
