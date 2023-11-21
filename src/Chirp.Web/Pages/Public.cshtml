@@ -16,17 +16,27 @@
     <div class=navigation>
         @if (SignInManager.IsSignedIn(User))
         {
-            <a href="/@(User.Identity!.Name)">my timeline</a>
-            <a href="/">public timeline</a>
-            <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
+        <div>
+            <a href="/@(User.Identity!.Name)">My timeline</a>
+            |
+            <a href="/">Public timeline</a>
+            |
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
+            |
             <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post" >
                 <button  type="submit" class="nav-link btn btn-link text-dark">Logout</button>
             </form>
+        </div>
         }
         else
         {
+        <div>
+            <a href="/">Public timeline</a>
+            |
             <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+            |
             <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+        </div>
         }
     </div>
 
