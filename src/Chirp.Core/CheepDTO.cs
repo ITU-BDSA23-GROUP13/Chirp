@@ -13,4 +13,16 @@ public class CheepDTO
 
     [Required]
     public required ulong Timestamp { get; set; }
+
+    public enum Reaction
+    {
+        // ChatGPT helped come up with ideas for reactions fitting out theme.
+        Chirp,
+        Gigglegill,
+        FumingFins,
+        BubbleHug,
+    }
+
+    [Required]
+    public required IDictionary<AuthorDTO, Reaction> Reactions { get; set; } = new Dictionary<AuthorDTO, Reaction>();
 }
