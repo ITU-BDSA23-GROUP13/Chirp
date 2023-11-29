@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Chirp.Core\Chirp.Core.csproj" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.11" />
   </ItemGroup>
 
   <ItemGroup>

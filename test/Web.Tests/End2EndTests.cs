@@ -2,7 +2,7 @@ using System;
 using System.Diagnostics;
 using System.ComponentModel;
 
-using Chirp.Razor;
+using Chirp.Web;
 
 namespace Tests;
 
@@ -13,7 +13,6 @@ public class End2End
     public void TestReadCheep()
     {
         // Arrange
-        DBFacade.RunDB();
 
         // Act
         // string output = "";

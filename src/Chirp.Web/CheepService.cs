@@ -1,12 +1,12 @@
 using Chirp.Core;
 
-namespace Chirp.Razor;
+namespace Chirp.Web;
 
 public record CheepViewModel(string Author, string Message, DateTimeOffset Timestamp);
 
 public interface ICheepService
 {
-    public Task<(List<CheepViewModel>,uint)> GetCheepsAndTotalCount(uint page);
+    public Task<(List<CheepViewModel>,uint)> GetCheepsAndPageCount(uint page);
     public Task<(List<CheepViewModel>,uint)?> GetCheepsAndTotalCountFromAuthor(string author, uint page);
 }
 
@@ -22,7 +22,7 @@ public class CheepService : ICheepService
         this.authorRepository = authorRepository;
     }
 
-    public async Task<(List<CheepViewModel>,uint)> GetCheepsAndTotalCount(uint page)
+    public async Task<(List<CheepViewModel>,uint)> GetCheepsAndPageCount(uint page)
     {
         var cheeps = await cheepRepository.GetPageSortedBy(page, pageSize);
 
@@ -32,7 +32,7 @@ public class CheepService : ICheepService
 
         var totalCount = await cheepRepository.GetCount();
 
-        return (list, totalCount);
+        return (list, (uint) Math.Ceiling((decimal) totalCount / (decimal) pageSize));
     }
 
     public async Task<(List<CheepViewModel>,uint)?> GetCheepsAndTotalCountFromAuthor(string author, uint page)
@@ -49,4 +49,6 @@ public class CheepService : ICheepService
 
         return (list, (uint) totalCount);
     }
+
+    public Task Put() { return Task.CompletedTask; }
 }

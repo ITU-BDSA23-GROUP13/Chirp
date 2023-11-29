@@ -1,10 +1,11 @@
 ﻿using System.Runtime.InteropServices;
 
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Chirp.Infrastructure;
 
-public class ChirpContext : DbContext
+public class ChirpContext : IdentityDbContext<Author>
 {
     public DbSet<Cheep> Cheep { get; set; } = null!;
     public DbSet<Author> Author { get; set; } = null!;
@@ -52,6 +53,9 @@ public class ChirpContext : DbContext
         }
 
         options.UseSqlite($"Data Source={DBPath}");
+        options.EnableSensitiveDataLogging();
+
+        base.OnConfiguring(options);
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -65,8 +69,8 @@ public class ChirpContext : DbContext
 
         // Author
         modelBuilder.Entity<Author>().HasKey(a => a.Id);
-        modelBuilder.Entity<Author>().Property(a => a.Name).IsRequired();
-        modelBuilder.Entity<Author>().Property(a => a.Name).IsRequired().HasMaxLength(50);
+        modelBuilder.Entity<Author>().Property(a => a.Id).IsRequired();//.HasConversion<ulong>();
+        modelBuilder.Entity<Author>().Property(a => a.UserName).IsRequired().HasMaxLength(50);
         modelBuilder.Entity<Author>().Property(a => a.Email).IsRequired();
         modelBuilder.Entity<Author>().HasMany(a => a.Cheeps).WithOne(c => c.Author).IsRequired(); // https://learn.microsoft.com/en-us/ef/core/modeling/relationships/one-to-many       
 

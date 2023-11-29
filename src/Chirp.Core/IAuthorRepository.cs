@@ -12,4 +12,6 @@ public interface IAuthorRepository {
     public Task<IList<CheepDTO>> GetCheepsPageSortedBy(string name, uint page, uint pageSize, Order order = Order.Newest);
     public Task<uint?> GetCheepCount(string name);
 
+    public Task Put(AuthorDTO author);
+
 }
