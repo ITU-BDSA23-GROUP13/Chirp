@@ -22,11 +22,10 @@ public class UnitTestsInfrastructure
         builder.Services.AddSingleton<CheepRepository>();
         builder.Services.AddSingleton<AuthorRepository>();
         builder.Services.AddDbContext<ChirpContext>(
-            builder => builder.UseSqlite(@"Data Source=C:\Users\cope\AppData\Local\Temp\chirp.db")
+            builder => builder.UseInMemoryDatabase("ChirpDB")
         );
         var app = builder.Build();
         var context = app.Services.GetRequiredService<ChirpContext>();
-        context.Database.Migrate();
         DBInitializer.SeedDatabase(context);
 
         authorRepository = app.Services.GetRequiredService<AuthorRepository>();

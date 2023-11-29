@@ -24,7 +24,6 @@ builder.Services.AddDefaultIdentity<Author>(options =>
         options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ChirpContext>();
 
-
 builder.Services.Configure<IdentityOptions>(options =>
 {
     // Password settings.
