@@ -50,7 +50,7 @@ builder.Services.AddAuthentication()
     .AddGitHub(options =>
     {
         options.ClientId = /*"57d22a4e96859177858c";*/ "Iv1.dcb4bc25e1621f2c";
-        options.ClientSecret = System.Environment.GetEnvironmentVariable("CHIRP_GITHUB_CLIENT_SECRET") ?? throw new System.NullReferenceException("CHIRP_GITHUB_CLIENT_SECRET not set");
+        options.ClientSecret = Environment.GetEnvironmentVariable("CHIRP_GITHUB_CLIENT_SECRET") ?? throw new NullReferenceException("CHIRP_GITHUB_CLIENT_SECRET not set");
     });
 // f1e958fd2497d14e71de2156136d8e1b8a976807
 
@@ -82,10 +82,11 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthentication();
-app.UseAuthorization();
+//app.UseAuthorization();
 
 using var serviceScope = app.Services.CreateScope();
 var chirpContext = serviceScope.ServiceProvider.GetRequiredService<ChirpContext>();
+await chirpContext.Database.MigrateAsync();
 DBInitializer.SeedDatabase(chirpContext);
 
 app.MapRazorPages();
