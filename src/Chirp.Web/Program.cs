@@ -1,7 +1,9 @@
 using Chirp.Core;
 using Chirp.Infrastructure;
 using Chirp.Web;
+
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,7 +12,11 @@ builder.Services.AddRazorPages();
 builder.Services.AddScoped<ICheepService, CheepService>();
 builder.Services.AddScoped<ICheepRepository, CheepRepository>();
 builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
-builder.Services.AddDbContext<ChirpContext>();
+builder.Services.AddDbContext<ChirpContext>(builder =>
+{
+    string path = Environment.GetEnvironmentVariable("CHIRP_DB") ?? Path.Join(Path.GetTempPath(), "chirp.db");
+    builder.UseSqlite($"Data Source={path}");
+});
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -43,10 +49,10 @@ builder.Services.Configure<IdentityOptions>(options =>
 builder.Services.AddAuthentication()
     .AddGitHub(options =>
     {
-        options.ClientId     = /*"57d22a4e96859177858c";*/ "Iv1.dcb4bc25e1621f2c";
+        options.ClientId = /*"57d22a4e96859177858c";*/ "Iv1.dcb4bc25e1621f2c";
         options.ClientSecret = System.Environment.GetEnvironmentVariable("CHIRP_GITHUB_CLIENT_SECRET") ?? throw new System.NullReferenceException("CHIRP_GITHUB_CLIENT_SECRET not set");
     });
-    // f1e958fd2497d14e71de2156136d8e1b8a976807
+// f1e958fd2497d14e71de2156136d8e1b8a976807
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
@@ -54,7 +60,7 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.Cookie.HttpOnly = true;
     options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
 
-    options.LoginPath        = "/Identity/Account/Login";
+    options.LoginPath = "/Identity/Account/Login";
     options.AccessDeniedPath = "/Identity/Account/AccessDenied";
     options.SlidingExpiration = true;
 });
