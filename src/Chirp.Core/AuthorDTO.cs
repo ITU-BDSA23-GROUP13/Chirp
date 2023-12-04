@@ -13,6 +13,11 @@ public class AuthorDTO
     [StringLength(160, MinimumLength = 5)]
     public required string Email { get; set; }
 
-    /*[Required]
-    public required List<CheepDTO> Cheeps { get; set; }*/
+    /*
+    [Required]
+    public required List<CheepDTO> Cheeps { get; set; }
+
+    [Required]
+    public required List<AuthorDTO> Followed { get; set; }
+    */
 }
