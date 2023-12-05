@@ -88,11 +88,12 @@ public class CheepRepository : ICheepRepository
 
     public async Task<CheepDTO?> Get(Guid id)
     {
-        Cheep? cheep = await context.Cheep
+        var cheep = await context.Cheep
             .Where(c => c.Id == id.ToString())
             .FirstOrDefaultAsync();
+        if (cheep is null) return null;
 
-        return cheep is null ? null : new CheepDTO
+        return new CheepDTO
         {
             Author = cheep.Author.UserName ?? throw new System.NullReferenceException(),
             Text = cheep.Text,
@@ -102,12 +103,13 @@ public class CheepRepository : ICheepRepository
 
     public async Task<AuthorDTO?> GetAuthor(Guid id)
     {
-        Author? author = await context.Cheep
+        var author = await context.Cheep
             .Where(c => c.Id == id.ToString())
             .Select(c => c.Author)
             .FirstOrDefaultAsync();
+        if (author is null) return null;
 
-        return author is null ? null : new AuthorDTO
+        return new AuthorDTO
         {
             Name = author.UserName ?? throw new System.NullReferenceException(),
             Email = author.Email ?? throw new System.NullReferenceException(),
@@ -158,14 +160,7 @@ public class CheepRepository : ICheepRepository
                 Timestamp = checked ((long) cheep.Timestamp),
             });
 
-        try
-        {
-            await context.SaveChangesAsync();
-            return true;
-        }
-        catch
-        {
-            return false;
-        }
+        await context.SaveChangesAsync();
+        return true;
     }
 }

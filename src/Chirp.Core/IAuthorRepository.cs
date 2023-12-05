@@ -13,11 +13,15 @@ namespace Chirp.Core;
 /// </summary>
 public interface IAuthorRepository {
 
+    public Task<AuthorDTO?> Get(string name);
+
     /// <summary>
     /// Returns null, if no author with the given name was found.
     /// Throws NullReferenceException if the author was found, but the name was null.
     /// </summary>
     public Task<IReadOnlyCollection<CheepDTO>?> GetCheeps(string name);
+
+    public Task<string?> GetEmail(string name);
 
     /// <summary>
     /// Returns null, if no author with the given name was found.
@@ -29,6 +33,8 @@ public interface IAuthorRepository {
     /// Returns null, if no author with the given name was found.
     /// </summary>
     public Task<uint?> GetCheepCount(string name);
+
+    public Task<bool> Put(AuthorDTO author);
 
     /// <summary>
     /// Returns true, if successful.

@@ -113,13 +113,17 @@ public class AuthorRepository : IAuthorRepository
         return checked ((uint?) cheeps?.Count);
     }
 
-    public async Task Put(AuthorDTO author)
+    public async Task<bool> Put(AuthorDTO author)
     {
         await context.Author.AddAsync(new Author
             {
                 UserName = author.Name,
                 Email = author.Email,
             });
+
+        await context.SaveChangesAsync();
+
+        return true;
     }
 
     public async Task<bool> PutFollowing(string follower, string followee)
@@ -139,15 +143,8 @@ public class AuthorRepository : IAuthorRepository
         // context.Author.Update(author1);
         // context.Author.Update(author2);
 
-        try
-        {
-            await context.SaveChangesAsync();
-            return true;
-        }
-        catch
-        {
-            return false;
-        }
+        await context.SaveChangesAsync();
+        return true;
     }
 
     public async Task<bool> DeleteFollowing(string follower, string followee)
@@ -164,15 +161,8 @@ public class AuthorRepository : IAuthorRepository
         // context.Author.Update(author1);
         // context.Author.Update(author2);
 
-        try
-        {
-            await context.SaveChangesAsync();
-            return true;
-        }
-        catch
-        {
-            return false;
-        }
+        await context.SaveChangesAsync();
+        return true;
     }
 
 }
