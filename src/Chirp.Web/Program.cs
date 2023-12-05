@@ -15,6 +15,7 @@ builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
 builder.Services.AddDbContext<ChirpContext>(builder =>
 {
     string path = Environment.GetEnvironmentVariable("CHIRP_DB") ?? Path.Join(Path.GetTempPath(), "chirp.db");
+    try { File.Delete(path); } catch { }
     builder.UseSqlite($"Data Source={path}");
 });
 
