@@ -15,25 +15,28 @@ builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
 builder.Services.AddDbContext<ChirpContext>(builder =>
 {
     string path = Environment.GetEnvironmentVariable("CHIRP_DB") ?? Path.Join(Path.GetTempPath(), "chirp.db");
-    try { File.Delete(path); } catch { }
+    Console.WriteLine("Using database at " + path);
     builder.UseSqlite($"Data Source={path}");
 });
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<Author>(options =>
-        options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ChirpContext>();
+{
+    options.SignIn.RequireConfirmedAccount = false;
+    options.SignIn.RequireConfirmedEmail = false;
+})
+.AddEntityFrameworkStores<ChirpContext>();
 
 builder.Services.Configure<IdentityOptions>(options =>
 {
     // Password settings.
-    options.Password.RequireDigit = true;
-    options.Password.RequireLowercase = true;
-    options.Password.RequireNonAlphanumeric = true;
-    options.Password.RequireUppercase = true;
-    options.Password.RequiredLength = 6;
-    options.Password.RequiredUniqueChars = 1;
+    // options.Password.RequireDigit = true;
+    // options.Password.RequireLowercase = true;
+    // options.Password.RequireNonAlphanumeric = true;
+    // options.Password.RequireUppercase = true;
+    // options.Password.RequiredLength = 6;
+    // options.Password.RequiredUniqueChars = 1;
 
     // Lockout settings.
     options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
@@ -44,10 +47,6 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.User.AllowedUserNameCharacters =
         "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
     options.User.RequireUniqueEmail = false;
-
-    // SignIn settings.
-    options.SignIn.RequireConfirmedEmail = false;
-    options.SignIn.RequireConfirmedAccount = false;
 });
 
 builder.Services.AddAuthentication()
@@ -90,7 +89,7 @@ app.UseAuthorization();
 
 using var serviceScope = app.Services.CreateScope();
 var chirpContext = serviceScope.ServiceProvider.GetRequiredService<ChirpContext>();
-await chirpContext.Database.MigrateAsync();
+await chirpContext.Database.EnsureCreatedAsync();
 DBInitializer.SeedDatabase(chirpContext);
 
 app.MapRazorPages();

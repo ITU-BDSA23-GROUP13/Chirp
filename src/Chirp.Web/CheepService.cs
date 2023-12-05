@@ -41,6 +41,8 @@ public class CheepService : ICheepService
 
     public async Task<(List<CheepViewModel>,uint)?> GetCheepsAndTotalCountFromAuthor(string author, uint page)
     {
+        var authorDTO = await authorRepository.Get(author);
+
         var cheeps = await authorRepository.GetCheepsPage(author, page, pageSize);
         if (cheeps is null) return null;
 

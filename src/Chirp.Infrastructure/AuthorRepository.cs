@@ -77,6 +77,7 @@ public class AuthorRepository : IAuthorRepository
     {
         var author = await context.Author
             .Where(a => a.UserName == name)
+            .Include(a => a.Cheeps)
             .FirstOrDefaultAsync();
         if (author is null) return null;
 
@@ -88,7 +89,6 @@ public class AuthorRepository : IAuthorRepository
         };
 
         var list = cheeps
-            .Where(c => c.Author.UserName == name)
             .Skip((int) ((page - 1) * pageSize))
             .Take((int) pageSize)
             .Select(c =>

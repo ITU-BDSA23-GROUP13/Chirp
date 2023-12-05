@@ -1,68 +1,69 @@
+using Chirp.Core;
+using Chirp.Infrastructure;
+using Chirp.Web;
+
+using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+
 namespace Web.Tests;
 
 public class UnitTestWeb
-
 {
-    /************************
-        Dummy test
-    *************************/
-    [Fact]
-    public void NinetynineIsNotPrime() // Dummy test
-    {
-        // Arrange
-        //var input = 99;
-        // Act
-        var result = false;
-        // Assert
-        Assert.False(result);
-    }
+    private readonly ICheepService service;
 
-    /************************
-        Test CheepService.cs
-    *************************/
-    [Fact]
-    public void OKTestDBCheepServiceGetCheeps() // Dummy test
+    public UnitTestWeb()
     {
-        // Cheeps are extracted
+        var builder = WebApplication.CreateBuilder();
+        builder.Services.AddSingleton<ICheepService, CheepService>();
+        builder.Services.AddSingleton<ICheepRepository, CheepRepository>();
+        builder.Services.AddSingleton<IAuthorRepository, AuthorRepository>();
+        builder.Services.AddDbContext<ChirpContext>(
+            builder => builder.UseInMemoryDatabase("ChirpDB")
+        );
+        var app = builder.Build();
 
-        // Arrange
-        //var input = 99;
-        // Act
-        var result = false;
-        // Assert
-        Assert.False(result);
+        var context = app.Services.GetRequiredService<ChirpContext>();
+        DBInitializer.SeedDatabase(context);
+
+        service = app.Services.GetRequiredService<ICheepService>();
     }
 
     [Fact]
-    public void NotOKTestDBCheepServiceGetCheeps() // Dummy test
+    public async void UnitTestGetCheepsAndPageCount()
     {
-        // Cheeps are not extracted
-        // The wrong Cheeps are extracted
+        var (cheeps, pageCount) = await service.GetCheepsAndPageCount(0);
 
-        // Arrange
-        //var input = 99;
-        // Act
-        var result = false;
-        // Assert
-        Assert.False(result);
+        Assert.NotEmpty(cheeps);
+        Assert.True(pageCount > 0);
     }
 
     [Fact]
-    public void DummyTestFluentAssertion() // Dummy test
-
-    //  https://medium.com/p/87c2e087c6d#62e8
-
-    //  Testing with fluent Assertion
-
-    // To be deleted after constidering whether this information is useful
+    public async void UnitTestGetCheepsAndTotalCountFromAuthor()
     {
-        string actual = "ABCDEFGHI";
+        var (cheeps, pageCount) = await service.GetCheepsAndTotalCountFromAuthor("Jacqualine Gilcoine", 0) ?? throw new NullReferenceException();
 
-        // Without Fluent Assertion
-        Assert.True(actual.StartsWith("AB") && actual.EndsWith("HI"), "string does not start with AB and ends with HI");
+        Assert.NotEmpty(cheeps);
+        Assert.True(pageCount > 0);
+    }
 
-        // With Fluent Assertion
-        //actual.Should().StartWith("AB").And.EndWith("HI");
+    //[Fact]
+    public void UnitTestGetCheepsAndTotalCountFromFollowed()
+    {
+    }
 
+    //[Fact]
+    public void UnitTestPutCheep()
+    {
+    }
+
+    //[Fact]
+    public void UnitTestFollowAuthor()
+    {
+    }
+
+    //[Fact]
+    public void UnitTestUnfollowAuthor()
+    {
     }
 }
