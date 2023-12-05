@@ -18,37 +18,7 @@ public class UnitTestWeb
     }
 
     /************************
-        Test DBFacade.cs
-    *************************/
-    [Fact]
-    public void OKTestDBFacadeRunDB() // Dummy test
-    {
-        // DB is running
-
-        // Arrange
-        //var input = 99;
-        // Act
-        var result = false;
-        // Assert
-        Assert.False(result);
-    }
-
-    [Fact]
-    public void NotOKTestDBFacadeRunDB() // Dummy test
-    {
-        // Failure running DB
-
-        // Arrange
-        //var input = 99;
-        // Act
-        var result = false;
-        // Assert
-        Assert.False(result);
-    }
-
-
-    /************************
-        Test CheeoService.cs
+        Test CheepService.cs
     *************************/
     [Fact]
     public void OKTestDBCheepServiceGetCheeps() // Dummy test
@@ -96,4 +66,3 @@ public class UnitTestWeb
 
     }
 }
-

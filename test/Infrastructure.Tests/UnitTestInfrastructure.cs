@@ -13,8 +13,9 @@ namespace Chirp.Tests;
 
 public class UnitTestsInfrastructure
 {
-    private readonly AuthorRepository authorRepository;
-    private readonly CheepRepository cheepRepository;
+    private readonly ChirpContext context;
+    private readonly IAuthorRepository authorRepository;
+    private readonly ICheepRepository cheepRepository;
 
     public UnitTestsInfrastructure()
     {
@@ -25,9 +26,8 @@ public class UnitTestsInfrastructure
             builder => builder.UseInMemoryDatabase("ChirpDB")
         );
         var app = builder.Build();
-        var context = app.Services.GetRequiredService<ChirpContext>();
-        DBInitializer.SeedDatabase(context);
 
+        context = app.Services.GetRequiredService<ChirpContext>();
         authorRepository = app.Services.GetRequiredService<AuthorRepository>();
         cheepRepository = app.Services.GetRequiredService<CheepRepository>();
     }
@@ -36,9 +36,10 @@ public class UnitTestsInfrastructure
     public async Task UnitTestGetExistingUser()
     {
         // Arrange
+        DBInitializer.SeedDatabase(context);
 
         // Act
-        var author = await authorRepository.Get("Mellie Yost"); // Here we assume that there is a user with this name
+        var author = await authorRepository.Get("Mellie Yost");
 
         // Assert
         Assert.NotNull(author);
@@ -48,35 +49,36 @@ public class UnitTestsInfrastructure
     public async Task UnitTestGetNonexistingUser()
     {
         // Arrange
+        DBInitializer.SeedDatabase(context);
 
         // Act
-        Func<Task> action = async () => await authorRepository.Get("UserThatDoesNotExist!"); // Here we assume that there are no users with this name
+        var author = await authorRepository.Get("UserThatDoesNotExist!");
 
         // Assert
-        var ex = await Assert.ThrowsAsync<InvalidOperationException>(action);
-        Assert.Contains("Sequence contains no elements.", ex.Message);
-        //Assert.Null(author);
+        Assert.Null(author);
     }
 
     [Fact]
     public async Task UnitTestGetEmail()
     {
         // Arrange
+        DBInitializer.SeedDatabase(context);
 
         // Act
-        var author = await authorRepository.GetEmail("Mellie Yost"); // Here we assume that there is a user with this name
+        var author = await authorRepository.GetEmail("Mellie Yost");
 
         // Assert
         Assert.NotNull(author);
     }
 
     [Fact]
-    public async Task UnitTestGetCount()
+    public async Task UnitTestGetAllCount()
     {
         // Arrange
+        DBInitializer.SeedDatabase(context);
 
         // Act
-        var count = await cheepRepository.GetCount(); // Count has a value if there is a table
+        var count = await cheepRepository.GetAllCount();
 
         // Assert
         Assert.True(count >= 0);
@@ -87,83 +89,70 @@ public class UnitTestsInfrastructure
     // [InlineData(7)]
     // [InlineData(70000000)]
 
-    [Fact]
     public async Task UnitTestGetText() //(ulong value)
     {
         // Arrange
+        DBInitializer.SeedDatabase(context);
 
         // Act
-        string? txt = await cheepRepository.GetText(Guid.NewGuid());
+        var text = await cheepRepository.GetText(Guid.NewGuid());
 
         // Assert
-        if (txt == null)
-        {
-            Assert.Null(txt);
-        }
-        else
-        {
-            Assert.NotNull(txt); // 7 is a random number - can we extract a cheep id ?
-        }
+        Assert.NotNull(text);
     }
 
-    //[Fact]
+    [Fact]
     public async Task UnitTestGetEmailNonexistingUser()
     {
         // Arrange
+        DBInitializer.SeedDatabase(context);
 
         // Act
-        Func<Task> action = async () => await authorRepository.GetEmail("UserThatDoesNotExist!"); // Here we assume that there are no users with this name
+        var email = await authorRepository.GetEmail("UserThatDoesNotExist!"); // Here we assume that there are no users with this name
 
         // Assert
-        var ex = await Assert.ThrowsAsync<InvalidOperationException>(action);
-        Assert.Contains("Sequence contains no elements.", ex.Message);
-        //Assert.Null(author);
+        Assert.Null(email);
     }
 
-    //[Fact]
+    [Fact]
     public async Task UnitTestGetCheepsPageSortedByAscending()
     {
         // Arrange
+        DBInitializer.SeedDatabase(context);
 
         // Act
-        //GetCheepsPageSortedBy(string name, uint page, uint pageSize, Order order)
         var authors = await authorRepository.GetCheepsPageSortedBy("Mellie Yost", 1, 32, 0);
 
         // Assert
         Assert.NotNull(authors);
+        Assert.Equal(authors.Count, 32);
     }
 
     [Fact]
     public async Task UnitTestGetCheepsPageSortedByDescending()
     {
         // Arrange
+        DBInitializer.SeedDatabase(context);
 
         // Act
-        //GetCheepsPageSortedBy(string name, uint page, uint pageSize, Order order)
         var authors = await authorRepository.GetCheepsPageSortedBy("Mellie Yost", 1, 32, 0);
 
         // Assert
         Assert.NotNull(authors);
+        Assert.Equal(authors.Count, 32);
     }
 
     [Fact]
     public async Task UnitTestGetCheepsPageSortedByNonexistingUser()
     {
         // Arrange
+        DBInitializer.SeedDatabase(context);
 
         // Act
-        //Func<Task> action = async () => await authorRepository.GetCheepsPageSortedBy("ThisUserDoesNotExist", 1, 32, 0);
         var authors = await authorRepository.GetCheepsPageSortedBy("ThisUserDoesNotExist", 1, 32, 0);
 
         // Assert
-        //Assert.Null(authors);
-        //Assert.NotEmpty(authors);
-
-        Console.WriteLine("authors");
-        Console.WriteLine(authors);
-
+        Assert.Null(authors);
     }
 
-
 }
-
