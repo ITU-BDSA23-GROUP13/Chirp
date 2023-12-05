@@ -121,7 +121,7 @@ public class UnitTestsInfrastructure
         DBInitializer.SeedDatabase(context);
 
         // Act
-        var authors = await authorRepository.GetCheepsPageSortedBy("Mellie Yost", 1, 32, 0);
+        var authors = await authorRepository.GetCheepsPageSortedBy("Jacqualine Gilcoine", 0, 32, ICheepRepository.Order.Newest);
 
         // Assert
         Assert.NotNull(authors);
@@ -135,7 +135,7 @@ public class UnitTestsInfrastructure
         DBInitializer.SeedDatabase(context);
 
         // Act
-        var authors = await authorRepository.GetCheepsPageSortedBy("Mellie Yost", 1, 32, 0);
+        var authors = await authorRepository.GetCheepsPageSortedBy("Jacqualine Gilcoine", 0, 32, ICheepRepository.Order.Oldest);
 
         // Assert
         Assert.NotNull(authors);
@@ -149,7 +149,7 @@ public class UnitTestsInfrastructure
         DBInitializer.SeedDatabase(context);
 
         // Act
-        var authors = await authorRepository.GetCheepsPageSortedBy("ThisUserDoesNotExist", 1, 32, 0);
+        var authors = await authorRepository.GetCheepsPageSortedBy("ThisUserDoesNotExist", 0, 1, 0);
 
         // Assert
         Assert.Null(authors);
