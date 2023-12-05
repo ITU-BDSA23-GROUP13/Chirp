@@ -8,6 +8,10 @@ public interface ICheepService
 {
     public Task<(List<CheepViewModel>,uint)> GetCheepsAndPageCount(uint page);
     public Task<(List<CheepViewModel>,uint)?> GetCheepsAndTotalCountFromAuthor(string author, uint page);
+    public Task<(List<CheepViewModel>,uint)?> GetCheepsAndTotalCountFromFollowed(string user, uint page);
+    public Task<bool> PutCheep(CheepViewModel cheep);
+    public Task<bool> FollowAuthor(string user, string author);
+    public Task<bool> UnfollowAuthor(string user, string author);
 }
 
 public class CheepService : ICheepService
@@ -24,20 +28,20 @@ public class CheepService : ICheepService
 
     public async Task<(List<CheepViewModel>,uint)> GetCheepsAndPageCount(uint page)
     {
-        var cheeps = await cheepRepository.GetPageSortedBy(page, pageSize);
+        var cheeps = await cheepRepository.GetPageFromAll(page, pageSize);
 
         var list = cheeps
             .Select(c => new CheepViewModel(c.Author, c.Text, DateTimeOffset.FromUnixTimeSeconds((long) c.Timestamp)))
             .ToList();
 
-        var totalCount = await cheepRepository.GetCount();
+        var totalCount = await cheepRepository.GetAllCount();
 
         return (list, (uint) Math.Ceiling((decimal) totalCount / (decimal) pageSize));
     }
 
     public async Task<(List<CheepViewModel>,uint)?> GetCheepsAndTotalCountFromAuthor(string author, uint page)
     {
-        var cheeps = await authorRepository.GetCheepsPageSortedBy(author, page, pageSize);
+        var cheeps = await authorRepository.GetCheepsPage(author, page, pageSize);
         if (cheeps is null) return null;
 
         var list = cheeps
@@ -50,5 +54,39 @@ public class CheepService : ICheepService
         return (list, (uint) totalCount);
     }
 
-    public Task Put() { return Task.CompletedTask; }
+    public async Task<(List<CheepViewModel>,uint)?> GetCheepsAndTotalCountFromFollowed(string user, uint page)
+    {
+        var cheeps = await cheepRepository.GetPageFromFollowed(user, page, pageSize);
+        if (cheeps is null) return null;
+
+        var list = cheeps
+            .Select(c => new CheepViewModel(c.Author, c.Text, DateTimeOffset.FromUnixTimeSeconds((long) c.Timestamp)))
+            .ToList();
+
+        var totalCount = await cheepRepository.GetFollowedCount(user);
+        if (cheeps is null) return null;
+
+        return (list, (uint) Math.Ceiling((decimal) totalCount / (decimal) pageSize));
+    }
+
+    public Task<bool> PutCheep(CheepViewModel cheep)
+    {
+        return cheepRepository.Put(new CheepDTO
+        {
+            Author = cheep.Author,
+            Text = cheep.Message,
+            Timestamp = (ulong) cheep.Timestamp.ToUnixTimeSeconds(),
+        });
+    }
+
+    public Task<bool> FollowAuthor(string user, string author)
+    {
+        return authorRepository.PutFollowing(user, author);
+    }
+
+    public Task<bool> UnfollowAuthor(string user, string author)
+    {
+        return authorRepository.DeleteFollowing(user, author);
+    }
+
 }

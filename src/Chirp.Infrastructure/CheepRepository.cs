@@ -15,7 +15,7 @@ public class CheepRepository : ICheepRepository
         this.context = context;
     }
 
-    public async Task<IList<CheepDTO>> GetPageSortedBy(uint page, uint pageSize, Order order)
+    public async Task<IList<CheepDTO>> GetPageFromAll(uint page, uint pageSize, Order order)
     {
         var cheeps = order switch
         {
@@ -43,20 +43,57 @@ public class CheepRepository : ICheepRepository
         return list;
     }
 
-    public async Task<uint> GetCount()
+    public async Task<uint> GetAllCount()
     {
         // https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/checked-and-unchecked
         // We want this to throw an exception if the cast fails.
         return checked ((uint) await this.context.Cheep.CountAsync());
     }
 
+    public async Task<IList<CheepDTO>?> GetPageFromFollowed(string followee, uint page, uint pageSize, Order order = Order.Newest)
+    {
+        var followed = await context.Author.Where(a => a.UserName == followee).Select(a => a.Followed).FirstOrDefaultAsync();
+        if (followed is null) return null;
+
+        var cheeps = order switch
+        {
+            Order.Newest => context.Cheep.OrderByDescending(c => c.Timestamp),
+            Order.Oldest => context.Cheep.OrderBy(c => c.Timestamp),
+            _ => throw new System.Diagnostics.UnreachableException(),
+        };
+
+        var list = await cheeps
+            .Skip((int) ((page - 1) * pageSize))
+            .Take((int) pageSize)
+            .Select(c =>
+                new CheepDTO
+                {
+                    Author = c.Author.UserName!,
+                    Text = c.Text,
+                    Timestamp = (ulong) c.Timestamp,
+                }
+            )
+            .ToListAsync();
+        
+        if (list.Any(c => c.Author is null))
+            throw new System.NullReferenceException();
+
+        return list;
+    }
+
+    public async Task<uint?> GetFollowedCount(string followee)
+    {
+        return checked ((uint) await this.context.Cheep.CountAsync());
+    }
+
     public async Task<CheepDTO?> Get(Guid id)
     {
-        Cheep? cheep = await context.Cheep
+        var cheep = await context.Cheep
             .Where(c => c.Id == id.ToString())
             .FirstOrDefaultAsync();
+        if (cheep is null) return null;
 
-        return cheep is null ? null : new CheepDTO
+        return new CheepDTO
         {
             Author = cheep.Author.UserName ?? throw new System.NullReferenceException(),
             Text = cheep.Text,
@@ -66,12 +103,13 @@ public class CheepRepository : ICheepRepository
 
     public async Task<AuthorDTO?> GetAuthor(Guid id)
     {
-        Author? author = await context.Cheep
+        var author = await context.Cheep
             .Where(c => c.Id == id.ToString())
             .Select(c => c.Author)
             .FirstOrDefaultAsync();
+        if (author is null) return null;
 
-        return author is null ? null : new AuthorDTO
+        return new AuthorDTO
         {
             Name = author.UserName ?? throw new System.NullReferenceException(),
             Email = author.Email ?? throw new System.NullReferenceException(),
@@ -110,12 +148,10 @@ public class CheepRepository : ICheepRepository
         }
     }
 
-    public async Task Put(CheepDTO cheep)
+    public async Task<bool> Put(CheepDTO cheep)
     {
         var author = await context.Author.Where(a => a.UserName == cheep.Author).FirstOrDefaultAsync();
-
-        if (author is null)
-            throw new InvalidOperationException("Author does not exist.");
+        if (author is null) return false;
 
         await context.Cheep.AddAsync(new Cheep
            {
@@ -123,5 +159,8 @@ public class CheepRepository : ICheepRepository
                 Text = cheep.Text,
                 Timestamp = checked ((long) cheep.Timestamp),
             });
+
+        await context.SaveChangesAsync();
+        return true;
     }
 }

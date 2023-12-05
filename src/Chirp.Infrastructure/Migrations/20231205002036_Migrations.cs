@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Chirp.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class SomeMigrations : Migration
+    public partial class Migrations : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -157,6 +157,30 @@ namespace Chirp.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "AuthorAuthor",
+                columns: table => new
+                {
+                    FollowedId = table.Column<string>(type: "TEXT", nullable: false),
+                    FollowersId = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AuthorAuthor", x => new { x.FollowedId, x.FollowersId });
+                    table.ForeignKey(
+                        name: "FK_AuthorAuthor_AspNetUsers_FollowedId",
+                        column: x => x.FollowedId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AuthorAuthor_AspNetUsers_FollowersId",
+                        column: x => x.FollowersId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Cheep",
                 columns: table => new
                 {
@@ -214,6 +238,11 @@ namespace Chirp.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_AuthorAuthor_FollowersId",
+                table: "AuthorAuthor",
+                column: "FollowersId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Cheep_AuthorId",
                 table: "Cheep",
                 column: "AuthorId");
@@ -236,6 +265,9 @@ namespace Chirp.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "AuthorAuthor");
 
             migrationBuilder.DropTable(
                 name: "Cheep");

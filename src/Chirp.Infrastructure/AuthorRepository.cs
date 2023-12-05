@@ -19,17 +19,23 @@ public class AuthorRepository : IAuthorRepository
         this.context = context;
     }
 
+    public async Task<uint> GetCount()
+    {
+        return (uint) await context.Author.CountAsync();
+    }
+
     /// <summary>
     /// Returns null, we no author was found.
     /// Throws NullReferenceException if the author was found, but the name or email was null.
     /// </summary>
     public async Task<AuthorDTO?> Get(string name)
     {
-        Author? author = await context.Author
+        var author = await context.Author
             .Where(a => a.UserName == name)
             .FirstOrDefaultAsync();
+        if (author is null) return null;
 
-        return author is null ? null : new AuthorDTO
+        return new AuthorDTO
         {
             Name = author.UserName ?? throw new System.NullReferenceException(),
             Email = author.Email ?? throw new System.NullReferenceException(),
@@ -42,23 +48,21 @@ public class AuthorRepository : IAuthorRepository
     /// </summary>
     public async Task<string?> GetEmail(string name)
     {
-        Author? author = await context.Author
+        var author = await context.Author
             .Where(a => a.UserName == name)
             .FirstOrDefaultAsync();
-        return author?.Email ?? throw new System.NullReferenceException();
+        if (author is null) return null;
+        return author.Email ?? throw new System.NullReferenceException();
     }
 
-    /// <summary>
-    /// Returns null, we no author was found.
-    /// Throws NullReferenceException if the author was found, but the name was null.
-    /// </summary>
     public async Task<IReadOnlyCollection<CheepDTO>?> GetCheeps(string name)
     {
-        Author? author = await context.Author
+        var author = await context.Author
             .Where(a => a.UserName == name)
             .FirstOrDefaultAsync();
+        if (author is null) return null;
 
-        return author?.Cheeps
+        return author.Cheeps
             .Select(cheep =>
                 new CheepDTO
                 {
@@ -69,20 +73,21 @@ public class AuthorRepository : IAuthorRepository
             .ToList();
     }
 
-    /// <summary>
-    /// Returns null, we no author was found.
-    /// Throws NullReferenceException if the author was found, but the name was null.
-    /// </summary>
-    public async Task<IList<CheepDTO>> GetCheepsPageSortedBy(string name, uint page, uint pageSize, Order order)
+    public async Task<IList<CheepDTO>?> GetCheepsPage(string name, uint page, uint pageSize, Order order)
     {
+        var author = await context.Author
+            .Where(a => a.UserName == name)
+            .FirstOrDefaultAsync();
+        if (author is null) return null;
+
         var cheeps = order switch
         {
-            Order.Newest => context.Cheep.OrderByDescending(c => c.Timestamp),
-            Order.Oldest => context.Cheep.OrderBy(c => c.Timestamp),
+            Order.Newest => author.Cheeps.OrderByDescending(c => c.Timestamp),
+            Order.Oldest => author.Cheeps.OrderBy(c => c.Timestamp),
             _ => throw new System.Diagnostics.UnreachableException(),
         };
 
-        var list = await cheeps
+        var list = cheeps
             .Where(c => c.Author.UserName == name)
             .Skip((int) ((page - 1) * pageSize))
             .Take((int) pageSize)
@@ -94,7 +99,7 @@ public class AuthorRepository : IAuthorRepository
                     Timestamp = (ulong) c.Timestamp,
                 }
             )
-            .ToListAsync();
+            .ToList();
 
         // ... so we check here instead
         if (list.Any(c => c.Author is null))
@@ -114,15 +119,56 @@ public class AuthorRepository : IAuthorRepository
         return checked ((uint?) cheeps?.Count);
     }
 
-    public async Task Put(AuthorDTO author)
+    public async Task<bool> Put(AuthorDTO author)
     {
         await context.Author.AddAsync(new Author
             {
-                Id = new Guid().ToString(),
                 UserName = author.Name,
                 Email = author.Email,
-                Cheeps = new(),
             });
+
+        await context.SaveChangesAsync();
+
+        return true;
+    }
+
+    public async Task<bool> PutFollowing(string follower, string followee)
+    {
+        var author1 = await context.Author.Where(c => c.UserName == follower).FirstOrDefaultAsync();
+        if (author1 is null) return false;
+
+        var author2 = await context.Author.Where(c => c.UserName == followee).FirstOrDefaultAsync();
+        if (author2 is null) return false;
+
+        if (author1.Followers.Any(a => a.UserName == followee)) return false;
+        if (author2.Followed.Any(a => a.UserName == follower)) return false;
+
+        author1.Followers.Add(author2);
+        author2.Followed.Add(author1);
+
+        // context.Author.Update(author1);
+        // context.Author.Update(author2);
+
+        await context.SaveChangesAsync();
+        return true;
+    }
+
+    public async Task<bool> DeleteFollowing(string follower, string followee)
+    {
+        var author1 = await context.Author.Where(c => c.UserName == follower).FirstOrDefaultAsync();
+        if (author1 is null) return false;
+
+        var author2 = await context.Author.Where(c => c.UserName == followee).FirstOrDefaultAsync();
+        if (author2 is null) return false;
+
+        if (!author1.Followers.Remove(author2)) return false;
+        if (!author2.Followed.Remove(author1)) return false;
+
+        // context.Author.Update(author1);
+        // context.Author.Update(author2);
+
+        await context.SaveChangesAsync();
+        return true;
     }
 
 }

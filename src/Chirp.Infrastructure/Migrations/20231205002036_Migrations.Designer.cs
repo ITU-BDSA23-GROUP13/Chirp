@@ -11,14 +11,29 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Chirp.Infrastructure.Migrations
 {
     [DbContext(typeof(ChirpContext))]
-    [Migration("20231129131821_SomeMigrations")]
-    partial class SomeMigrations
+    [Migration("20231205002036_Migrations")]
+    partial class Migrations
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.12");
+
+            modelBuilder.Entity("AuthorAuthor", b =>
+                {
+                    b.Property<string>("FollowedId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FollowersId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("FollowedId", "FollowersId");
+
+                    b.HasIndex("FollowersId");
+
+                    b.ToTable("AuthorAuthor");
+                });
 
             modelBuilder.Entity("Chirp.Infrastructure.Author", b =>
                 {
@@ -236,6 +251,21 @@ namespace Chirp.Infrastructure.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("AuthorAuthor", b =>
+                {
+                    b.HasOne("Chirp.Infrastructure.Author", null)
+                        .WithMany()
+                        .HasForeignKey("FollowedId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Chirp.Infrastructure.Author", null)
+                        .WithMany()
+                        .HasForeignKey("FollowersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Chirp.Infrastructure.Cheep", b =>
