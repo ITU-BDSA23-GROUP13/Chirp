@@ -4,21 +4,12 @@ body {
   font-size: 14px;
 }
 
-section{
-  margin-top: 20px;
-}
-
 a {
   color: #26776F;
 }
 
 a:hover {
   color: #333;
-}
-
-button.clear-button{
-  background-color: transparent;
-  border:none;
 }
 
 input[type="text"],
@@ -69,7 +60,7 @@ div.page h1 img {
   height: 1em;
 }
 
-nav {
+div.page div.navigation {
   background: #DEE9E8;
   padding: 4px 10px;
   border-top: 1px solid #ccc;
@@ -79,13 +70,13 @@ nav {
   letter-spacing: 0.5px;
 }
 
-nav a {
+div.page div.navigation a {
   color: #444;
   font-weight: bold;
 }
 
 div.page h2 {
-  margin: 5px 0px;
+  margin: 0 0 15px 0;
   color: #571010;
   text-shadow: 0 1px 2px #ccc;
 }
@@ -255,10 +246,20 @@ div.page li#currentPage a{
   text-decoration: underline;
 }
 
-textarea {
-  resize: none;
+#CheepBox {
+  width: 90%;
+  max-width: 800px;
+  text-align: top;
+  vertical-align: top;
 }
 
-#cheepingBox{
+#CheepBox::placeholder {
+  font-size: 1.5em;
+  color: #a92020;
+  font-weight: bold;
+  padding: 10px;
+  /* Adjust the padding as needed */
+  line-height: 1.5;
+  /* Adjust the line height as needed */
 
 }
