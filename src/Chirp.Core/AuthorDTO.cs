@@ -20,4 +20,24 @@ public class AuthorDTO
     [Required]
     public required List<AuthorDTO> Followed { get; set; }
     */
+
+    public override bool Equals(object? other)
+    {
+        if (other is AuthorDTO)
+        {
+            var a = (AuthorDTO) other;
+            return Name == a.Name && Email == a.Email;
+        }
+        return false;
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Name, Email);
+    }
+
+    public override string? ToString()
+    {
+        return $"AuthorDTO {{ Name: {Name}, Email: {Email} }}";
+    }
 }

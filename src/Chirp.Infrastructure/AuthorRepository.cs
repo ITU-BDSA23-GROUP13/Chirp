@@ -19,6 +19,11 @@ public class AuthorRepository : IAuthorRepository
         this.context = context;
     }
 
+    public async Task<uint> GetCount()
+    {
+        return (uint) await context.Author.CountAsync();
+    }
+
     /// <summary>
     /// Returns null, we no author was found.
     /// Throws NullReferenceException if the author was found, but the name or email was null.
@@ -68,7 +73,7 @@ public class AuthorRepository : IAuthorRepository
             .ToList();
     }
 
-    public async Task<IList<CheepDTO>?> GetCheepsPageSortedBy(string name, uint page, uint pageSize, Order order)
+    public async Task<IList<CheepDTO>?> GetCheepsPage(string name, uint page, uint pageSize, Order order)
     {
         var author = await context.Author
             .Where(a => a.UserName == name)

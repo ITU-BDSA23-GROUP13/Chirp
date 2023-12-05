@@ -13,6 +13,8 @@ namespace Chirp.Core;
 /// </summary>
 public interface IAuthorRepository {
 
+    public Task<uint> GetCount();
+
     public Task<AuthorDTO?> Get(string name);
 
     /// <summary>
@@ -27,7 +29,7 @@ public interface IAuthorRepository {
     /// Returns null, if no author with the given name was found.
     /// Throws NullReferenceException if the author was found, but the name was null.
     /// </summary>
-    public Task<IList<CheepDTO>?> GetCheepsPageSortedBy(string name, uint page, uint pageSize, Order order = Order.Newest);
+    public Task<IList<CheepDTO>?> GetCheepsPage(string name, uint page, uint pageSize, Order order = Order.Newest);
 
     /// <summary>
     /// Returns null, if no author with the given name was found.

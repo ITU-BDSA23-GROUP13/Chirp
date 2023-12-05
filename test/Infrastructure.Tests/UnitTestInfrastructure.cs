@@ -17,13 +17,29 @@ public class UnitTestsInfrastructure
     private readonly IAuthorRepository authorRepository;
     private readonly ICheepRepository cheepRepository;
 
+    private static readonly AuthorDTO testAuthor = new AuthorDTO {
+        Name = "Test Author",
+        Email = "test@email.com",
+    };
+    private static readonly CheepDTO testCheep = new CheepDTO {
+        Author = testAuthor.Name,
+        Text = "Test Cheep",
+        Timestamp = (ulong) DateTimeOffset.Now.ToUnixTimeSeconds(),
+    };
+
+    private static uint counter = 0;
+
     public UnitTestsInfrastructure()
     {
+        // In case tests are started on different threads, we stille want to ensure that each test use a different database.
+        // https://learn.microsoft.com/en-us/dotnet/api/system.threading.interlocked.increment?view=net-8.0
+        uint i = Interlocked.Increment(ref counter);
+
         var builder = WebApplication.CreateBuilder();
         builder.Services.AddSingleton<CheepRepository>();
         builder.Services.AddSingleton<AuthorRepository>();
         builder.Services.AddDbContext<ChirpContext>(
-            builder => builder.UseInMemoryDatabase("ChirpDB")
+            builder => builder.UseInMemoryDatabase("ChirpDB" + i)
         );
         var app = builder.Build();
 
@@ -35,22 +51,20 @@ public class UnitTestsInfrastructure
     [Fact]
     public async Task UnitTestGetExistingUser()
     {
-        // Arrange
-        DBInitializer.SeedDatabase(context);
+        // Arrenge
+        await authorRepository.Put(testAuthor);
 
         // Act
-        var author = await authorRepository.Get("Mellie Yost");
+        var author = await authorRepository.Get(testAuthor.Name);
 
         // Assert
         Assert.NotNull(author);
+        Assert.Equal(testAuthor, author);
     }
 
-    //[Fact]
-    public async Task UnitTestGetNonexistingUser()
+    [Fact]
+    public async Task UnitTestGetNonexistingAuthor()
     {
-        // Arrange
-        DBInitializer.SeedDatabase(context);
-
         // Act
         var author = await authorRepository.Get("UserThatDoesNotExist!");
 
@@ -59,54 +73,22 @@ public class UnitTestsInfrastructure
     }
 
     [Fact]
-    public async Task UnitTestGetEmail()
+    public async Task UnitTestGetAuthorEmail()
     {
         // Arrange
-        DBInitializer.SeedDatabase(context);
+        await authorRepository.Put(testAuthor);
 
         // Act
-        var author = await authorRepository.GetEmail("Mellie Yost");
+        var author = await authorRepository.GetEmail(testAuthor.Name);
 
         // Assert
         Assert.NotNull(author);
-    }
-
-    [Fact]
-    public async Task UnitTestGetAllCount()
-    {
-        // Arrange
-        DBInitializer.SeedDatabase(context);
-
-        // Act
-        var count = await cheepRepository.GetAllCount();
-
-        // Assert
-        Assert.True(count >= 0);
-
-    }
-
-    // [Theory]
-    // [InlineData(7)]
-    // [InlineData(70000000)]
-
-    public async Task UnitTestGetText() //(ulong value)
-    {
-        // Arrange
-        DBInitializer.SeedDatabase(context);
-
-        // Act
-        var text = await cheepRepository.GetText(Guid.NewGuid());
-
-        // Assert
-        Assert.NotNull(text);
+        Assert.Equal(testAuthor.Email, author);
     }
 
     [Fact]
     public async Task UnitTestGetEmailNonexistingUser()
     {
-        // Arrange
-        DBInitializer.SeedDatabase(context);
-
         // Act
         var email = await authorRepository.GetEmail("UserThatDoesNotExist!");
 
@@ -114,14 +96,42 @@ public class UnitTestsInfrastructure
         Assert.Null(email);
     }
 
+    [Theory]
+    [InlineData(0)]
+    [InlineData(1)]
+    [InlineData(100)]
+    public async Task UnitTestGetAllCheepCount(int inputCount)
+    {
+        // Arrange
+        await authorRepository.Put(testAuthor);
+
+        for (var i = 0; i < inputCount; i++)
+        {
+            Assert.True(
+                await cheepRepository.Put(new CheepDTO
+                {
+                    Author = testCheep.Author,
+                    Text = testCheep.Text,
+                    Timestamp = (ulong) DateTimeOffset.Now.ToUnixTimeSeconds(),
+                })
+            );
+        }
+
+        // Act
+        var count = await cheepRepository.GetAllCount();
+
+        // Assert
+        Assert.Equal((uint) inputCount, count);
+    }
+
     [Fact]
-    public async Task UnitTestGetCheepsPageSortedByAscending()
+    public async Task UnitTestGetCheepsPageFromAuthorSortedByNewest()
     {
         // Arrange
         DBInitializer.SeedDatabase(context);
 
         // Act
-        var authors = await authorRepository.GetCheepsPageSortedBy("Jacqualine Gilcoine", 0, 32, ICheepRepository.Order.Newest);
+        var authors = await authorRepository.GetCheepsPage("Jacqualine Gilcoine", 0, 32, ICheepRepository.Order.Newest);
 
         // Assert
         Assert.NotNull(authors);
@@ -129,13 +139,13 @@ public class UnitTestsInfrastructure
     }
 
     [Fact]
-    public async Task UnitTestGetCheepsPageSortedByDescending()
+    public async Task UnitTestGetCheepsPageFromAuthorSortedByOldest()
     {
         // Arrange
         DBInitializer.SeedDatabase(context);
 
         // Act
-        var authors = await authorRepository.GetCheepsPageSortedBy("Jacqualine Gilcoine", 0, 32, ICheepRepository.Order.Oldest);
+        var authors = await authorRepository.GetCheepsPage("Jacqualine Gilcoine", 0, 32, ICheepRepository.Order.Oldest);
 
         // Assert
         Assert.NotNull(authors);
@@ -143,13 +153,13 @@ public class UnitTestsInfrastructure
     }
 
     [Fact]
-    public async Task UnitTestGetCheepsPageSortedByNonexistingUser()
+    public async Task UnitTestGetCheepsFromNonExistingAuthor()
     {
         // Arrange
         DBInitializer.SeedDatabase(context);
 
         // Act
-        var authors = await authorRepository.GetCheepsPageSortedBy("ThisUserDoesNotExist", 0, 1, 0);
+        var authors = await authorRepository.GetCheepsPage("ThisUserDoesNotExist", 0, 1, 0);
 
         // Assert
         Assert.Null(authors);
