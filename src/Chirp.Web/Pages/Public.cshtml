@@ -55,11 +55,26 @@
                     </p>
                 </li>
             }
-            @Model.PageNumber
+            
         </ul>
     }
     else
     {
         <em>There are no cheeps so far.</em>
     }
+    <ul id="page-navigation">
+        @{
+        //temporary numbers
+        double numberOfPages = 21;
+        double currentPage = @Model.PageNumber;
+        }
+        @for(int i=0;i<numberOfPages; i++)
+        {
+        <li @(i == currentPage ? "id=currentPage" : "")>
+            <a href="?page=@i">
+                @i
+            </a>
+        </li>
+        } 
+    </ul>
 </div>
