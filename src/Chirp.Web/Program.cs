@@ -48,10 +48,10 @@ builder.Services.Configure<IdentityOptions>(options =>
 builder.Services.AddAuthentication()
     .AddGitHub(options =>
     {
-        options.ClientId = /*"57d22a4e96859177858c";*/ "Iv1.dcb4bc25e1621f2c";
+        options.ClientId = "Iv1.dcb4bc25e1621f2c";
         options.ClientSecret = Environment.GetEnvironmentVariable("CHIRP_GITHUB_CLIENT_SECRET") ?? throw new NullReferenceException("CHIRP_GITHUB_CLIENT_SECRET not set");
     });
-// f1e958fd2497d14e71de2156136d8e1b8a976807
+builder.Services.AddAuthorization();
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
