@@ -108,7 +108,7 @@ public class UnitTestsInfrastructure
         DBInitializer.SeedDatabase(context);
 
         // Act
-        var email = await authorRepository.GetEmail("UserThatDoesNotExist!"); // Here we assume that there are no users with this name
+        var email = await authorRepository.GetEmail("UserThatDoesNotExist!");
 
         // Assert
         Assert.Null(email);
@@ -125,7 +125,7 @@ public class UnitTestsInfrastructure
 
         // Assert
         Assert.NotNull(authors);
-        Assert.Equal(authors.Count, 32);
+        Assert.Equal(32, authors.Count());
     }
 
     [Fact]
@@ -139,7 +139,7 @@ public class UnitTestsInfrastructure
 
         // Assert
         Assert.NotNull(authors);
-        Assert.Equal(authors.Count, 32);
+        Assert.Equal(32, authors.Count());
     }
 
     [Fact]

@@ -25,11 +25,12 @@ public class AuthorRepository : IAuthorRepository
     /// </summary>
     public async Task<AuthorDTO?> Get(string name)
     {
-        Author? author = await context.Author
+        var author = await context.Author
             .Where(a => a.UserName == name)
             .FirstOrDefaultAsync();
+        if (author is null) return null;
 
-        return author is null ? null : new AuthorDTO
+        return new AuthorDTO
         {
             Name = author.UserName ?? throw new System.NullReferenceException(),
             Email = author.Email ?? throw new System.NullReferenceException(),

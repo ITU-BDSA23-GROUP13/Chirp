@@ -13,6 +13,6 @@ public class Author : IdentityUser
 
     public Author()
     {
-        Id = new Guid().ToString();
+        Id = Guid.NewGuid().ToString();
     }
 }
