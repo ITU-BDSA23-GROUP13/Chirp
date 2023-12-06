@@ -2,7 +2,12 @@ using Chirp.Core;
 
 namespace Chirp.Web;
 
-public record CheepViewModel(string Author, string Message, DateTimeOffset Timestamp);
+public class CheepViewModel
+{
+    public required string Author  { get; set; }
+    public required string Message { get; set; }
+    public required DateTimeOffset Timestamp { get; set; }
+}
 
 public interface ICheepService
 {
@@ -31,7 +36,12 @@ public class CheepService : ICheepService
         var cheeps = await cheepRepository.GetPageFromAll(page, pageSize);
 
         var list = cheeps
-            .Select(c => new CheepViewModel(c.Author, c.Text, DateTimeOffset.FromUnixTimeSeconds((long) c.Timestamp)))
+            .Select(c => new CheepViewModel
+                {
+                    Author = c.Author,
+                    Message = c.Text,
+                    Timestamp = DateTimeOffset.FromUnixTimeSeconds((long) c.Timestamp)
+                })
             .ToList();
 
         var totalCount = await cheepRepository.GetAllCount();
@@ -47,7 +57,12 @@ public class CheepService : ICheepService
         if (cheeps is null) return null;
 
         var list = cheeps
-            .Select(c => new CheepViewModel(c.Author, c.Text, DateTimeOffset.FromUnixTimeSeconds((long) c.Timestamp)))
+            .Select(c => new CheepViewModel
+                {
+                    Author = c.Author,
+                    Message = c.Text,
+                    Timestamp = DateTimeOffset.FromUnixTimeSeconds((long) c.Timestamp)
+                })
             .ToList();
 
         var totalCount = await authorRepository.GetCheepCount(author);
@@ -62,7 +77,12 @@ public class CheepService : ICheepService
         if (cheeps is null) return null;
 
         var list = cheeps
-            .Select(c => new CheepViewModel(c.Author, c.Text, DateTimeOffset.FromUnixTimeSeconds((long) c.Timestamp)))
+            .Select(c => new CheepViewModel
+                {
+                    Author = c.Author,
+                    Message = c.Text,
+                    Timestamp = DateTimeOffset.FromUnixTimeSeconds((long) c.Timestamp)
+                })
             .ToList();
 
         var totalCount = await cheepRepository.GetFollowedCount(user);

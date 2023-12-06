@@ -6,7 +6,10 @@ namespace Chirp.Web.Pages;
 public class UserTimelineModel : PageModel
 {
     private readonly ICheepService service;
-    public List<CheepViewModel>? Cheeps { get; set; }
+    /// <summary>
+    /// Stores CheepViewModels but with Timestamp as a string instead
+    /// </summary>
+    public List<dynamic>? Cheeps { get; set; }
     public uint? TotalCount { get; set; }
 
     public UserTimelineModel(ICheepService service)
@@ -20,7 +23,7 @@ public class UserTimelineModel : PageModel
 
         if (result is not null)
         {
-            Cheeps = result.Value.Item1;
+            Cheeps = PublicModel.ToCheepsWithFormattedTimestamp(result.Value.Item1);
             TotalCount = result.Value.Item2;
 
             return Page();
