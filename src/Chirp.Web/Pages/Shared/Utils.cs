@@ -1,26 +1,27 @@
 
+using Chirp.Infrastructure;
+
 using Microsoft.AspNetCore.Identity;
 
 namespace Chirp.Web;
 
 public static class Utils
 {
-    public static async Task<User> CreateUser<User>
+    public static async Task<Author> CreateUser
     (
-        string name, IUserStore<User> userStore,
-        string email, IUserEmailStore<User> emailStore
+        string name, IUserStore<Author> userStore,
+        string email, IUserEmailStore<Author> emailStore
     )
-        where User: class
     {
-        User user;
+        Author user;
         try
         {
-            user = Activator.CreateInstance<User>();
+            user = Activator.CreateInstance<Author>();
         }
         catch
         {
-            throw new InvalidOperationException($"Can't create an instance of '{nameof(IdentityUser)}'. " +
-                $"Ensure that '{nameof(IdentityUser)}' is not an abstract class and has a parameterless constructor");
+            throw new InvalidOperationException($"Can't create an instance of '{nameof(Author)}'. " +
+                $"Ensure that '{nameof(Author)}' is not an abstract class and has a parameterless constructor");
         }
 
         await userStore.SetUserNameAsync(user, name, CancellationToken.None);
@@ -29,8 +30,7 @@ public static class Utils
         return user;
     }
 
-    public static async Task ConfirmUser<User>(User user, UserManager<User> userManager)
-        where User: class
+    public static async Task ConfirmUser(Author user, UserManager<Author> userManager)
     {
         // NOTE: This is the code that should be replaced
         // if we ever want to actually verify the email.
