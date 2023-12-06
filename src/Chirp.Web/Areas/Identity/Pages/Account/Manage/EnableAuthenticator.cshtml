@@ -22,7 +22,7 @@
         </li>
         <li>
             <p>Scan the QR Code or enter this key <kbd>@Model.SharedKey</kbd> into your two factor authenticator app. Spaces and casing do not matter.</p>
-            <div id="qrCode"></div>
+            <div id="qrCode" style="display: block; margin: auto;"></div>
             <div id="qrCodeData" data-url="@Model.AuthenticatorUri"></div>
         </li>
         <li>
@@ -51,5 +51,14 @@
     <partial name="_ValidationScriptsPartial" />
 
     <script type="text/javascript" src="~/lib/qrcode.js"></script>
-    <script type="text/javascript" src="~/js/qr.js"></script>
+    <script>
+        window.addEventListener("load", () => {
+            const uri = document.getElementById("qrCodeData").getAttribute("data-url");
+            new QRCode(document.getElementById("qrCode"), {
+                text: uri,
+                width: 250,
+                height: 250,
+            });
+        });
+    </script>
 }
