@@ -40,6 +40,25 @@
         }
     </div>
 
+    <div class=cheepBox>
+        @if (SignInManager.IsSignedIn(User))
+        {
+        <section>
+            <form id="createCheep" method="post">
+                <h2>Post a cheep.</h2>
+                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                <div class="form-floating mb-3">
+                    <textarea asp-for="Message" class="form-control" aria-required="true" placeholder="@PublicModel.MessagePlaceholder()" style="width=100%;"></textarea>
+                    <span asp-validation-for="Message" class="text-danger"></span>
+                </div>
+                <div>
+                    <button id="cheep-submit" type="submit" class="w-100 btn btn-lg btn-primary">Post Cheep</button>
+                </div>
+            </form>
+        </section>
+        }
+    </div>
+
     @if (Model.Cheeps.Any())
     {
         <ul id="messagelist" class="cheeps">
