@@ -4,17 +4,22 @@ CC = clang
 help:
 	@echo "Use 'make restore' to restore dependencies."
 	@echo "Use 'make build'   to build the solution."
+	@echo "Use 'make rebuild' to build the solution without restoring."
 	@echo "Use 'make run'     to run the Chirp.Web project."
 	@echo "Use 'make rerun'   to run the Chirp.Web project without restoring or building."
 	@echo "Use 'make test'    to run the tests."
+
+restore:
+	@echo "Restoring dependencies..."
+	@dotnet restore
 
 build: restore
 	@echo "Building solution..."
 	@dotnet build --no-restore
 
-restore:
-	@echo "Restoring dependencies..."
-	@dotnet restore
+rebuild: 
+	@echo "Building solution..."
+	@dotnet build --no-restore
 
 run: build
 	@echo "Running Chirp.Web..."

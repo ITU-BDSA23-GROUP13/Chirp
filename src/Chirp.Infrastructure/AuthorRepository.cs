@@ -132,8 +132,23 @@ public class AuthorRepository : IAuthorRepository
         return true;
     }
 
+    public async Task<bool?> GetFollowing(string follower, string followee)
+    {
+        Console.WriteLine("Get Follower " + follower + " Followee " + followee);
+
+        var author1 = await context.Author.Where(c => c.UserName == follower).FirstOrDefaultAsync();
+        if (author1 is null) return false;
+
+        var author2 = await context.Author.Where(c => c.UserName == followee).FirstOrDefaultAsync();
+        if (author2 is null) return false;
+
+        return author1.Followed.Any(a => a.UserName == followee);
+    }
+
     public async Task<bool> PutFollowing(string follower, string followee)
     {
+        Console.WriteLine("Put Follower " + follower + " Followee " + followee);
+
         var author1 = await context.Author.Where(c => c.UserName == follower).FirstOrDefaultAsync();
         if (author1 is null) return false;
 
@@ -144,7 +159,7 @@ public class AuthorRepository : IAuthorRepository
         if (author2.Followed.Any(a => a.UserName == follower)) return false;
 
         author1.Followers.Add(author2);
-        author2.Followed.Add(author1);
+        //author2.Followed.Add(author1);
 
         // context.Author.Update(author1);
         // context.Author.Update(author2);
@@ -155,6 +170,8 @@ public class AuthorRepository : IAuthorRepository
 
     public async Task<bool> DeleteFollowing(string follower, string followee)
     {
+        Console.WriteLine("Delete Follower " + follower + " Followee " + followee);
+
         var author1 = await context.Author.Where(c => c.UserName == follower).FirstOrDefaultAsync();
         if (author1 is null) return false;
 
@@ -162,7 +179,7 @@ public class AuthorRepository : IAuthorRepository
         if (author2 is null) return false;
 
         if (!author1.Followers.Remove(author2)) return false;
-        if (!author2.Followed.Remove(author1)) return false;
+        //if (!author2.Followed.Remove(author1)) return false;
 
         // context.Author.Update(author1);
         // context.Author.Update(author2);

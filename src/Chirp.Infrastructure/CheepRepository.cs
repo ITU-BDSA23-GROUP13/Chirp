@@ -50,10 +50,14 @@ public class CheepRepository : ICheepRepository
         return checked ((uint) await this.context.Cheep.CountAsync());
     }
 
-    public async Task<IList<CheepDTO>?> GetPageFromFollowed(string followee, uint page, uint pageSize, Order order = Order.Newest)
+    public async Task<IList<CheepDTO>?> GetPageFromFollowed(string follower, uint page, uint pageSize, Order order = Order.Newest)
     {
-        var followed = await context.Author.Where(a => a.UserName == followee).Select(a => a.Followed).FirstOrDefaultAsync();
+        Console.WriteLine("Get followed page " + follower);
+
+        var followed = await context.Author.Where(a => a.UserName == follower).Include(a => a.Followed).Select(a => a.Followed).FirstOrDefaultAsync();
         if (followed is null) return null;
+
+        Console.WriteLine("Not null!");
 
         var cheeps = order switch
         {
