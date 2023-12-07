@@ -1,5 +1,5 @@
-﻿@page "/"
-@model Chirp.Web.Pages.PublicModel
+@page "/followed"
+@model Chirp.Web.Pages.FollowedModel
 @using Microsoft.AspNetCore.Identity
 @using Chirp.Infrastructure
 @inject SignInManager<Author> SignInManager
@@ -11,7 +11,7 @@
 }
 
 <div>
-    <h2> Public Timeline </h2>
+    <h2> Followed Timeline </h2>
 
     <div class=navigation>
         @if (SignInManager.IsSignedIn(User))
@@ -42,26 +42,7 @@
         }
     </div>
 
-    <div class=cheepBox>
-        @if (SignInManager.IsSignedIn(User))
-        {
-        <section>
-            <form id="createCheep" method="post" asp-page-handler="Cheep">
-                <h2>Post a cheep.</h2>
-                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-                <div class="form-floating mb-3">
-                    <textarea asp-for="Message" class="form-control" aria-required="true" placeholder="@PublicModel.MessagePlaceholder()" style="width=100%;"></textarea>
-                    <span asp-validation-for="Message" class="text-danger"></span>
-                </div>
-                <div>
-                    <button id="cheep-submit" type="submit" class="w-100 btn btn-lg btn-primary">Post Cheep</button>
-                </div>
-            </form>
-        </section>
-        }
-    </div>
-
-    @if (Model.Cheeps.Any())
+    @if (Model.Cheeps is not null && Model.Cheeps.Any())
     {
         <ul id="messagelist" class="cheeps">
             @foreach (var cheep in Model.Cheeps)
@@ -93,6 +74,6 @@
     }
     else
     {
-        <em>There are no cheeps so far.</em>
+        <em>There are no cheeps so far. Try follow some authors and come back!</em>
     }
 </div>

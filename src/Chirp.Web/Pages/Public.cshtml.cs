@@ -108,7 +108,7 @@ public class PublicModel : PageModel
         };
     }
 
-    public async Task<ActionResult> OnPostAsync()
+    public async Task<ActionResult> OnPostCheepAsync()
     {
         if (!_signInManager.IsSignedIn(User))
         {

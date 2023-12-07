@@ -38,6 +38,8 @@ public interface IAuthorRepository {
 
     public Task<bool> Put(AuthorDTO author);
 
+    public Task<bool?> GetFollowing(string follower, string followee);
+
     /// <summary>
     /// Returns true, if successful.
     /// Returns false, if either user did not exist or the author was already followed.

@@ -37,4 +37,30 @@ public class UserTimelineModel : PageModel
 
         return Page();
     }
+
+    public async Task<bool> IsFollowing(string author)
+    {
+        var result = await service.GetFollow(User.Identity?.Name!, author);
+
+        if (result is null)
+        {
+            throw new Exception($"Could not get following between {User.Identity?.Name!} and {author}");
+        }
+
+        return (bool) result;
+    }
+
+    public async Task<ActionResult> OnPostFollow(string author)
+    {
+        var result = await service.PutFollower(User.Identity?.Name!, author);
+
+        return Page();
+    }
+
+    public async Task<ActionResult> OnPostUnfollow(string author)
+    {
+        var result = await service.DeleteFollow(User.Identity?.Name!, author);
+
+        return Page();
+    }
 }

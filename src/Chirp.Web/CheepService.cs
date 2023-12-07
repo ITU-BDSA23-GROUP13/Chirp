@@ -15,8 +15,9 @@ public interface ICheepService
     public Task<(List<CheepViewModel>,uint)?> GetCheepsAndTotalCountFromAuthor(string author, uint page);
     public Task<(List<CheepViewModel>,uint)?> GetCheepsAndTotalCountFromFollowed(string user, uint page);
     public Task<bool> PutCheep(CheepViewModel cheep);
-    public Task<bool> FollowAuthor(string user, string author);
-    public Task<bool> UnfollowAuthor(string user, string author);
+    public Task<bool?> GetFollow(string follower, string followee);
+    public Task<bool> PutFollower(string user, string author);
+    public Task<bool> DeleteFollow(string user, string author);
 }
 
 public class CheepService : ICheepService
@@ -73,8 +74,12 @@ public class CheepService : ICheepService
 
     public async Task<(List<CheepViewModel>,uint)?> GetCheepsAndTotalCountFromFollowed(string user, uint page)
     {
+        Console.WriteLine("Get followed page " + user);
+
         var cheeps = await cheepRepository.GetPageFromFollowed(user, page, pageSize);
         if (cheeps is null) return null;
+
+        Console.WriteLine("Not null");
 
         var list = cheeps
             .Select(c => new CheepViewModel
@@ -87,6 +92,8 @@ public class CheepService : ICheepService
 
         var totalCount = await cheepRepository.GetFollowedCount(user);
         if (cheeps is null) return null;
+
+        Console.WriteLine("Not null");
 
         return (list, (uint) Math.Ceiling((decimal) totalCount / (decimal) pageSize));
     }
@@ -101,14 +108,19 @@ public class CheepService : ICheepService
         });
     }
 
-    public Task<bool> FollowAuthor(string user, string author)
+    public Task<bool?> GetFollow(string follower, string followee)
     {
-        return authorRepository.PutFollowing(user, author);
+        return authorRepository.GetFollowing(follower, followee);
     }
 
-    public Task<bool> UnfollowAuthor(string user, string author)
+    public Task<bool> PutFollower(string follower, string followee)
     {
-        return authorRepository.DeleteFollowing(user, author);
+        return authorRepository.PutFollowing(follower, followee);
+    }
+
+    public Task<bool> DeleteFollow(string follower, string followee)
+    {
+        return authorRepository.DeleteFollowing(follower, followee);
     }
 
 }
