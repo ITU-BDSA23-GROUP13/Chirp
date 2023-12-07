@@ -74,8 +74,20 @@
                     </p>
                 </li>
             }
-            @Model.PageNumber
         </ul>
+        <div class=footer>
+            <ul id="page-navigation">
+                @for(var i = 1; i <= Model.TotalPageCount; i++)
+                    {
+                    <li @(i == Model.PageNumber ? "id=currentPage" : "")>
+                        <a href="?page=@i">
+                            @i
+                        </a>
+                    </li>
+                    } 
+            </ul>
+            Chirp &mdash; An ASP.NET Application
+        </div>
     }
     else
     {
