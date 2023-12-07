@@ -68,7 +68,7 @@ public class CheepService : ICheepService
         var totalCount = await authorRepository.GetCheepCount(author);
         if (totalCount is null) return null;
 
-        return (list, (uint) totalCount);
+        return (list, (uint) Math.Ceiling((decimal) totalCount / (decimal) pageSize));
     }
 
     public async Task<(List<CheepViewModel>,uint)?> GetCheepsAndTotalCountFromFollowed(string user, uint page)

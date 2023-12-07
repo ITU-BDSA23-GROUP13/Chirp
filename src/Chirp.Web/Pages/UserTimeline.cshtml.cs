@@ -10,7 +10,10 @@ public class UserTimelineModel : PageModel
     /// Stores CheepViewModels but with Timestamp as a string instead
     /// </summary>
     public List<dynamic>? Cheeps { get; set; }
-    public uint? TotalCount { get; set; }
+
+    [FromQuery(Name = "page")]
+    public required uint PageNumber { get; set; }
+    public required uint TotalPageCount { get; set; }
 
     public UserTimelineModel(ICheepService service)
     {
@@ -24,13 +27,13 @@ public class UserTimelineModel : PageModel
         if (result is not null)
         {
             Cheeps = PublicModel.ToCheepsWithFormattedTimestamp(result.Value.Item1);
-            TotalCount = result.Value.Item2;
+            TotalPageCount = result.Value.Item2;
 
             return Page();
         }
 
         Cheeps = null;
-        TotalCount = null;
+        TotalPageCount = 0;
 
         return Page();
     }
