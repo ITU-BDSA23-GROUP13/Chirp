@@ -15,6 +15,19 @@ public class CheepRepository : ICheepRepository
         this.context = context;
     }
 
+    private static readonly IComparer<Cheep> newestComparer = Comparer<Cheep>.Create((a, b) => b.Timestamp.CompareTo(a.Timestamp));
+    private static readonly IComparer<Cheep> oldestComparer = Comparer<Cheep>.Create((a, b) => a.Timestamp.CompareTo(b.Timestamp));
+
+    private static IComparer<Cheep> getCheepComparer(Order order)
+    {
+        return order switch
+        {
+            Order.Newest => newestComparer,
+            Order.Oldest => oldestComparer,
+            _ => throw new System.Diagnostics.UnreachableException(),
+        };
+    }
+
     public async Task<IList<CheepDTO>> GetPageFromAll(uint page, uint pageSize, Order order)
     {
         var cheeps = order switch
@@ -50,23 +63,19 @@ public class CheepRepository : ICheepRepository
         return checked ((uint) await this.context.Cheep.CountAsync());
     }
 
-    public async Task<IList<CheepDTO>?> GetPageFromFollowed(string follower, uint page, uint pageSize, Order order = Order.Newest)
+    public async Task<IList<CheepDTO>?> GetPageFromFollowed(string followerName, uint page, uint pageSize, Order order = Order.Newest)
     {
-        Console.WriteLine("Get followed page " + follower);
+        var cheeps = await context.Author
+            .Include(a => a.Followers).ThenInclude(a => a.Cheeps).ThenInclude(c => c.Author)
+            //.Where(a => a.UserName == followerName) // Doing it like this doesn't work for some reason.
+            .SelectMany(a => a.Followers.SelectMany(a => a.Cheeps), (follower, cheep) => new {follower, cheep})
+            .Where(f => f.follower.UserName == followerName && f.cheep != null)
+            .Select(f => f.cheep)
+            .ToListAsync();
 
-        var followed = await context.Author.Where(a => a.UserName == follower).Include(a => a.Followed).Select(a => a.Followed).FirstOrDefaultAsync();
-        if (followed is null) return null;
+        cheeps.Sort(getCheepComparer(order));
 
-        Console.WriteLine("Not null!");
-
-        var cheeps = order switch
-        {
-            Order.Newest => context.Cheep.OrderByDescending(c => c.Timestamp),
-            Order.Oldest => context.Cheep.OrderBy(c => c.Timestamp),
-            _ => throw new System.Diagnostics.UnreachableException(),
-        };
-
-        var list = await cheeps
+        var list = cheeps
             .Skip((int) ((page - 1) * pageSize))
             .Take((int) pageSize)
             .Select(c =>
@@ -77,17 +86,27 @@ public class CheepRepository : ICheepRepository
                     Timestamp = (ulong) c.Timestamp,
                 }
             )
-            .ToListAsync();
-        
+            .ToList();
+            
         if (list.Any(c => c.Author is null))
             throw new System.NullReferenceException();
 
         return list;
     }
 
-    public async Task<uint?> GetFollowedCount(string followee)
+    public async Task<uint?> GetFollowedCount(string followerName)
     {
-        return checked ((uint) await this.context.Cheep.CountAsync());
+        var author = await context.Author
+            .Include(a => a.Followers).ThenInclude(a => a.Cheeps)
+            .Where(a => a.UserName == followerName)
+            .FirstOrDefaultAsync();
+        if (author is null) return null;
+
+        var cheeps = author.Followers
+            .SelectMany(a => a.Cheeps)
+            .Count();
+
+        return checked ((uint?) cheeps);
     }
 
     public async Task<CheepDTO?> Get(Guid id)

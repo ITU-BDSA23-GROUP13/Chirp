@@ -36,7 +36,7 @@ public class ChirpContext : IdentityDbContext<Author>
         modelBuilder.Entity<Author>().Property(a => a.UserName).IsRequired().HasMaxLength(50);
         modelBuilder.Entity<Author>().Property(a => a.Email).IsRequired();
         modelBuilder.Entity<Author>().HasMany(a => a.Cheeps).WithOne(c => c.Author).IsRequired(); // https://learn.microsoft.com/en-us/ef/core/modeling/relationships/one-to-many
-        modelBuilder.Entity<Author>().HasMany(a => a.Followed).WithMany(a => a.Followers);
+        modelBuilder.Entity<Author>().HasMany(a => a.Followed).WithMany(a => a.Followers).UsingEntity(f => f.ToTable("Following"));
 
         base.OnModelCreating(modelBuilder);
     }
