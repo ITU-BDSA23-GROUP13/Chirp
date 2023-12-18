@@ -7,6 +7,17 @@ public class CheepViewModel
     public required string Author  { get; set; }
     public required string Message { get; set; }
     public required DateTimeOffset Timestamp { get; set; }
+
+    public override bool Equals(object? obj)
+    {
+        if (obj is not CheepViewModel cheep) return false;
+        return cheep.Author == Author && cheep.Message == Message && cheep.Timestamp == Timestamp;
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Author, Message, Timestamp);
+    }
 }
 
 public interface ICheepService
