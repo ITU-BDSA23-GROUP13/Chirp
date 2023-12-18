@@ -31,7 +31,7 @@ public class UnitTestsInfrastructure
 
     public UnitTestsInfrastructure()
     {
-        // In case tests are started on different threads, we stille want to ensure that each test use a different database.
+        // In case tests are started on different threads, we still want to ensure that each test use a different database.
         // https://learn.microsoft.com/en-us/dotnet/api/system.threading.interlocked.increment?view=net-8.0
         uint i = Interlocked.Increment(ref counter);
 
@@ -163,6 +163,34 @@ public class UnitTestsInfrastructure
 
         // Assert
         Assert.Null(authors);
+    }
+
+    [Fact]
+    public async Task UnitTestGetNonExistingFollowing()
+    {
+        var following = await authorRepository.GetFollowing("ThisUserDoesNotExist", "ThisUserDoesNotExist");
+
+        Assert.Null(following);
+    }
+
+    public async Task UnitTestGetNotFollowing()
+    {
+        DBInitializer.SeedDatabase(context);
+
+        var following = await authorRepository.GetFollowing("Jacqualine Gilcoine", "Mellie Yost");
+
+        Assert.False(following);
+    }
+
+    [Fact]
+    public async Task UnitTestPutFollowing()
+    {
+        DBInitializer.SeedDatabase(context);
+        Assert.True(await authorRepository.PutFollowing("Jacqualine Gilcoine", "Mellie Yost"));
+
+        var following = await authorRepository.GetFollowing("Jacqualine Gilcoine", "Mellie Yost");
+        
+        Assert.True(following);
     }
 
 }
