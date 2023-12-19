@@ -38,6 +38,8 @@ public interface IAuthorRepository {
 
     public Task<bool> Put(AuthorDTO author);
 
+    public Task<IReadOnlyCollection<string>?> GetFollowed(string author);
+
     public Task<bool?> GetFollowing(string follower, string followee);
 
     /// <summary>

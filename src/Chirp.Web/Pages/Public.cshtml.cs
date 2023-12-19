@@ -19,6 +19,7 @@ public class PublicModel : PageModel
     /// Stores CheepViewModels but with Timestamp as a string instead
     /// </summary>
     public required List<dynamic> Cheeps { get; set; }
+    private readonly HashSet<string> followed = new();
 
     [FromQuery(Name = "page")]
     public required uint PageNumber { get; set; }
@@ -39,7 +40,21 @@ public class PublicModel : PageModel
         Cheeps = ToCheepsWithFormattedTimestamp(cheeps);
         TotalPageCount = count;
 
+        var followed = await service.GetFollowed(User.Identity?.Name!);
+        if (followed is not null)
+        {
+            foreach (var author in followed)
+            {
+                this.followed.Add(author);
+            }
+        }
+
         return Page();
+    }
+
+    public bool IsFollowing(string author)
+    {
+        return followed.Contains(author);
     }
 
     public static List<dynamic> ToCheepsWithFormattedTimestamp(List<CheepViewModel> cheeps)
@@ -47,7 +62,6 @@ public class PublicModel : PageModel
         var Cheeps = new List<dynamic>();
 
         var now = DateTimeOffset.Now;
-        var startOfDay = now.AddHours(-now.Hour).AddMinutes(-now.Minute).AddSeconds(-now.Second).AddMilliseconds(-now.Millisecond); // Please find a better way to do this
 
         foreach (var cheep in cheeps)
         {
@@ -63,7 +77,7 @@ public class PublicModel : PageModel
                 // Mon, June 15 '09, 1:45 PM
                 timestamp = cheep.Timestamp.ToString(@"ddd, MMMM d 'yy, ") + cheep.Timestamp.ToString("t");
             }
-            else if (cheep.Timestamp < startOfDay)
+            else if (cheep.Timestamp.Month != now.Month || cheep.Timestamp.Day != now.Day)
             {
                 // Mon, June 15, 1:45 PM
                 timestamp = cheep.Timestamp.ToString(@"ddd, MMMM d, ") + cheep.Timestamp.ToString("t");
@@ -126,4 +140,19 @@ public class PublicModel : PageModel
 
         return Redirect($"~/{cheep.Author}");
     }
+
+    public async Task<ActionResult> OnPostFollowAsync(string author)
+    {
+        var result = await service.PutFollower(User.Identity?.Name!, author);
+
+        return await OnGetAsync();
+    }
+
+    public async Task<ActionResult> OnPostUnfollowAsync(string author)
+    {
+        var result = await service.DeleteFollow(User.Identity?.Name!, author);
+
+        return await OnGetAsync();
+    }
+
 }

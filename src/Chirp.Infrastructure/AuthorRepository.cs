@@ -132,6 +132,17 @@ public class AuthorRepository : IAuthorRepository
         return true;
     }
 
+    public async Task<IReadOnlyCollection<string>?> GetFollowed(string author)
+    {
+        if (!await context.Author.AnyAsync(a => a.UserName == author)) return null;
+
+        return context.Author
+            .SelectMany(a => a.Followed, (followee, follower) => new {followee, follower})
+            .Where(f => f.follower.UserName == author)
+            .Select(f => f.followee.UserName!)
+            .ToList();
+    }
+
     public async Task<bool?> GetFollowing(string followerName, string followeeName)
     {
         if (!await context.Author.AnyAsync(a => a.UserName == followerName)) return null;

@@ -10,6 +10,7 @@ public class UserTimelineModel : PageModel
     /// Stores CheepViewModels but with Timestamp as a string instead
     /// </summary>
     public List<dynamic>? Cheeps { get; set; }
+    private readonly HashSet<string> followed = new();
 
     [FromQuery(Name = "page")]
     public required uint PageNumber { get; set; }
@@ -20,47 +21,49 @@ public class UserTimelineModel : PageModel
         this.service = service;
     }
 
-    public async Task<ActionResult> OnGet(string author, [FromQuery(Name = "page")] uint page)
+    public async Task<ActionResult> OnGetAsync(string author)
     {
-        var result = await service.GetCheepsAndTotalCountFromAuthor(author, page);
-
+        var result = await service.GetCheepsAndTotalCountFromAuthor(author, PageNumber);
         if (result is not null)
         {
             Cheeps = PublicModel.ToCheepsWithFormattedTimestamp(result.Value.Item1);
             TotalPageCount = result.Value.Item2;
-
-            return Page();
+        }
+        else
+        {
+            Cheeps = null;
+            TotalPageCount = 0;
         }
 
-        Cheeps = null;
-        TotalPageCount = 0;
+        var followed = await service.GetFollowed(User.Identity?.Name!);
+        if (followed is not null)
+        {
+            foreach (var f in followed)
+            {
+                this.followed.Add(f);
+            }
+        }
 
         return Page();
     }
 
-    public async Task<bool> IsFollowing(string author)
+    public bool IsFollowing(string author)
     {
-        var result = await service.GetFollow(User.Identity?.Name!, author);
-
-        if (result is null)
-        {
-            throw new Exception($"Could not get following between {User.Identity?.Name!} and {author}");
-        }
-
-        return (bool) result;
+        return followed.Contains(author);
     }
 
-    public async Task<ActionResult> OnPostFollow(string author)
+    public async Task<ActionResult> OnPostFollowAsync(string author)
     {
         var result = await service.PutFollower(User.Identity?.Name!, author);
 
-        return Page();
+        return await OnGetAsync(author);
     }
 
-    public async Task<ActionResult> OnPostUnfollow(string author)
+    public async Task<ActionResult> OnPostUnfollowAsync(string author)
     {
         var result = await service.DeleteFollow(User.Identity?.Name!, author);
 
-        return Page();
+        return await OnGetAsync(author);
     }
+
 }

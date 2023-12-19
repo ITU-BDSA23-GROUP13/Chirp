@@ -23,7 +23,7 @@
             |
             <a href="/">Public timeline</a>
             |
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Manage Profile</a>
             |
             <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post" >
                 <button  type="submit" class="nav-link btn btn-link text-dark">Logout</button>
@@ -51,6 +51,9 @@
                     <p>
                         <strong>
                             <a href="/@cheep.Author">@cheep.Author</a>
+                            <form class="unfollowAuthor" method="post" asp-page-handler="Unfollow" asp-route-author="@cheep.Author">
+                                <button id="unfollow-submit" type="submit" class="w-100 btn btn-lg btn-primary">Unfollow Author</button>
+                            </form>
                         </strong>
                         @cheep.Message
                         <small>&mdash; @cheep.Timestamp</small>
