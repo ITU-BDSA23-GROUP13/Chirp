@@ -42,9 +42,9 @@
         }
     </div>
 
-    <div class=cheepBox>
-        @if (SignInManager.IsSignedIn(User))
-        {
+    @if (SignInManager.IsSignedIn(User))
+    {
+    <div class=cheepbox>
         <section>
             <form id="createCheep" method="post" asp-page-handler="Cheep">
                 <h2>Post a cheep.</h2>
@@ -58,8 +58,8 @@
                 </div>
             </form>
         </section>
-        }
     </div>
+    }
 
     @if (Model.Cheeps.Any())
     {
