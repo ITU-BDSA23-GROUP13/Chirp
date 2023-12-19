@@ -3,20 +3,32 @@ using Chirp.Infrastructure;
 using Chirp.Web;
 
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
+if (builder.Environment.IsDevelopment())
+{
+    builder.Configuration.AddEnvironmentVariables().AddJsonFile("appsettings.Development.json");
+}
+else
+{
+    builder.Configuration.AddEnvironmentVariables().AddJsonFile("appsettings.json");
+}
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddScoped<ICheepService, CheepService>();
 builder.Services.AddScoped<ICheepRepository, CheepRepository>();
 builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
-builder.Services.AddDbContext<ChirpContext>(builder =>
+builder.Services.AddDbContext<ChirpContext>(options =>
 {
-    string path = Environment.GetEnvironmentVariable("CHIRP_DB") ?? Path.Join(Path.GetTempPath(), "chirp.db");
-    Console.WriteLine("Using database at " + path);
-    builder.UseSqlite($"Data Source={path}");
+    // https://stackoverflow.com/questions/63777518/add-credentials-to-connection-string-from-code
+    var connString = builder.Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING") ?? throw new NullReferenceException("AZURE_SQL_CONNECTIONSTRING not set");
+    var connStringBuilder = new SqlConnectionStringBuilder(connString);
+    connStringBuilder.Password = Environment.GetEnvironmentVariable("CHIRP_SQL_PASSWORD") ?? throw new NullReferenceException("CHIRP_SQL_PASSWORD not set");
+    options.UseSqlServer(connStringBuilder.ConnectionString);
 });
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();

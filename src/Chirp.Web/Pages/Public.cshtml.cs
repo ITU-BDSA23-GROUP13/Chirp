@@ -22,7 +22,7 @@ public class PublicModel : PageModel
     private readonly HashSet<string> followed = new();
 
     [FromQuery(Name = "page")]
-    public required uint PageNumber { get; set; }
+    public required uint PageNumber { get; set; } = 1;
     public required uint TotalPageCount { get; set; }
 
     public PublicModel(
@@ -35,7 +35,7 @@ public class PublicModel : PageModel
 
     public async Task<ActionResult> OnGetAsync()
     {
-        var (cheeps, count) = await service.GetCheepsAndPageCount(PageNumber);
+        var (cheeps, count) = await service.GetCheepsAndPageCount(PageNumber != 0 ? PageNumber : 1);
 
         Cheeps = ToCheepsWithFormattedTimestamp(cheeps);
         TotalPageCount = count;
