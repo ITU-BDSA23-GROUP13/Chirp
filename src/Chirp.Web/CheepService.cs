@@ -22,9 +22,21 @@ public class CheepViewModel
 
 public interface ICheepService
 {
+    /// <summary>
+    /// The <paramref name="page"/> parameter is 1-indexed.
+    /// </summary>
     public Task<(List<CheepViewModel>,uint)> GetCheepsAndPageCount(uint page);
+
+    /// <summary>
+    /// The <paramref name="page"/> parameter is 1-indexed.
+    /// </summary>
     public Task<(List<CheepViewModel>,uint)?> GetCheepsAndTotalCountFromAuthor(string author, uint page);
+
+    /// <summary>
+    /// The <paramref name="page"/> parameter is 1-indexed.
+    /// </summary>
     public Task<(List<CheepViewModel>,uint)?> GetCheepsAndTotalCountFromFollowed(string user, uint page);
+
     public Task<bool> PutCheep(CheepViewModel cheep);
     public Task<IReadOnlyCollection<string>?> GetFollowed(string user);
     public Task<bool?> GetFollow(string follower, string followee);
@@ -46,6 +58,8 @@ public class CheepService : ICheepService
 
     public async Task<(List<CheepViewModel>,uint)> GetCheepsAndPageCount(uint page)
     {
+        if (page == 0) throw new ArgumentOutOfRangeException(nameof(page), "Page must be greater than 0");
+
         var cheeps = await cheepRepository.GetPageFromAll(page, pageSize);
 
         var list = cheeps
@@ -64,6 +78,8 @@ public class CheepService : ICheepService
 
     public async Task<(List<CheepViewModel>,uint)?> GetCheepsAndTotalCountFromAuthor(string author, uint page)
     {
+        if (page == 0) throw new ArgumentOutOfRangeException(nameof(page), "Page must be greater than 0");
+
         var authorDTO = await authorRepository.Get(author);
 
         var cheeps = await authorRepository.GetCheepsPage(author, page, pageSize);
@@ -86,6 +102,8 @@ public class CheepService : ICheepService
 
     public async Task<(List<CheepViewModel>,uint)?> GetCheepsAndTotalCountFromFollowed(string user, uint page)
     {
+        if (page == 0) throw new ArgumentOutOfRangeException(nameof(page), "Page must be greater than 0");
+
         var cheeps = await cheepRepository.GetPageFromFollowed(user, page, pageSize);
         if (cheeps is null) return null;
 

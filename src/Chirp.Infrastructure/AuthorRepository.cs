@@ -25,7 +25,8 @@ public class AuthorRepository : IAuthorRepository
     }
 
     /// <summary>
-    /// Returns null, we no author was found.
+    /// Gets the author with the given name.
+    /// Returns null if we no author was found.
     /// Throws NullReferenceException if the author was found, but the name or email was null.
     /// </summary>
     public async Task<AuthorDTO?> Get(string name)
@@ -43,6 +44,7 @@ public class AuthorRepository : IAuthorRepository
     }
 
     /// <summary>
+    /// Gets the email of the author with the given name.
     /// Returns null, we no author was found.
     /// Throws NullReferenceException if the author was found, but the email was null.
     /// </summary>
@@ -55,6 +57,10 @@ public class AuthorRepository : IAuthorRepository
         return author.Email ?? throw new System.NullReferenceException();
     }
 
+    /// <summary>
+    /// Gets all the cheeps from the author with the given name.
+    /// Returns null, we no author was found.
+    /// Throws NullReferenceException if the author was found, but the name was null.
     public async Task<IReadOnlyCollection<CheepDTO>?> GetCheeps(string name)
     {
         var author = await context.Author
@@ -73,6 +79,10 @@ public class AuthorRepository : IAuthorRepository
             .ToList();
     }
 
+    /// <summary>
+    /// Returns a page of cheeps from the author with the given name, ordered by timestamp.
+    /// The <paramref name="page"/> parameter is 0-indexed.
+    /// </summary>
     public async Task<IList<CheepDTO>?> GetCheepsPage(string name, uint page, uint pageSize, Order order)
     {
         var author = await context.Author
@@ -108,6 +118,9 @@ public class AuthorRepository : IAuthorRepository
         return list;
     }
 
+    /// <summary>
+    /// Returns the total number of cheeps from the author with the given name.
+    /// </summary>
     public async Task<uint?> GetCheepCount(string name)
     {
         var cheeps = await context.Author

@@ -28,6 +28,10 @@ public class CheepRepository : ICheepRepository
         };
     }
 
+    /// <summary>
+    /// Returns a page of cheeps from all authors, ordered by timestamp.
+    /// The <paramref name="page"/> parameter is 0-indexed.
+    /// </summary>
     public async Task<IList<CheepDTO>> GetPageFromAll(uint page, uint pageSize, Order order)
     {
         var cheeps = order switch
@@ -56,6 +60,9 @@ public class CheepRepository : ICheepRepository
         return list;
     }
 
+    /// <summary>
+    /// Returns the total number of cheeps from all authors.
+    /// </summary>
     public async Task<uint> GetAllCount()
     {
         // https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/checked-and-unchecked
@@ -63,6 +70,10 @@ public class CheepRepository : ICheepRepository
         return checked ((uint) await this.context.Cheep.CountAsync());
     }
 
+    /// <summary>
+    /// Returns a page of cheeps from all authors that the given author follows, ordered by timestamp.
+    /// The <paramref name="page"/> parameter is 0-indexed.
+    /// </summary>
     public async Task<IList<CheepDTO>?> GetPageFromFollowed(string followerName, uint page, uint pageSize, Order order = Order.Newest)
     {
         var cheeps = await context.Author
@@ -94,6 +105,9 @@ public class CheepRepository : ICheepRepository
         return list;
     }
 
+    /// <summary>
+    /// Returns the total number of cheeps from all authors that the given author follows.
+    /// </summary>
     public async Task<uint?> GetFollowedCount(string followerName)
     {
         var author = await context.Author

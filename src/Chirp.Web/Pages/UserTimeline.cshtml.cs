@@ -13,7 +13,7 @@ public class UserTimelineModel : PageModel
     private readonly HashSet<string> followed = new();
 
     [FromQuery(Name = "page")]
-    public required uint PageNumber { get; set; }
+    public required uint PageNumber { get; set; } = 1;
     public required uint TotalPageCount { get; set; }
 
     public UserTimelineModel(ICheepService service)
@@ -23,7 +23,7 @@ public class UserTimelineModel : PageModel
 
     public async Task<ActionResult> OnGetAsync(string author)
     {
-        var result = await service.GetCheepsAndTotalCountFromAuthor(author, PageNumber);
+        var result = await service.GetCheepsAndTotalCountFromAuthor(author, PageNumber != 0 ? PageNumber : 1);
         if (result is not null)
         {
             Cheeps = PublicModel.ToCheepsWithFormattedTimestamp(result.Value.Item1);
