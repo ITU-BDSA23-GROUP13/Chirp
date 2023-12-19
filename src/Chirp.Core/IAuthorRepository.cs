@@ -40,6 +40,8 @@ public interface IAuthorRepository {
 
     public Task<IReadOnlyCollection<string>?> GetFollowed(string author);
 
+    public Task<uint?> GetFollowerCount(string author);
+
     public Task<bool?> GetFollowing(string follower, string followee);
 
     /// <summary>

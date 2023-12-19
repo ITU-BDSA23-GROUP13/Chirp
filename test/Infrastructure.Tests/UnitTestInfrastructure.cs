@@ -5,17 +5,42 @@
 using Chirp.Core;
 using Chirp.Infrastructure;
 
-using Microsoft.AspNetCore.Builder;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Chirp.Tests;
 
-public class UnitTestsInfrastructure
+public class UnitTestsInfrastructure : IDisposable
 {
+    // https://github.com/dotnet/EntityFramework.Docs/blob/main/samples/core/Testing/TestingWithoutTheDatabase/SqliteInMemoryBloggingControllerTest.cs
     private readonly ChirpContext context;
     private readonly IAuthorRepository authorRepository;
     private readonly ICheepRepository cheepRepository;
+
+    public UnitTestsInfrastructure()
+    {
+        // I think creating DbContexts by directly giving the connection strings
+        // and letting it connect itself might be reusing the same connection.
+        // So here we open new ones explicitly.
+        var connection = new SqliteConnection("Filename=:memory:");
+        connection.Open();
+
+        var options = new DbContextOptionsBuilder<ChirpContext>()
+            .UseSqlite(connection)
+            .Options;
+        
+        context = new ChirpContext(options);
+        context.Database.EnsureCreated();
+        authorRepository = new AuthorRepository(context);
+        cheepRepository = new CheepRepository(context);
+    }
+
+    public void Dispose()
+    {
+        Console.WriteLine("Disposed ChirpContext");
+        context.Database.CloseConnection();
+        context.Dispose();
+    }
 
     private static readonly AuthorDTO testAuthor = new AuthorDTO {
         Name = "Test Author",
@@ -26,27 +51,6 @@ public class UnitTestsInfrastructure
         Text = "Test Cheep",
         Timestamp = (ulong) DateTimeOffset.Now.ToUnixTimeSeconds(),
     };
-
-    private static uint counter = 0;
-
-    public UnitTestsInfrastructure()
-    {
-        // In case tests are started on different threads, we still want to ensure that each test use a different database.
-        // https://learn.microsoft.com/en-us/dotnet/api/system.threading.interlocked.increment?view=net-8.0
-        uint i = Interlocked.Increment(ref counter);
-
-        var builder = WebApplication.CreateBuilder();
-        builder.Services.AddSingleton<CheepRepository>();
-        builder.Services.AddSingleton<AuthorRepository>();
-        builder.Services.AddDbContext<ChirpContext>(
-            builder => builder.UseInMemoryDatabase("ChirpDB" + i)
-        );
-        var app = builder.Build();
-
-        context = app.Services.GetRequiredService<ChirpContext>();
-        authorRepository = app.Services.GetRequiredService<AuthorRepository>();
-        cheepRepository = app.Services.GetRequiredService<CheepRepository>();
-    }
 
     [Fact]
     public async Task UnitTestGetExistingUser()
@@ -173,6 +177,7 @@ public class UnitTestsInfrastructure
         Assert.Null(following);
     }
 
+    [Fact]
     public async Task UnitTestGetNotFollowing()
     {
         DBInitializer.SeedDatabase(context);
@@ -191,6 +196,20 @@ public class UnitTestsInfrastructure
         var following = await authorRepository.GetFollowing("Jacqualine Gilcoine", "Mellie Yost");
         
         Assert.True(following);
+    }
+
+    [Fact]
+    public async void UnitTestGetFollowerCount()
+    {
+        DBInitializer.SeedDatabase(context);
+        Assert.True(await authorRepository.PutFollowing("Jacqualine Gilcoine", "Mellie Yost"));
+
+        var a = await authorRepository.GetFollowerCount("Mellie Yost");
+        Assert.NotNull(a);
+        Assert.Equal((uint) 1, (uint) a);
+        var b = await authorRepository.GetFollowerCount("Jacqualine Gilcoine");
+        Assert.NotNull(b);
+        Assert.Equal((uint) 0, (uint) b);
     }
 
 }

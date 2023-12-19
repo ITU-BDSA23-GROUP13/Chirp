@@ -8,11 +8,6 @@ public class ChirpContext : IdentityDbContext<Author>
     public DbSet<Cheep> Cheep { get; set; } = null!;
     public DbSet<Author> Author { get; set; } = null!;
 
-    public ChirpContext() : base(new DbContextOptionsBuilder().UseSqlite($"Data Source=:memory:").Options)
-    {
-        Console.WriteLine("Initializing ChirpContext using in memory DB");
-    }
-
     public ChirpContext(DbContextOptions options) : base(options)
     {
         Console.WriteLine("Initializing ChirpContext");

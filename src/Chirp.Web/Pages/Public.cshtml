@@ -11,8 +11,6 @@
 }
 
 <div>
-    <h2> Public Timeline </h2>
-
     <div class=navigation>
         @if (SignInManager.IsSignedIn(User))
         {
@@ -41,6 +39,8 @@
         </div>
         }
     </div>
+
+    <h2> Public Timeline </h2>
 
     @if (SignInManager.IsSignedIn(User))
     {

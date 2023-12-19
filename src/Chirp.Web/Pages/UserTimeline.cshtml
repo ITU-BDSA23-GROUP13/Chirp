@@ -13,32 +13,6 @@
 <div>
     @if (Model.Cheeps is not null)
     {
-        @if (isMyTimeline)
-        {
-        <h2> My Timeline </h2>
-        }
-        else
-        {
-        <h2> @routeName's Timeline </h2>
-            @if (SignInManager.IsSignedIn(User))
-            {
-                <div>
-                @if (!Model.IsFollowing((string) routeName))
-                {
-                    <form class="followAuthor" method="post" asp-page-handler="Follow">
-                        <button id="follow-submit" type="submit" class="w-100 btn btn-lg btn-primary">Follow Author</button>
-                    </form>
-                }
-                else
-                {
-                    <form class="unfollowAuthor" method="post" asp-page-handler="Unfollow">
-                        <button id="unfollow-submit" type="submit" class="w-100 btn btn-lg btn-primary">Unfollow Author</button>
-                    </form>
-                }
-                </div>
-            }
-        }
-
         <div class=navigation>
             @if (SignInManager.IsSignedIn(User))
             {
@@ -67,6 +41,34 @@
             </div>
             }
         </div>
+
+        @if (isMyTimeline)
+        {
+        <h2> My Timeline </h2>
+        <div>You have @Model.FollowerCount @(Model.FollowerCount == 1 ? "follower" : "followers").</div>
+        }
+        else
+        {
+        <h2> @routeName's Timeline </h2>
+        <div>They have @Model.FollowerCount @(Model.FollowerCount == 1 ? "follower" : "followers").</div>
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <div>
+                @if (!Model.IsFollowing((string) routeName))
+                {
+                    <form class="followAuthor" method="post" asp-page-handler="Follow">
+                        <button id="follow-submit" type="submit" class="w-100 btn btn-lg btn-primary">Follow Author</button>
+                    </form>
+                }
+                else
+                {
+                    <form class="unfollowAuthor" method="post" asp-page-handler="Unfollow">
+                        <button id="unfollow-submit" type="submit" class="w-100 btn btn-lg btn-primary">Unfollow Author</button>
+                    </form>
+                }
+                </div>
+            }
+        }
 
         @if (Model.Cheeps.Any())
         {
