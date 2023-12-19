@@ -156,6 +156,16 @@ public class AuthorRepository : IAuthorRepository
             .ToList();
     }
 
+    public async Task<uint?> GetFollowerCount(string author)
+    {
+        if (!await context.Author.AnyAsync(a => a.UserName == author)) return null;
+
+        return checked ((uint?) await context.Author
+            .SelectMany(a => a.Followers, (follower, followee) => new {follower, followee})
+            .Where(f => f.followee.UserName == author)
+            .CountAsync());
+    }
+
     public async Task<bool?> GetFollowing(string followerName, string followeeName)
     {
         if (!await context.Author.AnyAsync(a => a.UserName == followerName)) return null;
@@ -186,7 +196,7 @@ public class AuthorRepository : IAuthorRepository
         if (followee.Followers.Any(a => a.UserName == followerName)) return false;
 
         follower.Followers.Add(followee);
-        followee.Followed.Add(follower);
+        // followee.Followed.Add(follower); // Should be done automatically by the line above.
 
         // context.Author.Update(author1);
         // context.Author.Update(author2);

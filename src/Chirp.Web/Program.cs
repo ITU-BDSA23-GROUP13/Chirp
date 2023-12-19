@@ -19,6 +19,7 @@ else
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+
 builder.Services.AddScoped<ICheepService, CheepService>();
 builder.Services.AddScoped<ICheepRepository, CheepRepository>();
 builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
@@ -43,12 +44,12 @@ builder.Services.AddDefaultIdentity<Author>(options =>
 builder.Services.Configure<IdentityOptions>(options =>
 {
     // Password settings.
-    // options.Password.RequireDigit = true;
-    // options.Password.RequireLowercase = true;
-    // options.Password.RequireNonAlphanumeric = true;
-    // options.Password.RequireUppercase = true;
-    // options.Password.RequiredLength = 6;
-    // options.Password.RequiredUniqueChars = 1;
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireNonAlphanumeric = true;
+    options.Password.RequireUppercase = true;
+    options.Password.RequiredLength = 6;
+    options.Password.RequiredUniqueChars = 1;
 
     // Lockout settings.
     options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);

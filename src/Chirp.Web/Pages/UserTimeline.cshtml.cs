@@ -6,10 +6,12 @@ namespace Chirp.Web.Pages;
 public class UserTimelineModel : PageModel
 {
     private readonly ICheepService service;
+
     /// <summary>
     /// Stores CheepViewModels but with Timestamp as a string instead
     /// </summary>
     public List<dynamic>? Cheeps { get; set; }
+    public uint FollowerCount { get; private set; } = 0;
     private readonly HashSet<string> followed = new();
 
     [FromQuery(Name = "page")]
@@ -35,7 +37,13 @@ public class UserTimelineModel : PageModel
             TotalPageCount = 0;
         }
 
-        var followed = await service.GetFollowed(User.Identity?.Name!);
+        var followers = await service.GetFollowerCount(author);
+        if (followers is not null)
+        {
+            FollowerCount = (uint) followers;
+        }
+
+        var followed = await service.GetFollowed(author);
         if (followed is not null)
         {
             foreach (var f in followed)
