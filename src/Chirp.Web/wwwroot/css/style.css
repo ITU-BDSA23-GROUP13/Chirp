@@ -1,33 +1,302 @@
+@media (prefers-color-scheme: dark) {
+    body {
+        background: #250e0e;
+        color: #c4ede9;
+    }
+
+    a {
+        color: #3cc3b6;
+    }
+
+    a:hover {
+        color: #adebe4;
+    }
+
+    input[type="tel"],
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+        background: #0d2624;
+        border: 1px solid #274944;
+        color: #c4ede9;
+    }
+
+    input[type="submit"] {
+        background: #0d2624;
+        border: 1px solid #3b0707;
+        color: white;
+    }
+
+    button {
+        background: #274944;
+        border: 1px solid #3cc3b6;
+        color: #3cc3b6;
+    }
+
+    div.page {
+        background: black;
+        border: 1px solid #603939;
+    }
+
+    div.page h1.sitename {
+        background: #603939;
+        text-shadow: 0 0 3px #222222;
+    }
+
+    div.page h1 a {
+        color: #c4ede9;
+    }
+
+    div.page div.navigation {
+        background: #1d302d;
+        border-top: 1px solid #274944;
+        border-bottom: 1px solid #24423e;
+        color: #19675d;
+    }
+
+    div.page div.navigation a {
+        color: #3cc3b6;
+    }
+
+    div.page hr {
+        color: #24423e;
+    }
+
+    div.page h1 {
+        color: #cc6e6e;
+        text-shadow: 0 1px 2px #555;
+    }
+
+    div.page h2 {
+        color: #cc6e6e;
+        text-shadow: 0 1px 2px #555;
+    }
+
+    div.page h3 {
+        color: #cc6e6e;
+        text-shadow: 0 1px 2px #555;
+    }
+
+    div.page h4 {
+        color: #cc6e6e;
+        text-shadow: 0 1px 2px #555;
+    }
+
+    div.page div.footer {
+        background: #1d302d;
+        color: #4d807a;
+    }
+
+    div.page div.followstatus {
+        border: 1px solid #ccc;
+        background: #E3EBEA;
+    }
+
+    div.page ul.cheeps li {
+        background: #0d2624;
+        border: 1px solid #194d48;
+    }
+
+    div.page ul.cheeps li small {
+        color: #4d807a;
+    }
+
+    div.page div.cheepbox {
+        background: #0d2624;
+        border: 1px solid #194d48;
+    }
+
+    div.page textarea {
+    }
+
+    div.page div.cheepbox h3 {
+        color: #571010;
+        text-shadow: 0 1px 2px #ccc;
+    }
+
+    div.message {
+        background: #f3b9b9;
+        border: 1px solid #ce8181;
+    }
+
+    ul.message li {
+        background: #f3b9b9;
+        border: 1px solid #ce8181;
+    }
+
+    div.error {
+        background: #FAE4E4;
+        border: 1px solid #DD6F6F;
+    }
+
+    div.topics {
+        background: #ffffff;
+        border: 1px solid #e29494;
+    }
+
+    li.topic {
+        background: #0d2624;
+        border: 1px solid #194d48;
+    }
+}
+
+@media (prefers-color-scheme: light) or (prefers-color-scheme: no-preference) {
+    body {
+        background: #eccaca;
+        color: black;
+    }
+
+    a {
+        color: #26776F;
+    }
+
+    a:hover {
+        color: #333;
+    }
+
+    input[type="tel"],
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+        background: white;
+        border: 1px solid #e6c0bf;
+        color: #571010;
+    }
+
+    input[type="submit"] {
+        background: #571010;
+        border: 1px solid #3b0707;
+        color: white;
+    }
+
+    button {
+        background: #e6c0bf;
+        border: 1px solid #571010;
+        color: #571010;
+    }
+
+    div.page {
+        background: white;
+        border: 1px solid #cc6e6e;
+    }
+
+    div.page h1.sitename {
+        background: #cc6e6e;
+        text-shadow: 0 0 3px #772424;
+    }
+
+    div.page h1 a {
+        color: white;
+    }
+
+    div.page div.navigation {
+        background: #DEE9E8;
+        border-top: 1px solid #ccc;
+        border-bottom: 1px solid #eee;
+        color: #888;
+    }
+
+    div.page div.navigation a {
+        color: #444;
+    }
+
+    div.page hr {
+        color: #ccc;
+    }
+
+    div.page h1 {
+        color: #571010;
+        text-shadow: 0 1px 2px #ccc;
+    }
+
+    div.page h2 {
+        color: #571010;
+        text-shadow: 0 1px 2px #ccc;
+    }
+
+    div.page h3 {
+        color: #571010;
+        text-shadow: 0 1px 2px #ccc;
+    }
+
+    div.page h4 {
+        color: #571010;
+        text-shadow: 0 1px 2px #ccc;
+    }
+
+    div.page div.footer {
+        background: #eee;
+        color: #888;
+    }
+
+    div.page div.followstatus {
+        border: 1px solid #ccc;
+        background: #E3EBEA;
+    }
+
+    div.page ul.cheeps li {
+        background: #F0FAF9;
+        border: 1px solid #DBF3F1;
+    }
+
+    div.page ul.cheeps li small {
+        color: #888;
+    }
+
+    div.page div.cheepbox {
+        background: #F0FAF9;
+        border: 1px solid #DBF3F1;
+    }
+
+    div.page div.cheepbox h3 {
+        color: #571010;
+        text-shadow: 0 1px 2px #ccc;
+    }
+
+    div.message {
+        background: #f3b9b9;
+        border: 1px solid #ce8181;
+    }
+
+    ul.message li {
+        background: #f3b9b9;
+        border: 1px solid #ce8181;
+    }
+
+    div.error {
+        background: #FAE4E4;
+        border: 1px solid #DD6F6F;
+    }
+
+    div.topics {
+        background: #ffffff;
+        border: 1px solid #e29494;
+    }
+
+    li.topic {
+        background: #F0FAF9;
+        border: 1px solid #DBF3F1;
+    }
+}
+
 body {
-  background: #eccaca;
   font-family: 'Trebuchet MS', sans-serif;
   font-size: 14px;
 }
 
-a {
-  color: #26776F;
-}
-
-a:hover {
-  color: #333;
-}
-
+input[type="tel"],
 input[type="text"],
+input[type="email"],
 input[type="password"] {
-  background: white;
-  border: 1px solid #e6c0bf;
   padding: 2px;
   font-family: 'Trebuchet MS', sans-serif;
   font-size: 14px;
   border-radius: 2px;
   -moz-border-radius: 2px;
   -webkit-border-radius: 2px;
-  color: #571010;
 }
 
 input[type="submit"] {
-  background: #571010;
-  border: 1px solid #3b0707;
   padding: 1px 3px;
   font-family: 'Trebuchet MS', sans-serif;
   font-size: 14px;
@@ -35,25 +304,34 @@ input[type="submit"] {
   border-radius: 2px;
   -moz-border-radius: 2px;
   -webkit-border-radius: 2px;
-  color: white;
+}
+
+button {
+    margin-top: 5px;
+    border-radius: 3px;
+}
+
+a#delete {
+    margin-left: 5px;
+    color: red;
+    font-weight: bold;
 }
 
 div.page {
-  background: white;
-  border: 1px solid #cc6e6e;
   width: 700px;
   margin: 30px auto;
 }
 
-div.page h1 {
-  background: #cc6e6e;
+div.page h1.sitename {
   margin: 0;
   padding: 10px 14px;
-  color: white;
   letter-spacing: 1px;
-  text-shadow: 0 0 3px #772424;
   font-weight: normal;
   font-size: 80px;
+}
+
+div.page h1 a {
+  text-decoration: none;
 }
 
 div.page h1 img {
@@ -61,24 +339,17 @@ div.page h1 img {
 }
 
 div.page div.navigation {
-  background: #DEE9E8;
   padding: 4px 10px;
-  border-top: 1px solid #ccc;
-  border-bottom: 1px solid #eee;
-  color: #888;
   font-size: 12px;
   letter-spacing: 0.5px;
 }
 
 div.page div.navigation a {
-  color: #444;
   font-weight: bold;
 }
 
 div.page h2 {
   margin: 0 0 15px 0;
-  color: #571010;
-  text-shadow: 0 1px 2px #ccc;
 }
 
 div.page div.body {
@@ -86,20 +357,22 @@ div.page div.body {
 }
 
 div.page div.footer {
-  background: #eee;
-  color: #888;
   padding: 5px 10px;
   font-size: 12px;
 }
 
 div.page div.followstatus {
-  border: 1px solid #ccc;
-  background: #E3EBEA;
   border-radius: 2px;
   -moz-border-radius: 2px;
   -webkit-border-radius: 2px;
   padding: 3px;
   font-size: 13px;
+}
+
+div.page ul li {
+    list-style: none;
+    margin: 0;
+    padding-bottom: 5px;
 }
 
 div.page ul.cheeps {
@@ -111,8 +384,6 @@ div.page ul.cheeps {
 div.page ul.cheeps li {
   margin: 10px 0;
   padding: 5px;
-  background: #F0FAF9;
-  border: 1px solid #DBF3F1;
   border-radius: 2px;
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
@@ -130,14 +401,11 @@ div.page ul.cheeps li img {
 
 div.page ul.cheeps li small {
   font-size: 0.9em;
-  color: #888;
 }
 
 div.page div.cheepbox {
   margin: 10px 0;
   padding: 5px;
-  background: #F0FAF9;
-  border: 1px solid #e29494;
   border-radius: 2px;
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
@@ -146,14 +414,13 @@ div.page div.cheepbox {
 div.page div.cheepbox h3 {
   margin: 0;
   font-size: 1em;
-  color: #7e2c2c;
 }
 
 div.page div.cheepbox p {
   margin: 0;
 }
 
-div.page div.cheepbox input[type="text"] {
+div.page div.cheepbox textarea {
   width: 585px;
 }
 
@@ -166,8 +433,6 @@ div.message {
   list-style: none;
   margin: 10px 10px 0 10px;
 
-  background: #f3b9b9;
-  border: 1px solid #ce8181;
   border-radius: 2px;
   -moz-border-radius: 2px;
   -webkit-border-radius: 2px;
@@ -176,8 +441,6 @@ div.message {
 }
 
 ul.message li {
-  background: #f3b9b9;
-  border: 1px solid #ce8181;
   border-radius: 2px;
   -moz-border-radius: 2px;
   -webkit-border-radius: 2px;
@@ -187,8 +450,6 @@ ul.message li {
 
 div.error {
   margin: 10px 0;
-  background: #FAE4E4;
-  border: 1px solid #DD6F6F;
   border-radius: 2px;
   -moz-border-radius: 2px;
   -webkit-border-radius: 2px;
@@ -199,8 +460,6 @@ div.error {
 div.topics {
   width: 180px;
   height: 250px;
-  background: #ffffff;
-  border: 1px solid #e29494;
   border-radius: 2px;
   position: fixed;
   top: 50%;
@@ -219,8 +478,6 @@ ul.topic {
 li.topic {
   margin: 10px 0;
   padding: 5px;
-  background: #F0FAF9;
-  border: 1px solid #DBF3F1;
   border-radius: 2px;
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
