@@ -43,7 +43,7 @@ public class UserTimelineModel : PageModel
             FollowerCount = (uint) followers;
         }
 
-        var followed = await service.GetFollowed(author);
+        var followed = await service.GetFollowed(User.Identity?.Name!);
         if (followed is not null)
         {
             foreach (var f in followed)
