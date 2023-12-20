@@ -1,22 +1,60 @@
-using Chirp.Core;
 using Chirp.Infrastructure;
-using Chirp.Web;
 
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+
+using System.Data.Common;
 using System.Text.RegularExpressions;
+
+using static Web.Tests.End2EndTests;
 
 namespace Web.Tests;
 
 // https://learn.microsoft.com/en-us/aspnet/core/test/integration-tests?view=aspnetcore-7.0
-public class End2EndTests : IClassFixture<WebApplicationFactory<Program>>
+public class End2EndTests : IClassFixture<CustomWebApplicationFactory>
 {
+    public class CustomWebApplicationFactory : WebApplicationFactory<Program>
+    {
+        protected override void ConfigureWebHost(IWebHostBuilder builder)
+        {
+            builder.ConfigureServices(services =>
+            {
+                var dbContextDescriptor = services.SingleOrDefault(
+                    d => d.ServiceType ==
+                        typeof(DbContextOptions<ChirpContext>));
+
+                services.Remove(dbContextDescriptor!);
+
+                var dbConnectionDescriptor = services.SingleOrDefault(
+                    d => d.ServiceType ==
+                        typeof(DbConnection));
+
+                services.Remove(dbConnectionDescriptor!);
+
+                // Create open SqliteConnection so EF won't automatically close it.
+                services.AddSingleton<DbConnection>(container =>
+                {
+                    var connection = new SqliteConnection("DataSource=:memory:");
+                    connection.Open();
+
+                    return connection;
+                });
+
+                services.AddDbContext<ChirpContext>((container, options) =>
+                {
+                    var connection = container.GetRequiredService<DbConnection>();
+                    options.UseSqlite(connection);
+                });
+            });
+        }
+    }
+
     private readonly WebApplicationFactory<Program> factory;
 
-    public End2EndTests(WebApplicationFactory<Program> factory)
+    public End2EndTests(CustomWebApplicationFactory factory)
     {
         this.factory = factory;
     }
