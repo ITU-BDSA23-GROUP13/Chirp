@@ -66,7 +66,7 @@ public class UnitTestWeb : IDisposable
     [Fact]
     public async void UnitTestGetCheepsAndTotalCountFromFollowed()
     {
-        Assert.True(await service.PutFollower("Jacqualine Gilcoine", "Mellie Yost"));
+        Assert.True(await service.PutFollowing("Jacqualine Gilcoine", "Mellie Yost"));
 
         var (mellieCheeps, melliePageCount) = await service.GetCheepsAndTotalCountFromAuthor("Mellie Yost", 1) ?? throw new NullReferenceException();
         var (cheeps, pageCount) = await service.GetCheepsAndTotalCountFromFollowed("Jacqualine Gilcoine", 1) ?? throw new NullReferenceException();
@@ -79,9 +79,9 @@ public class UnitTestWeb : IDisposable
     public async void UnitTestFollowAuthor()
     {
         Assert.False(await service.GetFollow("Jacqualine Gilcoine", "Mellie Yost"));
-        Assert.True(await service.PutFollower("Jacqualine Gilcoine", "Mellie Yost"));
+        Assert.True(await service.PutFollowing("Jacqualine Gilcoine", "Mellie Yost"));
 
-        var followed = await service.GetFollowed("Jacqualine Gilcoine");
+        var followed = await service.GetFollowsAll("Jacqualine Gilcoine");
         Assert.NotNull(followed);
         Assert.Contains("Mellie Yost", followed);
     }
@@ -90,8 +90,8 @@ public class UnitTestWeb : IDisposable
     public async void UnitTestUnfollowAuthor()
     {
         Assert.False(await service.GetFollow("Jacqualine Gilcoine", "Mellie Yost"));
-        Assert.True(await service.PutFollower("Jacqualine Gilcoine", "Mellie Yost"));
-        Assert.True(await service.DeleteFollow("Jacqualine Gilcoine", "Mellie Yost"));
+        Assert.True(await service.PutFollowing("Jacqualine Gilcoine", "Mellie Yost"));
+        Assert.True(await service.DeleteFollowing("Jacqualine Gilcoine", "Mellie Yost"));
         Assert.False(await service.GetFollow("Jacqualine Gilcoine", "Mellie Yost"));
     }
 
@@ -99,7 +99,7 @@ public class UnitTestWeb : IDisposable
     public async void UnitTestGetFollowerCount()
     {
         Assert.False(await service.GetFollow("Jacqualine Gilcoine", "Mellie Yost"));
-        Assert.True(await service.PutFollower("Jacqualine Gilcoine", "Mellie Yost"));
+        Assert.True(await service.PutFollowing("Jacqualine Gilcoine", "Mellie Yost"));
 
         var a = await service.GetFollowerCount("Mellie Yost");
         Assert.NotNull(a);
