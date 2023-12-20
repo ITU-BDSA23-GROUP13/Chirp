@@ -37,6 +37,7 @@ public interface ICheepService
     /// </summary>
     public Task<(List<CheepViewModel>,uint)?> GetCheepsAndTotalCountFromFollowed(string user, uint page);
 
+    public Task<uint?> GetCheepCount(string author);
     public Task<bool> PutCheep(CheepViewModel cheep);
 
     public Task<IReadOnlyCollection<string>?> GetFollowed(string user);
@@ -125,6 +126,11 @@ public class CheepService : ICheepService
         return (list, (uint) Math.Ceiling((decimal) totalCount / (decimal) pageSize));
     }
 
+    public Task<uint?> GetCheepCount(string author)
+    {
+        return authorRepository.GetCheepCount(author);
+    }
+
     public Task<bool> PutCheep(CheepViewModel cheep)
     {
         return cheepRepository.Put(new CheepDTO
@@ -152,6 +158,7 @@ public class CheepService : ICheepService
 
     public Task<bool> PutFollower(string follower, string followee)
     {
+        Console.WriteLine("Post Follow: " + follower + " -> " + followee);
         return authorRepository.PutFollowing(follower, followee);
     }
 

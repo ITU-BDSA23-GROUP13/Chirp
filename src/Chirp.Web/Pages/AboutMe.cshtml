@@ -1,0 +1,95 @@
+﻿@page "/aboutme"
+@model MyApp.Namespace.AboutMeModel
+@using Chirp.Web.Areas.Identity.Pages.Account.Manage
+@using Microsoft.AspNetCore.Identity
+@using Chirp.Infrastructure
+@inject SignInManager<Author> SignInManager
+@{
+    var username = User.Identity?.Name!;
+}
+
+<div>
+    <div class=navigation>
+        @if (SignInManager.IsSignedIn(User))
+        {
+        <div>
+            <a href="/@(User.Identity!.Name)">My timeline</a>
+            |
+            <a href="/followed">Followed timeline</a>
+            |
+            <a href="/">Public timeline</a>
+            |
+            <a href="/aboutme">Aboue Me</a>
+            |
+            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post" >
+                <button  type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+            </form>
+        </div>
+        }
+        else
+        {
+        <div>
+            <a href="/">Public timeline</a>
+            |
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+            |
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+        </div>
+        }
+    </div>
+
+    <h2> About @(User.Identity?.Name!) </h2>
+    <hr>
+    <a class="nav-link @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data" asp-page="./PersonalData">Personal data</a>
+    <br>
+    <h3> Cheeps </h3>
+        @if (Model.CheepCount == 0)
+        {
+            <em>
+            You have not cheeped yet. Go to the
+            <a href="/">public timeline</a>
+            to make your first cheep.
+            </em>
+        }
+        else
+        {
+            <em>
+            You have @Model.CheepCount cheeps. Go to
+            <a href="/@(username)">your timeline</a>
+            to see your cheeps.
+            </em>
+        }
+    <h3> Followers </h3>
+        @if (Model.FollowerCount == 0)
+        {
+            <em>You have no followers yet.</em>
+        }
+        else
+        {
+            <em>You have @Model.FollowerCount @(Model.FollowerCount == 1 ? "follower" : "followers").</em>
+        }
+    <h3> Following </h3>
+    <ul id="messagelist" class="cheeps">
+        @if (Model.Followed.Count == 0)
+        {
+            <em>You are not following any authors.</em>
+        }
+        else
+        {
+            <em>You are following @Model.Followed.Count @(Model.Followed.Count == 1 ? "author" : "authors").</em>
+            @foreach (var f in Model.Followed)
+            {
+            <li>
+                <p>
+                    <strong>
+                        <a href="/@f">@f</a>
+                    </strong>
+                    <form class="unfollowAuthor" method="post" asp-page-handler="Unfollow" asp-route-author="@f">
+                        <button id="unfollow-submit" type="submit" class="w-100 btn btn-lg btn-primary">Unfollow Author</button>
+                    </form>
+                </p>
+            </li>
+            }
+        }
+    </ul>
+</div>
