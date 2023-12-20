@@ -103,7 +103,6 @@ public class End2EndTests : IClassFixture<CustomWebApplicationFactory>
         // Assert
         response.EnsureSuccessStatusCode();
         var html = await response.Content.ReadAsStringAsync();
-        Console.WriteLine(html);
 
         Regex rx = new Regex(@"<strong>.*?<\/strong>", RegexOptions.Singleline);
         MatchCollection matches = rx.Matches(html);
