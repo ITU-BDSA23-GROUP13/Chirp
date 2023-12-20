@@ -3,9 +3,8 @@ title: _Chirp!_ Project Report
 subtitle: ITU BDSA 2023 Group `13`
 author:
 - "Marcus Alsted Wegmann <maaw@itu.dk>"
-numbersections: true
-author:
 - "Daniel Ahmadi <daah@itu.dk>"
+numbersections: true
 ---
 
 # Design and Architecture of _Chirp!_
