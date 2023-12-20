@@ -7,7 +7,6 @@ help:
 	@echo "    'make run'     to run the Chirp.Web project."
 	@echo "    'make rerun'   to run the Chirp.Web project without restoring or building."
 	@echo "    'make watch'   to run the Chirp.Web project and watch for changes."
-	@echo "    'make rewatch' to run the Chirp.Web project and watch for changes without restoring or building."
 	@echo "    'make test'    to run the tests."
 
 restore:
@@ -32,11 +31,7 @@ rerun:
 
 watch:
 	@echo "Running Chirp.Web..."
-	@dotnet watch --project src/Chirp.Web/Chirp.Web.csproj --no-restore --no-build
-
-rewatch:
-	@echo "Running Chirp.Web..."
-	@dotnet watch --project src/Chirp.Web/Chirp.Web.csproj --no-restore --no-build
+	@dotnet watch --project src/Chirp.Web/Chirp.Web.csproj
 
 test: build
 	@echo "Running tests..."
