@@ -421,7 +421,7 @@ div.page div.cheepbox p {
 }
 
 div.page div.cheepbox textarea {
-  width: 585px;
+  width: 99%;
 }
 
 div.page div.cheepbox input[type="submit"] {

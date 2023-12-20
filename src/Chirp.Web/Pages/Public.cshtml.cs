@@ -6,6 +6,7 @@ using Chirp.Infrastructure;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Chirp.Web.Pages;
@@ -35,6 +36,7 @@ public class PublicModel : PageModel
 
     public async Task<ActionResult> OnGetAsync()
     {
+        Console.WriteLine("AAA");
         var (cheeps, count) = await service.GetCheepsAndPageCount(PageNumber != 0 ? PageNumber : 1);
 
         Cheeps = ToCheepsWithFormattedTimestamp(cheeps);
@@ -49,6 +51,7 @@ public class PublicModel : PageModel
             }
         }
 
+        Console.WriteLine("BBB");
         return Page();
     }
 
@@ -104,8 +107,9 @@ public class PublicModel : PageModel
     }
 
     [BindProperty]
+    [Required]
     [StringLength(160, MinimumLength = 5)]
-    public string Message { get; set; } = null!;
+    public string Message { get; set; } = "";
 
     public static string MessagePlaceholder()
     {
@@ -124,9 +128,10 @@ public class PublicModel : PageModel
 
     public async Task<ActionResult> OnPostCheepAsync()
     {
-        if (!_signInManager.IsSignedIn(User))
+        // https://learn.microsoft.com/en-us/aspnet/core/mvc/models/validation?view=aspnetcore-7.0
+        if (!ModelState.IsValid || !_signInManager.IsSignedIn(User))
         {
-            return Page();
+            return await OnGetAsync();
         }
 
         var cheep = new CheepViewModel
@@ -145,14 +150,17 @@ public class PublicModel : PageModel
     {
         var result = await service.PutFollowing(User.Identity?.Name!, author);
 
-        return await OnGetAsync();
+        // Uses Redirect to reset the ModelState. Otherwise error messages will occur
+        // if the Message field is invalid (e.g. empty), which we don't care about,
+        // when we simply want to (un)follow an author.
+        return Redirect("/");
     }
 
     public async Task<ActionResult> OnPostUnfollowAsync(string author)
     {
         var result = await service.DeleteFollowing(User.Identity?.Name!, author);
 
-        return await OnGetAsync();
+        return Redirect("/");
     }
 
 }
