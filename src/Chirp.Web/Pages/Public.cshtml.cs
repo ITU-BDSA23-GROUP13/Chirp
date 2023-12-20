@@ -36,7 +36,6 @@ public class PublicModel : PageModel
 
     public async Task<ActionResult> OnGetAsync()
     {
-        Console.WriteLine("AAA");
         var (cheeps, count) = await service.GetCheepsAndPageCount(PageNumber != 0 ? PageNumber : 1);
 
         Cheeps = ToCheepsWithFormattedTimestamp(cheeps);
@@ -51,7 +50,6 @@ public class PublicModel : PageModel
             }
         }
 
-        Console.WriteLine("BBB");
         return Page();
     }
 
