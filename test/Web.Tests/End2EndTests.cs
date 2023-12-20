@@ -20,6 +20,9 @@ public class End2EndTests : IClassFixture<CustomWebApplicationFactory>
     {
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
+            // These variables are not needed, but the web app throws if they are null.
+            Environment.SetEnvironmentVariable("CHIRP_GITHUB_CLIENT_SECRET", "x");
+
             builder.ConfigureServices(services =>
             {
                 var dbContextDescriptor = services.SingleOrDefault(
