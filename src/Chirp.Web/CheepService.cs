@@ -37,6 +37,7 @@ public interface ICheepService
     /// </summary>
     public Task<(List<CheepViewModel>,uint)?> GetCheepsAndTotalCountFromFollowed(string user, uint page);
 
+    public Task<uint?> GetCheepCount(string author);
     public Task<bool> PutCheep(CheepViewModel cheep);
 
     public Task<IReadOnlyCollection<string>?> GetFollowed(string user);
@@ -123,6 +124,11 @@ public class CheepService : ICheepService
         if (cheeps is null) return null;
 
         return (list, (uint) Math.Ceiling((decimal) totalCount / (decimal) pageSize));
+    }
+
+    public Task<uint?> GetCheepCount(string author)
+    {
+        return authorRepository.GetCheepCount(author);
     }
 
     public Task<bool> PutCheep(CheepViewModel cheep)

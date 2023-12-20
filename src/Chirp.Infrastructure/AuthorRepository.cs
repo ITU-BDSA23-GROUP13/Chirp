@@ -150,7 +150,7 @@ public class AuthorRepository : IAuthorRepository
         if (!await context.Author.AnyAsync(a => a.UserName == author)) return null;
 
         return context.Author
-            .SelectMany(a => a.Followed, (followee, follower) => new {followee, follower})
+            .SelectMany(a => a.Follows, (follower, followee) => new {follower, followee})
             .Where(f => f.follower.UserName == author)
             .Select(f => f.followee.UserName!)
             .ToList();
@@ -161,7 +161,7 @@ public class AuthorRepository : IAuthorRepository
         if (!await context.Author.AnyAsync(a => a.UserName == author)) return null;
 
         return checked ((uint?) await context.Author
-            .SelectMany(a => a.Followers, (follower, followee) => new {follower, followee})
+            .SelectMany(a => a.FollowedBy, (followee, follower) => new {followee, follower})
             .Where(f => f.followee.UserName == author)
             .CountAsync());
     }
@@ -171,32 +171,33 @@ public class AuthorRepository : IAuthorRepository
         if (!await context.Author.AnyAsync(a => a.UserName == followerName)) return null;
         if (!await context.Author.AnyAsync(a => a.UserName == followeeName)) return null;
 
-        var a = await context.Author
-            .SelectMany(a => a.Followed, (followee, follower) => new {followee, follower})
-            .AnyAsync(f => f.followee.UserName == followeeName && f.follower.UserName == followerName);
-        if (a) return true;
-
-        var b = await context.Author
-            .SelectMany(a => a.Followers, (follower, followee) => new {follower, followee})
+        var followerFollowsFollowee = await context.Author
+            .SelectMany(a => a.Follows, (follower, followee) => new {follower, followee})
             .AnyAsync(f => f.follower.UserName == followerName && f.followee.UserName == followeeName);
-        if (b) return true;
+        if (followerFollowsFollowee) return true;
+
+        var followeeFollowedByFollower = await context.Author
+            .SelectMany(a => a.FollowedBy, (followee, follower) => new {followee, follower})
+            .AnyAsync(f => f.followee.UserName == followeeName && f.follower.UserName == followerName);
+        if (followeeFollowedByFollower) return true;
 
         return false;
     }
 
     public async Task<bool> PutFollowing(string followerName, string followeeName)
     {
-        var follower = await context.Author.Include(a => a.Followed).Where(c => c.UserName == followerName).FirstOrDefaultAsync();
+        var follower = await context.Author.Include(a => a.Follows).Where(c => c.UserName == followerName).FirstOrDefaultAsync();
         if (follower is null) return false;
 
-        var followee = await context.Author.Include(a => a.Followers).Where(c => c.UserName == followeeName).FirstOrDefaultAsync();
+        var followee = await context.Author.Include(a => a.FollowedBy).Where(c => c.UserName == followeeName).FirstOrDefaultAsync();
         if (followee is null) return false;
 
-        if (follower.Followed.Any(a => a.UserName == followeeName)) return false;
-        if (followee.Followers.Any(a => a.UserName == followerName)) return false;
+        if (follower.Follows.Any(a => a.UserName == followeeName)) return false;
+        
+        if (followee.FollowedBy.Any(a => a.UserName == followerName)) return false;
 
-        follower.Followers.Add(followee);
-        // followee.Followed.Add(follower); // Should be done automatically by the line above.
+        follower.Follows.Add(followee);
+        followee.FollowedBy.Add(follower);
 
         // context.Author.Update(author1);
         // context.Author.Update(author2);
@@ -207,14 +208,14 @@ public class AuthorRepository : IAuthorRepository
 
     public async Task<bool> DeleteFollowing(string followerName, string followeeName)
     {
-        var follower = await context.Author.Include(a => a.Followed).Where(c => c.UserName == followerName).FirstOrDefaultAsync();
+        var follower = await context.Author.Include(a => a.Follows).Where(c => c.UserName == followerName).FirstOrDefaultAsync();
         if (follower is null) return false;
 
-        var followee = await context.Author.Include(a => a.Followed).Where(c => c.UserName == followeeName).FirstOrDefaultAsync();
+        var followee = await context.Author.Include(a => a.Follows).Where(c => c.UserName == followeeName).FirstOrDefaultAsync();
         if (followee is null) return false;
 
         // Uses single & to both Remove methods are called.
-        if (!follower.Followers.Remove(followee) & !followee.Followed.Remove(follower)) return false;
+        if (!follower.Follows.Remove(followee) & !followee.FollowedBy.Remove(follower)) return false;
 
         // context.Author.Update(author1);
         // context.Author.Update(author2);

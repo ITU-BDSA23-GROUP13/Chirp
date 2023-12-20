@@ -77,9 +77,9 @@ public class CheepRepository : ICheepRepository
     public async Task<IList<CheepDTO>?> GetPageFromFollowed(string followerName, uint page, uint pageSize, Order order = Order.Newest)
     {
         var cheeps = await context.Author
-            .Include(a => a.Followers).ThenInclude(a => a.Cheeps).ThenInclude(c => c.Author)
+            .Include(a => a.Follows).ThenInclude(a => a.Cheeps).ThenInclude(c => c.Author)
             //.Where(a => a.UserName == followerName) // Doing it like this doesn't work for some reason.
-            .SelectMany(a => a.Followers.SelectMany(a => a.Cheeps), (follower, cheep) => new {follower, cheep})
+            .SelectMany(a => a.Follows.SelectMany(a => a.Cheeps), (follower, cheep) => new {follower, cheep})
             .Where(f => f.follower.UserName == followerName && f.cheep != null)
             .Select(f => f.cheep)
             .ToListAsync();
@@ -111,12 +111,12 @@ public class CheepRepository : ICheepRepository
     public async Task<uint?> GetFollowedCount(string followerName)
     {
         var author = await context.Author
-            .Include(a => a.Followers).ThenInclude(a => a.Cheeps)
+            .Include(a => a.Follows).ThenInclude(a => a.Cheeps)
             .Where(a => a.UserName == followerName)
             .FirstOrDefaultAsync();
         if (author is null) return null;
 
-        var cheeps = author.Followers
+        var cheeps = author.Follows
             .SelectMany(a => a.Cheeps)
             .Count();
 

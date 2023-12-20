@@ -6,18 +6,18 @@ public static class DBInitializer
     {
         if (!(chirpContext.Author.Any() && chirpContext.Cheep.Any()))
         {
-            var a1 = new Author() { UserName = "Roger Histand", Email = "Roger+Histand@hotmail.com", Cheeps = null!, Followed = new(), Followers = new() };
-            var a2 = new Author() { UserName = "Luanna Muro", Email = "Luanna-Muro@ku.dk", Cheeps = null!, Followed = new(), Followers = new() };
-            var a3 = new Author() { UserName = "Wendell Ballan", Email = "Wendell-Ballan@gmail.com", Cheeps = null!, Followed = new(), Followers = new() };
-            var a4 = new Author() { UserName = "Nathan Sirmon", Email = "Nathan+Sirmon@dtu.dk", Cheeps = null!, Followed = new(), Followers = new() };
-            var a5 = new Author() { UserName = "Quintin Sitts", Email = "Quintin+Sitts@itu.dk", Cheeps = null!, Followed = new(), Followers = new() };
-            var a6 = new Author() { UserName = "Mellie Yost", Email = "Mellie+Yost@ku.dk", Cheeps = null!, Followed = new(), Followers = new() };
-            var a7 = new Author() { UserName = "Malcolm Janski", Email = "Malcolm-Janski@gmail.com", Cheeps = null!, Followed = new(), Followers = new() };
-            var a8 = new Author() { UserName = "Octavio Wagganer", Email = "Octavio.Wagganer@dtu.dk", Cheeps = null!, Followed = new(), Followers = new() };
-            var a9 = new Author() { UserName = "Johnnie Calixto", Email = "Johnnie+Calixto@itu.dk", Cheeps = null!, Followed = new(), Followers = new() };
-            var a10 = new Author() { UserName = "Jacqualine Gilcoine", Email = "Jacqualine.Gilcoine@gmail.com", Cheeps = null!, Followed = new(), Followers = new() };
-            var a11 = new Author() { UserName = "Helge", Email = "ropf@itu.dk", Cheeps = null!, Followed = new(), Followers = new() };
-            var a12 = new Author() { UserName = "Rasmus", Email = "rnie@itu.dk", Cheeps = null!, Followed = new(), Followers = new() };
+            var a1 = new Author() { UserName = "Roger Histand", Email = "Roger+Histand@hotmail.com", Cheeps = null!, Follows = new(), FollowedBy = new() };
+            var a2 = new Author() { UserName = "Luanna Muro", Email = "Luanna-Muro@ku.dk", Cheeps = null!, Follows = new(), FollowedBy = new() };
+            var a3 = new Author() { UserName = "Wendell Ballan", Email = "Wendell-Ballan@gmail.com", Cheeps = null!, Follows = new(), FollowedBy = new() };
+            var a4 = new Author() { UserName = "Nathan Sirmon", Email = "Nathan+Sirmon@dtu.dk", Cheeps = null!, Follows = new(), FollowedBy = new() };
+            var a5 = new Author() { UserName = "Quintin Sitts", Email = "Quintin+Sitts@itu.dk", Cheeps = null!, Follows = new(), FollowedBy = new() };
+            var a6 = new Author() { UserName = "Mellie Yost", Email = "Mellie+Yost@ku.dk", Cheeps = null!, Follows = new(), FollowedBy = new() };
+            var a7 = new Author() { UserName = "Malcolm Janski", Email = "Malcolm-Janski@gmail.com", Cheeps = null!, Follows = new(), FollowedBy = new() };
+            var a8 = new Author() { UserName = "Octavio Wagganer", Email = "Octavio.Wagganer@dtu.dk", Cheeps = null!, Follows = new(), FollowedBy = new() };
+            var a9 = new Author() { UserName = "Johnnie Calixto", Email = "Johnnie+Calixto@itu.dk", Cheeps = null!, Follows = new(), FollowedBy = new() };
+            var a10 = new Author() { UserName = "Jacqualine Gilcoine", Email = "Jacqualine.Gilcoine@gmail.com", Cheeps = null!, Follows = new(), FollowedBy = new() };
+            var a11 = new Author() { UserName = "Helge", Email = "ropf@itu.dk", Cheeps = null!, Follows = new(), FollowedBy = new() };
+            var a12 = new Author() { UserName = "Rasmus", Email = "rnie@itu.dk", Cheeps = null!, Follows = new(), FollowedBy = new() };
 
             var authors = new List<Author>() { a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12 };
 

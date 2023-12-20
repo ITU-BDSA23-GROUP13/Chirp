@@ -8,6 +8,7 @@
 @{
     ViewData["Title"] = "Chirp!";
     Layout = "Shared/_Layout";
+    var username = User.Identity?.Name!;
 }
 
 <div>
@@ -15,13 +16,13 @@
         @if (SignInManager.IsSignedIn(User))
         {
         <div>
-            <a href="/@(User.Identity!.Name)">My timeline</a>
+            <a href="/@(username)">My timeline</a>
             |
             <a href="/followed">Followed timeline</a>
             |
             <a href="/">Public timeline</a>
             |
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Manage Profile</a>
+            <a href="/aboutme">Aboue Me</a>
             |
             <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post" >
                 <button  type="submit" class="nav-link btn btn-link text-dark">Logout</button>
@@ -50,7 +51,7 @@
                 <h2>Post a cheep.</h2>
                 <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
                 <div class="form-floating mb-3">
-                    <textarea asp-for="Message" class="form-control" aria-required="true" placeholder="@PublicModel.MessagePlaceholder()" style="width=100%;"></textarea>
+                    <textarea asp-for="Message" class="form-control" placeholder="@PublicModel.MessagePlaceholder()" style="width=100%;"></textarea>
                     <span asp-validation-for="Message" class="text-danger"></span>
                 </div>
                 <div>
@@ -70,7 +71,7 @@
                     <p>
                         <strong>
                             <a href="/@cheep.Author">@cheep.Author</a>
-                            @if (SignInManager.IsSignedIn(User) && User.Identity.Name != cheep.Author)
+                            @if (SignInManager.IsSignedIn(User) && username != cheep.Author)
                             {
                                 @if (!Model.IsFollowing(cheep.Author))
                                 {
