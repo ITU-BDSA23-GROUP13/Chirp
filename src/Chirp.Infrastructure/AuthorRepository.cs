@@ -186,18 +186,15 @@ public class AuthorRepository : IAuthorRepository
 
     public async Task<bool> PutFollowing(string followerName, string followeeName)
     {
-        Console.WriteLine("Post Follow: " + followerName + " -> " + followeeName);
         var follower = await context.Author.Include(a => a.Follows).Where(c => c.UserName == followerName).FirstOrDefaultAsync();
-        Console.WriteLine("follower: " + follower);
         if (follower is null) return false;
 
         var followee = await context.Author.Include(a => a.FollowedBy).Where(c => c.UserName == followeeName).FirstOrDefaultAsync();
-        Console.WriteLine("followee: " + followee);
         if (followee is null) return false;
 
-        if (follower.Follows.Any(a => a.UserName == followeeName)) Console.WriteLine("Already followed a");
+        if (follower.Follows.Any(a => a.UserName == followeeName)) return false;
         
-        if (followee.FollowedBy.Any(a => a.UserName == followerName)) Console.WriteLine("Already followed b");
+        if (followee.FollowedBy.Any(a => a.UserName == followerName)) return false;
 
         follower.Follows.Add(followee);
         followee.FollowedBy.Add(follower);

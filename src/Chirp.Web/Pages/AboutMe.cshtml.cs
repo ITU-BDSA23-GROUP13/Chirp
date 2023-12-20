@@ -59,7 +59,6 @@ public class AboutMeModel : PageModel
 
     public async Task<ActionResult> OnPostUnfollowAsync(string author)
     {
-        Console.WriteLine("Post Unfollow: " + User.Identity?.Name! + " -> " + author);
         var result = await service.DeleteFollow(User.Identity?.Name!, author);
 
         return await OnGetAsync();

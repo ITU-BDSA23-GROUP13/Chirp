@@ -143,7 +143,6 @@ public class PublicModel : PageModel
 
     public async Task<ActionResult> OnPostFollowAsync(string author)
     {
-        Console.WriteLine("Post Follow: " + User.Identity?.Name! + " -> " + author);
         var result = await service.PutFollower(User.Identity?.Name!, author);
 
         return await OnGetAsync();
@@ -151,7 +150,6 @@ public class PublicModel : PageModel
 
     public async Task<ActionResult> OnPostUnfollowAsync(string author)
     {
-        Console.WriteLine("Post Unfollow: " + User.Identity?.Name! + " -> " + author);
         var result = await service.DeleteFollow(User.Identity?.Name!, author);
 
         return await OnGetAsync();

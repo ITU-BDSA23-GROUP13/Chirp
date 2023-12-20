@@ -158,7 +158,6 @@ public class CheepService : ICheepService
 
     public Task<bool> PutFollower(string follower, string followee)
     {
-        Console.WriteLine("Post Follow: " + follower + " -> " + followee);
         return authorRepository.PutFollowing(follower, followee);
     }
 
