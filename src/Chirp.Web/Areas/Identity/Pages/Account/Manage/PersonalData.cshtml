@@ -8,6 +8,26 @@
 <h3>@ViewData["Title"]</h3>
 
 <div class="row">
+    <hr>
+    <div>
+        @if (Model.ShowData)
+        {
+            <a href="./PersonalData?show=false">Hide personal data</a>
+            <ul>
+            @foreach (var (key, value) in Model.Data)
+            {
+                if (value is not null)
+                {
+                <li>@key: @value</li>
+                }
+            }
+            </ul>
+        }
+        else
+        {
+            <a href="./PersonalData?show=true">Show personal data</a>
+        }
+    </div>
     <div class="col-md-6">
         <p>Your account contains personal data that you have given us. This page allows you to download or delete that data.</p>
         <p>
@@ -17,7 +37,7 @@
             <button class="btn btn-primary" type="submit">Download</button>
         </form>
         <p>
-            <a id="delete" asp-page="DeletePersonalData" class="btn btn-danger">Delete</a>
+            <a id="delete" asp-page="DeletePersonalData" class="btn btn-danger">Forget me!</a>
         </p>
     </div>
 </div>

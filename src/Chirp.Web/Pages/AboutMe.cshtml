@@ -40,7 +40,7 @@
 
     <h2> About @(User.Identity?.Name!) </h2>
     <hr>
-    <a class="nav-link @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data" asp-page="./PersonalData">Personal data</a>
+    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/PersonalData" title="Manage">Personal data</a>
     <br>
     <h3> Cheeps </h3>
         @if (Model.CheepCount == 0)
