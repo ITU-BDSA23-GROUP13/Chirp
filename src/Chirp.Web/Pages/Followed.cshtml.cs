@@ -37,7 +37,7 @@ public class FollowedModel : PageModel
             TotalPageCount = 0;
         }
 
-        var followed = await service.GetFollowed(User.Identity?.Name!);
+        var followed = await service.GetFollowsAll(User.Identity?.Name!);
         if (followed is not null)
         {
             foreach (var author in followed)
@@ -58,7 +58,7 @@ public class FollowedModel : PageModel
     
     public async Task<ActionResult> OnPostUnfollowAsync(string author)
     {
-        var result = await service.DeleteFollow(User.Identity?.Name!, author);
+        var result = await service.DeleteFollowing(User.Identity?.Name!, author);
 
         return await OnGetAsync();
     }

@@ -193,7 +193,6 @@ public class AuthorRepository : IAuthorRepository
         if (followee is null) return false;
 
         if (follower.Follows.Any(a => a.UserName == followeeName)) return false;
-        
         if (followee.FollowedBy.Any(a => a.UserName == followerName)) return false;
 
         follower.Follows.Add(followee);
@@ -224,4 +223,29 @@ public class AuthorRepository : IAuthorRepository
         return true;
     }
 
+    public async Task<bool> DeleteAuthor(string name)
+    {
+        var author = await context.Author
+            .Include(a => a.Follows)
+            .Include(a => a.FollowedBy)
+            .Where(a => a.UserName == name)
+            .FirstOrDefaultAsync();
+        if (author is null) return false;
+
+        foreach (var followee in author.Follows)
+        {
+            followee.FollowedBy.Remove(author);
+        }
+
+        foreach (var follower in author.FollowedBy)
+        {
+            follower.Follows.Remove(author);
+        }
+
+        await context.SaveChangesAsync();
+
+        var success = await context.Author.Where(a => a.UserName == name).ExecuteDeleteAsync() > 0;
+
+        return success;
+    }
 }

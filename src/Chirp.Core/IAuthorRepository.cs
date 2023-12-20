@@ -56,4 +56,8 @@ public interface IAuthorRepository {
     /// </summary>
     public Task<bool> DeleteFollowing(string follower, string followee);
 
+    /// <summary>
+    /// Returns true, if successful.
+    /// </summary>
+    public Task<bool> DeleteAuthor(string author);
 }

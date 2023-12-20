@@ -49,6 +49,9 @@ namespace Chirp.Web.Areas.Identity.Pages.Account.Manage
                 prop => Attribute.IsDefined(prop, typeof(PersonalDataAttribute)));
             foreach (var p in personalDataProps)
             {
+                // We don't store phone numbers.
+                if (p.Name.StartsWith("Phone")) continue;
+
                 personalData.Add(p.Name, p.GetValue(author)?.ToString());
             }
 

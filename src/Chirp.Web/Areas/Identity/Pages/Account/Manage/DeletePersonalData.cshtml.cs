@@ -12,15 +12,18 @@ namespace Chirp.Web.Areas.Identity.Pages.Account.Manage
 {
     public class DeletePersonalDataModel : PageModel
     {
+        private readonly ICheepService service;
         private readonly UserManager<Author> _userManager;
         private readonly SignInManager<Author> _signInManager;
         private readonly ILogger<DeletePersonalDataModel> _logger;
 
         public DeletePersonalDataModel(
+            ICheepService service,
             UserManager<Author> userManager,
             SignInManager<Author> signInManager,
             ILogger<DeletePersonalDataModel> logger)
         {
+            this.service = service;
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
@@ -68,9 +71,9 @@ namespace Chirp.Web.Areas.Identity.Pages.Account.Manage
                 }
             }
 
-            var result = await _userManager.DeleteAsync(user);
+            var result = await service.DeleteAuthor(user.UserName!);
             var userId = await _userManager.GetUserIdAsync(user);
-            if (!result.Succeeded)
+            if (!result)
             {
                 throw new InvalidOperationException($"Unexpected error occurred deleting user.");
             }

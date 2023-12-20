@@ -40,7 +40,7 @@ public class PublicModel : PageModel
         Cheeps = ToCheepsWithFormattedTimestamp(cheeps);
         TotalPageCount = count;
 
-        var followed = await service.GetFollowed(User.Identity?.Name!);
+        var followed = await service.GetFollowsAll(User.Identity?.Name!);
         if (followed is not null)
         {
             foreach (var author in followed)
@@ -143,14 +143,14 @@ public class PublicModel : PageModel
 
     public async Task<ActionResult> OnPostFollowAsync(string author)
     {
-        var result = await service.PutFollower(User.Identity?.Name!, author);
+        var result = await service.PutFollowing(User.Identity?.Name!, author);
 
         return await OnGetAsync();
     }
 
     public async Task<ActionResult> OnPostUnfollowAsync(string author)
     {
-        var result = await service.DeleteFollow(User.Identity?.Name!, author);
+        var result = await service.DeleteFollowing(User.Identity?.Name!, author);
 
         return await OnGetAsync();
     }
