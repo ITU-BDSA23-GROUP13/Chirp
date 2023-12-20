@@ -1,41 +1,72 @@
-using System;
-using System.Diagnostics;
-using System.ComponentModel;
-
+using Chirp.Core;
+using Chirp.Infrastructure;
 using Chirp.Web;
 
-namespace Tests;
+using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using System.Text.RegularExpressions;
 
-public class End2End
+namespace Web.Tests;
+
+// https://learn.microsoft.com/en-us/aspnet/core/test/integration-tests?view=aspnetcore-7.0
+public class End2EndTests : IClassFixture<WebApplicationFactory<Program>>
 {
+    private readonly WebApplicationFactory<Program> factory;
 
-    [Fact]
-    public void TestReadCheep()
+    public End2EndTests(WebApplicationFactory<Program> factory)
     {
-        // Arrange
-
-        // Act
-        // string output = "";
-        // using (var process = new Process())
-        // {
-        //     process.StartInfo.FileName = "/usr/bin/dotnet";
-        //     process.StartInfo.Arguments = "./src/Chirp.Web/bin/Debug/net7.0/chirp.dll read 10";
-        //     process.StartInfo.UseShellExecute = false;
-        //     process.StartInfo.WorkingDirectory = "../../../../../";
-        //     process.StartInfo.RedirectStandardOutput = true;
-        //     process.Start();
-        //     // Synchronously read the standard output of the spawned process.
-        //     StreamReader reader = process.StandardOutput;
-        //     output = reader.ReadToEnd();
-        //     process.WaitForExit();
-        // }
-        // string fstCheep = output.Split("\n")[0];
-
-        string fstCheep = "ropf \n Hello, World!";
-        // Assert
-        Assert.StartsWith("ropf", fstCheep);
-        Assert.EndsWith("Hello, World!", fstCheep);
+        this.factory = factory;
     }
 
+    [Theory]
+    [InlineData("/")]
+    [InlineData("/Jacqualine%20Gilcoine")]
+    [InlineData("/NonExistingUser")]
+    public async void E2ETestContainsNavigationBarNotLoggedIn(string url)
+    {
+        // Arrange
+        var client = factory.CreateClient();
+
+        // Act
+        var response = await client.GetAsync(url);
+
+        // Assert
+        response.EnsureSuccessStatusCode();
+        var html = await response.Content.ReadAsStringAsync();
+        Assert.Contains("Public timeline", html);
+        Assert.Contains("Register", html);
+        Assert.Contains("Login", html);
+    }
+
+    [Theory]
+    [InlineData("/")]
+    public async void E2ETestContains32Cheeps(string url)
+    {
+        // Example of Cheep:
+        //
+        // <strong>
+        //     <a href="/author">author</a>
+        // </strong>
+        // Text
+        // <small>&mdash; today at 12.00</small>
+
+        // Arrange
+        var client = factory.CreateClient();
+
+        // Act
+        var response = await client.GetAsync(url);
+
+        // Assert
+        response.EnsureSuccessStatusCode();
+        var html = await response.Content.ReadAsStringAsync();
+        Console.WriteLine(html);
+
+        Regex rx = new Regex(@"<strong>.*?<\/strong>", RegexOptions.Singleline);
+        MatchCollection matches = rx.Matches(html);
+        Assert.Equal(32, matches.Count);
+    }
 
 }

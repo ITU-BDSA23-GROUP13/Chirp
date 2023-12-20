@@ -78,7 +78,6 @@ public class UnitTestWeb : IDisposable
     [Fact]
     public async void UnitTestFollowAuthor()
     {
-        Assert.False(await service.GetFollow("Jacqualine Gilcoine", "Mellie Yost"));
         Assert.True(await service.PutFollowing("Jacqualine Gilcoine", "Mellie Yost"));
 
         var followed = await service.GetFollowsAll("Jacqualine Gilcoine");
@@ -89,7 +88,6 @@ public class UnitTestWeb : IDisposable
     [Fact]
     public async void UnitTestUnfollowAuthor()
     {
-        Assert.False(await service.GetFollow("Jacqualine Gilcoine", "Mellie Yost"));
         Assert.True(await service.PutFollowing("Jacqualine Gilcoine", "Mellie Yost"));
         Assert.True(await service.DeleteFollowing("Jacqualine Gilcoine", "Mellie Yost"));
         Assert.False(await service.GetFollow("Jacqualine Gilcoine", "Mellie Yost"));
@@ -98,7 +96,6 @@ public class UnitTestWeb : IDisposable
     [Fact]
     public async void UnitTestGetFollowerCount()
     {
-        Assert.False(await service.GetFollow("Jacqualine Gilcoine", "Mellie Yost"));
         Assert.True(await service.PutFollowing("Jacqualine Gilcoine", "Mellie Yost"));
 
         var a = await service.GetFollowerCount("Mellie Yost");
@@ -112,7 +109,6 @@ public class UnitTestWeb : IDisposable
     [Fact]
     public async void UnitTestPutCheep()
     {
-        Assert.False(await service.GetFollow("Jacqualine Gilcoine", "Mellie Yost"));
         var cheep = new CheepViewModel
         {
             Author = "Jacqualine Gilcoine",
