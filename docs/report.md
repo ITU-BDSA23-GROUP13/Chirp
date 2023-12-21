@@ -64,8 +64,41 @@ This workflow runs automatically on every push with a tag that has the pattern: 
 ## Team work
 
 ## How to make _Chirp!_ work locally
+Requirements to run _Chirp!_ locally:
+* .NET 7.0.x SDK
+* .NETCore 7.0.x Runtime
+* AspNetCore 7.0.x Runtime
+
+### Download and run
+1) Download the latest release from the [releases page](https://github.com/ITU-BDSA23-GROUP13/Chirp/releases).
+2) Extract the zip file.
+3) Open a terminal in the extracted folder.
+4) Run executable.
+
+### Building from source
+1) Clone the repository
+```bash
+git clone https://github.com/ITU-BDSA23-GROUP13/Chirp.git
+```
+2) Change directory to the repository
+```bash
+cd Chirp
+```
+3) Run the project
+```bash
+dotnet run --project src/Chirp.Web
+```
+
+### Additional functionality
+Without further configuration, _Chirp!_ will use a Sqlite database stored in a temporary folder. To use a Sql Server database, you must locate the src/Chirp.Web/appsettings.Development.json file with you chosen editor and change the connection string next to AZURE_SQL_CONNECTIONSTRING with a valid connection string. Using GitHub as a third-party OAuth login provider will also be disabled, but can be enabled by setting the CHIRP_GITHUB_CLIENT_ID and CHIRP_GITHUB_CLIENT_SECRET environment variables.
 
 ## How to run test suite locally
+Assuming you have done the steps from above, you simply have to run the following command in the root of the repository:
+```bash
+dotnet test
+```
+
+This will run all of the test using in-memory Sqlite databases.
 
 # Ethics
 

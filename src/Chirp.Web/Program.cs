@@ -72,19 +72,20 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.User.RequireUniqueEmail = false;
 });
 
+var githubClientId = Environment.GetEnvironmentVariable("CHIRP_GITHUB_CLIENT_ID");
 var githubClientSecret = Environment.GetEnvironmentVariable("CHIRP_GITHUB_CLIENT_SECRET");
 if (githubClientSecret is not null)
 {
     builder.Services.AddAuthentication()
         .AddGitHub(options =>
         {
-            options.ClientId = "Iv1.dcb4bc25e1621f2c";
+            options.ClientId = githubClientId ?? "Iv1.dcb4bc25e1621f2c";
             options.ClientSecret = githubClientSecret;
         });
 }
 else
 {
-    Console.WriteLine("Could not add GitHub as authenticator. CHIRP_GITHUB_CLIENT_SECRET not set. GitHub authentication will not be available.");
+    Console.WriteLine("Could not add GitHub as authenticator. Either CHIRP_GITHUB_CLIENT_SECRET or CHIRP_GITHUB_CLIENT_ID was not set. GitHub authentication will not be available.");
 }
 builder.Services.AddAuthorization();
 
