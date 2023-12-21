@@ -11,6 +11,8 @@ numbersections: true
 
 ## Domain model
 
+![Data model as an ER-diagram.](./images/domain_model.png)
+
 ## Architecture — In the small
 
 ## Architecture of deployed application
