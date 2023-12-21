@@ -61,7 +61,10 @@ Here an already logged in user visits _Chirp!_ to check what data the _Chirp!_ s
 
 ## Sequence of functionality/calls trough _Chirp!_
 The diagram below shows the first sequence diagram.
+
 ![Sequence diagram 1.](./images/sequence_diagram1.png)
+
+This sequence diagram shows the network traffic of a user requesting the homepage of our Chirp application.
 
 # Process
 
