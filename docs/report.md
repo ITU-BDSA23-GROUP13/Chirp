@@ -43,6 +43,9 @@ The layer Chirp.Web handles connecting to the database, reacts to requests, and 
 # Process
 
 ## Build, test, release, and deployment
+![Build and Test workflow as an Activity diagram.](.images/build_and_test.png)
+![Build and Deploy workflow as an Activity diagram.](.images/build_and_deploy.png)
+![Publish and Release as an Activity diagram.](.images/publish_and_release.png)
 
 ## Team work
 

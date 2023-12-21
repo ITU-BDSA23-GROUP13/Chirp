@@ -19,14 +19,14 @@ jobs:
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '7.x'
+          dotnet-version: '7.0.x'
           include-prerelease: true
         
-      - name: Build with dotnet
+      - name: Build project
         run: dotnet build src/Chirp.Web/Chirp.Web.csproj --configuration Release
 
-      - name: dotnet publish
-        run: dotnet publish src/Chirp.Web/Chirp.Web.csproj -c Release -o ${{env.DOTNET_ROOT}}/myapp
+      - name: Publish project
+        run: dotnet publish src/Chirp.Web/Chirp.Web.csproj --no-build -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2

@@ -20,9 +20,9 @@ jobs:
           dotnet-version: 7.0.x
       - name: Restore dependencies
         run: dotnet restore
-      - name: Build
+      - name: Build project
         run: dotnet build --no-restore
-      - name: Test
+      - name: Test project
         run: dotnet test --no-build --verbosity normal
 
       - name: Publish for Windows
@@ -88,7 +88,7 @@ jobs:
           rm -r "$release_name"
           echo Files in directory -----
           dir
-      - name: Publish
+      - name: Release
         uses: softprops/action-gh-release@v1
         with:
           files: |
