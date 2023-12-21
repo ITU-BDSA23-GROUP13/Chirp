@@ -79,6 +79,13 @@ This workflow runs automatically on every push to the main branch. It builds the
 This workflow runs automatically on every push with a tag that has the pattern: "v*.*.*". It first builds and tests the project, to make sure we don't unintentionally release a version that fails our tests. It uses `dotnet publish` like the Publish and Deploy workflow, except it publishes the project for each of the operating systems: Windows, Linux, and MacOS on x64 architectures using a simple bash script that also zips the files into files with names like the following: `Chirp-<tag>-<os>-x64.zip`. The Files as well as the source code is then added to a new _Chirp!_ release on GitHub with the chosen tag as the version number.
 
 ## Team work
+The following image shows the project board right before hand in.
+![Project board.](./images/backlog.png)
+The issues we did not get to, were caused by some issues with not being able to run docker for all group members, and Playwright not working. We did also not get tiem to implement reactions.
+
+The flow of activities in our group is illustrated below.
+![Activity flow.](./images/team_work.png)
+After lectures, group members made issues from the tasks in the readme files from the lecture notes. These issues were then implemented in branches, and merged into main with pull requests. Pull requests require other group members to accept them.
 
 ## How to make _Chirp!_ work locally
 Requirements to run _Chirp!_ locally:
