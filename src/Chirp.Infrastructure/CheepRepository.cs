@@ -30,7 +30,7 @@ public class CheepRepository : ICheepRepository
 
     /// <summary>
     /// Returns a page of cheeps from all authors, ordered by timestamp.
-    /// The <paramref name="page"/> parameter is 0-indexed.
+    /// The <paramref name="page"/> parameter is 1-indexed.
     /// </summary>
     public async Task<IList<CheepDTO>> GetPageFromAll(uint page, uint pageSize, Order order)
     {
@@ -72,7 +72,7 @@ public class CheepRepository : ICheepRepository
 
     /// <summary>
     /// Returns a page of cheeps from all authors that the given author follows, ordered by timestamp.
-    /// The <paramref name="page"/> parameter is 0-indexed.
+    /// The <paramref name="page"/> parameter is 1-indexed.
     /// </summary>
     public async Task<IList<CheepDTO>?> GetPageFromFollowed(string followerName, uint page, uint pageSize, Order order = Order.Newest)
     {

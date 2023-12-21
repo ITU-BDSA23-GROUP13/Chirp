@@ -81,7 +81,7 @@ public class AuthorRepository : IAuthorRepository
 
     /// <summary>
     /// Returns a page of cheeps from the author with the given name, ordered by timestamp.
-    /// The <paramref name="page"/> parameter is 0-indexed.
+    /// The <paramref name="page"/> parameter is 1-indexed.
     /// </summary>
     public async Task<IList<CheepDTO>?> GetCheepsPage(string name, uint page, uint pageSize, Order order)
     {
