@@ -38,6 +38,11 @@ The layer Chirp.Web handles connecting to the database, reacts to requests, and 
 ## Architecture of deployed application
 
 ## User activities
+The following diagrams illustrates how a user might navigate around and use _Chirp!_.
+
+![New user registers and submits a cheep.](./images/user_activity1.png)
+
+Here a new User visits _Chirp!_ for the first time and wants to register as an author. The diagrams show which pages and actions the user needs to navigate through to achieve this.
 
 ## Sequence of functionality/calls trough _Chirp!_
 
