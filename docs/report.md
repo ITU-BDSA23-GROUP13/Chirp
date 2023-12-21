@@ -62,9 +62,17 @@ Here an already logged in user visits _Chirp!_ to check what data the _Chirp!_ s
 ## Sequence of functionality/calls trough _Chirp!_
 The diagram below shows the first sequence diagram.
 
-![Sequence diagram 1.](./images/sequence_diagram1.png)
+![Client visiting "/" as a Sequence Diagram.](./images/sequence_diagram1.png)
 
-This sequence diagram shows the network traffic of a user requesting the homepage of our Chirp application.
+This sequence diagram shows the network traffic of a user requesting the homepage of our Chirp application as well as which database queries are made.
+
+![Client visiting "/aboutme" as a Sequence Diagram.](./images/sequence_diagram2.png)
+
+This sequence diagram shows the network traffic of an already logged in user requesting the about me page.
+
+![Client visiting "/Identity/Account/ExternalLogin" as a Sequence Diagram.](./images/sequence_diagram3.png)
+
+This sequence diagram shows the network traffic of a not logged in user attempting to register with GitHub. (The stylesheet and favicon requests have been omitted.) We don't know much about the requests sent between GitHub as well as the database in this case, because it is handled by ASP.NET Core Identity, and is not written by us.
 
 # Process
 
