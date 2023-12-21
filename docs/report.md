@@ -19,7 +19,7 @@ Each Cheep stores its id, some text, a timestamp that denotes when it was posted
 
 Each Author (AspNetUser) stores their id, username, email, password hash, whether they have two-factor-authentication enables, aswell the above mentioned. Author's can also follow each other in a many-to-many relation.
 
-The AspNetUser, AspNetUserTokens, and AspNetUserLogins comes from ASP.NET Core Identity that _Chirp!_ uses to manage its users (i.e. Authors). In reality, each AspNetUser also stores additional attributes that are not used directly by _Chirp!_. These are normalized username and email, concurrency and sercurity stamps (used for e.g. password-resetting), phone number (_Chirp!_ doesn't collect phone numbers), lockout information, and an access failure count.
+The AspNetUser, AspNetUserTokens, and AspNetUserLogins comes from ASP.NET Core Identity that _Chirp!_ uses to manage its users (i.e. Authors). In reality, each AspNetUser also stores additional attributes that are not used directly by _Chirp!_. These are normalized username and email, concurrency and security stamps (used for e.g. password-resetting), phone number (_Chirp!_ doesn't collect phone numbers), lockout information, and an access failure count.
 The AspNetUserTokens stores tokens such as two-factor-authentication keys and recovery codes, and AspNetUserLogins stores third-party login provider information, e.g. Github OAuth.
 
 ## Architecture — In the small
@@ -31,7 +31,7 @@ Each layer only depends on the layer it encapsulates, i.e. Chirp.Infrastructure 
 
 The layer Chirp.Core contains interfaces, in yellow, and DTOs, in red. The interfaces describe the communication between the database and the application. The DTOs (data transfer models) are objects that are used to send data between the layers and consists of a common set data that is used by both Chirp.Web and Chirp.Infrastructure.
 
-The layer Chirp.Infrastructure implements the interfaces from Chirp.Core. _Chirp!_ uses Entity Framework Core to manage writing the queries for the database, which helps keep Chirp.Infrastructure database agnostic. It also describes how the database should be modelled.
+The layer Chirp.Infrastructure implements the interfaces from Chirp.Core. _Chirp!_ uses Entity Framework Core to manage writing the queries for the database, which helps keep Chirp.Infrastructure database agnostic. It also describes how the database should be modeled.
 
 The layer Chirp.Web handles connecting to the database, reacts to requests, and displays the web pages. Chirp.Web uses Chirp.Infrastructure through the interfaces and DTOs from Chirp.Core. _Chirp!_ uses ASP.NET Core Razor Pages to help create the web application.
 
@@ -60,6 +60,8 @@ Here an already logged in user visits _Chirp!_ to follow and unfollow another au
 Here an already logged in user visits _Chirp!_ to check what data the _Chirp!_ stores of them, and wants to delete their account. The diagrams shows how the about me page leads to the manage account page where personal data is shown. From there, it is also possible to delete your account.
 
 ## Sequence of functionality/calls trough _Chirp!_
+The diagram below shows the first sequence diagram.
+![Sequence diagram 1.](./images/sequence_diagram1.png)
 
 # Process
 
@@ -74,7 +76,7 @@ This workflow runs automatically on every push on any branch, and it simply buil
 ### Publish and Deploy
 ![Publish and Deploy workflow as an Activity diagram.](./images/publish_and_deploy.png)
 
-This workflow runs automatically on every push to the main branch. It builds the project and deploys it to our Azure Web Service. This workflow is split into to jobs: publish and deploy. The publish job similarly to the Build and Test workflow except it doesn't test, but instead runs the `dotnet publish` with the Chirp.Web project that produces the files, that is sent to the Web Service. The files are uploaded via the Artifact Action, which allows them the be downloaded again later so that they are available for the deploy job. The deploy job uses the Azure Webapps Deploy Action to deploy the application. A benefit of splitting the workflow into multiple jobs is that if any of the jobs fails, you don't need to rerun _all_ the previous jobs.
+This workflow runs automatically on every push to the main branch. It builds the project and deploys it to our Azure Web Service. This workflow is split into two jobs: publish and deploy. The publish job similarly to the Build and Test workflow except it doesn't test, but instead runs the `dotnet publish` with the Chirp.Web project that produces the files, that is sent to the Web Service. The files are uploaded via the Artifact Action, which allows them the be downloaded again later so that they are available for the deploy job. The deploy job uses the Azure Webapps Deploy Action to deploy the application. A benefit of splitting the workflow into multiple jobs is that if any of the jobs fails, you don't need to rerun _all_ the previous jobs.
 
 ### Publish and Release
 ![Publish and Release as an Activity diagram.](./images/publish_and_release.png)
@@ -86,7 +88,7 @@ The following image shows the project board right before hand in.
 
 ![Project board.](./images/backlog.png)
 
-The issues we did not get to, were caused by some issues with not being able to run docker for all group members, and Playwright not working. We did also not get tiem to implement reactions.
+The issues we did not get to, were caused by some issues with not being able to run docker for all group members, and Playwright not working. We did also not have the time to implement reactions.
 
 The flow of activities in our group is illustrated below.
 
