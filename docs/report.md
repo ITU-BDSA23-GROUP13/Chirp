@@ -44,14 +44,17 @@ _Chirp!_ is a client-server application. _Chirp!_ is deployed to Azure as a web 
 ## User activities
 The following diagrams illustrates how a user might navigate around and use _Chirp!_.
 
+### Register and Cheep
 ![New user registers and submits a cheep.](./images/user_activity1.png)
 
 Here a new user visits _Chirp!_ for the first time and wants to register as an author. The diagram shows which pages and actions the user needs to navigate through to achieve this.
 
+### Follow and Unfollow
 ![New user registers and submits a cheep.](./images/user_activity2.png)
 
 Here an already logged in user visits _Chirp!_ to follow and unfollow another author. The diagram shows how a user might follow an author and see how their followed timeline and about me page changes.
 
+### Personal Data and Deletion
 ![New user registers and submits a cheep.](./images/user_activity3.png)
 
 Here an already logged in user visits _Chirp!_ to check what data the _Chirp!_ stores of them, and wants to delete their account. The diagrams shows how the about me page leads to the manage account page where personal data is shown. From there, it is also possible to delete your account.
