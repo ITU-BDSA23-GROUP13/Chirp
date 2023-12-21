@@ -25,11 +25,21 @@ builder.Services.AddScoped<ICheepRepository, CheepRepository>();
 builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
 builder.Services.AddDbContext<ChirpContext>(options =>
 {
-    // https://stackoverflow.com/questions/63777518/add-credentials-to-connection-string-from-code
-    var connString = builder.Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING") ?? throw new NullReferenceException("AZURE_SQL_CONNECTIONSTRING not set");
-    var connStringBuilder = new SqlConnectionStringBuilder(connString);
-    connStringBuilder.Password = Environment.GetEnvironmentVariable("CHIRP_SQL_PASSWORD") ?? throw new NullReferenceException("CHIRP_SQL_PASSWORD not set");
-    options.UseSqlServer(connStringBuilder.ConnectionString);
+    try
+    {
+        // https://stackoverflow.com/questions/63777518/add-credentials-to-connection-string-from-code
+        var connString = builder.Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING") ?? throw new NullReferenceException("AZURE_SQL_CONNECTIONSTRING not set");
+        var connStringBuilder = new SqlConnectionStringBuilder(connString);
+        connStringBuilder.Password = Environment.GetEnvironmentVariable("CHIRP_SQL_PASSWORD") ?? throw new NullReferenceException("CHIRP_SQL_PASSWORD not set");
+        options.UseSqlServer(connStringBuilder.ConnectionString);
+    }
+    catch(Exception e)
+    {
+        Console.WriteLine($"Could not create connection string for the SQL server: \"{e.Message}\". Using Sqlite database instead.");
+        var path = Environment.GetEnvironmentVariable("CHIRP_LOCAL_DB") ?? Path.Join(Path.GetTempPath(), "chirp.db");
+        Console.WriteLine($"Using local Sqlite database at {path}");
+        options.UseSqlite($"Data Source={path}");
+    }
 });
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
@@ -62,12 +72,20 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.User.RequireUniqueEmail = false;
 });
 
-builder.Services.AddAuthentication()
-    .AddGitHub(options =>
-    {
-        options.ClientId = "Iv1.dcb4bc25e1621f2c";
-        options.ClientSecret = Environment.GetEnvironmentVariable("CHIRP_GITHUB_CLIENT_SECRET") ?? throw new NullReferenceException("CHIRP_GITHUB_CLIENT_SECRET not set");
-    });
+var githubClientSecret = Environment.GetEnvironmentVariable("CHIRP_GITHUB_CLIENT_SECRET");
+if (githubClientSecret is not null)
+{
+    builder.Services.AddAuthentication()
+        .AddGitHub(options =>
+        {
+            options.ClientId = "Iv1.dcb4bc25e1621f2c";
+            options.ClientSecret = githubClientSecret;
+        });
+}
+else
+{
+    Console.WriteLine("Could not add GitHub as authenticator. CHIRP_GITHUB_CLIENT_SECRET not set. GitHub authentication will not be available.");
+}
 builder.Services.AddAuthorization();
 
 builder.Services.ConfigureApplicationCookie(options =>
