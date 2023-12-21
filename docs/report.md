@@ -83,11 +83,15 @@ This workflow runs automatically on every push with a tag that has the pattern: 
 
 ## Team work
 The following image shows the project board right before hand in.
+
 ![Project board.](./images/backlog.png)
+
 The issues we did not get to, were caused by some issues with not being able to run docker for all group members, and Playwright not working. We did also not get tiem to implement reactions.
 
 The flow of activities in our group is illustrated below.
+
 ![Activity flow.](./images/team_work.png)
+
 After lectures, group members made issues from the tasks in the readme files from the lecture notes. These issues were then implemented in branches, and merged into main with pull requests. Pull requests require other group members to accept them.
 
 ## How to make _Chirp!_ work locally
