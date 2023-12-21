@@ -4,7 +4,7 @@ subtitle: ITU BDSA 2023 Group `13`
 author:
 - "Marcus Alsted Wegmann <maaw@itu.dk>"
 - "Daniel Ahmadi <daah@itu.dk>"
-- "Christopher Robin Heldgaard <chre@itu.dk>"
+- "Christopher Robin Heldgaard <crhe@itu.dk>"
 numbersections: true
 ---
 
