@@ -44,9 +44,20 @@ _Chirp!_ is a client-server application. _Chirp!_ is deployed to Azure as a web 
 ## User activities
 The following diagrams illustrates how a user might navigate around and use _Chirp!_.
 
+### Register and Cheep
 ![New user registers and submits a cheep.](./images/user_activity1.png)
 
-Here a new User visits _Chirp!_ for the first time and wants to register as an author. The diagrams show which pages and actions the user needs to navigate through to achieve this.
+Here a new user visits _Chirp!_ for the first time and wants to register as an author. The diagram shows which pages and actions the user needs to navigate through to achieve this.
+
+### Follow and Unfollow
+![User follows and unfollows an author.](./images/user_activity2.png)
+
+Here an already logged in user visits _Chirp!_ to follow and unfollow another author. The diagram shows how a user might follow an author and see how their followed timeline and about me page changes.
+
+### Personal Data and Deletion
+![User checks their personal data and deletes their account.](./images/user_activity3.png)
+
+Here an already logged in user visits _Chirp!_ to check what data the _Chirp!_ stores of them, and wants to delete their account. The diagrams shows how the about me page leads to the manage account page where personal data is shown. From there, it is also possible to delete your account.
 
 ## Sequence of functionality/calls trough _Chirp!_
 
@@ -71,6 +82,17 @@ This workflow runs automatically on every push to the main branch. It builds the
 This workflow runs automatically on every push with a tag that has the pattern: "v*.*.*". It first builds and tests the project, to make sure we don't unintentionally release a version that fails our tests. It uses `dotnet publish` like the Publish and Deploy workflow, except it publishes the project for each of the operating systems: Windows, Linux, and MacOS on x64 architectures using a simple bash script that also zips the files into files with names like the following: `Chirp-<tag>-<os>-x64.zip`. The Files as well as the source code is then added to a new _Chirp!_ release on GitHub with the chosen tag as the version number.
 
 ## Team work
+The following image shows the project board right before hand in.
+
+![Project board.](./images/backlog.png)
+
+The issues we did not get to, were caused by some issues with not being able to run docker for all group members, and Playwright not working. We did also not get tiem to implement reactions.
+
+The flow of activities in our group is illustrated below.
+
+![Activity flow.](./images/team_work.png)
+
+After lectures, group members made issues from the tasks in the readme files from the lecture notes. These issues were then implemented in branches, and merged into main with pull requests. Pull requests require other group members to accept them.
 
 ## How to make _Chirp!_ work locally
 Requirements to run _Chirp!_ locally:
