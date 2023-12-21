@@ -59,7 +59,7 @@ This workflow runs automatically on every push to the main branch. It builds the
 ### Publish and Release
 ![Publish and Release as an Activity diagram.](./images/publish_and_release.png)
 
-This workflow runs automatically on every push with a tag that has the pattern: "v*.*.*". It first builds and tests the project, to make sure we don't unintentionally release a version that fails our tests. It uses `dotnet publish` like the Publish and Deploy workflow, except it publishes the project for each of the operating systems: Windows, Linux, and MacOS on x64 architectures using a simple bash script that also zips the files into files with names like the following: `Chirp-<tag>-<os>-x64`. The Files as well as the source code is then added to a new _Chirp!_ release on GitHub with the chosen tag as the version number.
+This workflow runs automatically on every push with a tag that has the pattern: "v*.*.*". It first builds and tests the project, to make sure we don't unintentionally release a version that fails our tests. It uses `dotnet publish` like the Publish and Deploy workflow, except it publishes the project for each of the operating systems: Windows, Linux, and MacOS on x64 architectures using a simple bash script that also zips the files into files with names like the following: `Chirp-<tag>-<os>-x64.zip`. The Files as well as the source code is then added to a new _Chirp!_ release on GitHub with the chosen tag as the version number.
 
 ## Team work
 
