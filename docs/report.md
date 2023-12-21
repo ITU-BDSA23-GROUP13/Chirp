@@ -13,7 +13,7 @@ numbersections: true
 
 ## Domain model
 The following entity-relation-diagram illustrates _Chirp!_'s domain model.
-![Data model as an ER-diagram.](.docs/images/er-diagram.png)
+![Data model as an ER-diagram.](.docs/images/er_diagram.png)
 
 Each Cheep stores its id, some text, a timestamp that denotes when it was posted, and its author's id.
 
