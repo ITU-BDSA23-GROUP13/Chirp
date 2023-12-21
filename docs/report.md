@@ -37,7 +37,7 @@ The layer Chirp.Web handles connecting to the database, reacts to requests, and 
 
 ## Architecture of deployed application
 The following diagram shows the architecture of the deployed application.
-![Architecture of deployed application.](./images/architecture_of_deployer_application.png)
+![Architecture of deployed application.](./images/architecture_of_deployed_application.png)
 
 _Chirp!_ is a client-server application. _Chirp!_ is deployed to Azure as a web app, which is also connected to an Azure database.
 
