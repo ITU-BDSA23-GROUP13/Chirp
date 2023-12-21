@@ -24,7 +24,7 @@ The AspNetUserTokens stores tokens such as two-factor-authentication keys and re
 
 ## Architecture — In the small
 The following diagram illustrates _Chirp!_ overall architecture.
-![Onion architecture as a diagram.](.docs/images/onion_architecture.png)
+![Onion architecture as a diagram.](.images/onion_architecture.png)
 
 Each layer only depends on the layer it encapsulates, i.e. Chirp.Infrastructure depends on Chirp.Core but not Chirp.Web.
 
