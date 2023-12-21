@@ -46,7 +46,15 @@ The following diagrams illustrates how a user might navigate around and use _Chi
 
 ![New user registers and submits a cheep.](./images/user_activity1.png)
 
-Here a new User visits _Chirp!_ for the first time and wants to register as an author. The diagrams show which pages and actions the user needs to navigate through to achieve this.
+Here a new user visits _Chirp!_ for the first time and wants to register as an author. The diagram shows which pages and actions the user needs to navigate through to achieve this.
+
+![New user registers and submits a cheep.](./images/user_activity2.png)
+
+Here an already logged in user visits _Chirp!_ to follow and unfollow another author. The diagram shows how a user might follow an author and see how their followed timeline and about me page changes.
+
+![New user registers and submits a cheep.](./images/user_activity3.png)
+
+Here an already logged in user visits _Chirp!_ to check what data the _Chirp!_ stores of them, and wants to delete their account. The diagrams shows how the about me page leads to the manage account page where personal data is shown. From there, it is also possible to delete your account.
 
 ## Sequence of functionality/calls trough _Chirp!_
 
