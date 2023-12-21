@@ -5,7 +5,6 @@ author:
 - "Marcus Alsted Wegmann <maaw@itu.dk>"
 - "Daniel Ahmadi <daah@itu.dk>"
 - "Christopher Robin Heldgaard <chre@itu.dk>"
-- "Connie Petersson <cope@itu.dk>"
 numbersections: true
 ---
 
@@ -13,6 +12,7 @@ numbersections: true
 
 ## Domain model
 The following entity-relation-diagram illustrates _Chirp!_'s domain model.
+
 ![Data model as an ER-diagram.](./images/er_diagram.png)
 
 Each Cheep stores its id, some text, a timestamp that denotes when it was posted, and its author's id.
@@ -24,6 +24,7 @@ The AspNetUserTokens stores tokens such as two-factor-authentication keys and re
 
 ## Architecture — In the small
 The following diagram illustrates _Chirp!_ overall architecture.
+
 ![Onion architecture as a diagram.](./images/onion_architecture.png)
 
 Each layer only depends on the layer it encapsulates, i.e. Chirp.Infrastructure depends on Chirp.Core but not Chirp.Web.
@@ -43,9 +44,22 @@ The layer Chirp.Web handles connecting to the database, reacts to requests, and 
 # Process
 
 ## Build, test, release, and deployment
+We use GitHub Actions to manage releasing, deployment, and testing automatically with workflows. All our workflows runs on Ubuntu Linux. Each of the following Activity diagrams illustrates the flow of our workflows.
+
+### Build and Test
 ![Build and Test workflow as an Activity diagram.](./images/build_and_test.png)
-![Build and Deploy workflow as an Activity diagram.](./images/build_and_deploy.png)
+
+This workflow runs automatically on every push on any branch, and it simply builds and tests the project. This is useful because it can give some baseline information on the status of a commit, and it makes it easier to catch errors early. It helps check if a branch/pull requests can be merged into the main branch. It uses the Checkout Action to retrieve the commit that triggered this workflow, and the Setup-dotnet Action that prepares a .NET CLI environment, which in our case uses any 7.0.x version of .NET.
+
+### Publish and Deploy
+![Publish and Deploy workflow as an Activity diagram.](./images/publish_and_deploy.png)
+
+This workflow runs automatically on every push to the main branch. It builds the project and deploys it to our Azure Web Service. This workflow is split into to jobs: publish and deploy. The publish job similarly to the Build and Test workflow except it doesn't test, but instead runs the `dotnet publish` with the Chirp.Web project that produces the files, that is sent to the Web Service. The files are uploaded via the Artifact Action, which allows them the be downloaded again later so that they are available for the deploy job. The deploy job uses the Azure Webapps Deploy Action to deploy the application. A benefit of splitting the workflow into multiple jobs is that if any of the jobs fails, you don't need to rerun _all_ the previous jobs.
+
+### Publish and Release
 ![Publish and Release as an Activity diagram.](./images/publish_and_release.png)
+
+This workflow runs automatically on every push with a tag that has the pattern: "v*.*.*". It first builds and tests the project, to make sure we don't unintentionally release a version that fails our tests. It uses `dotnet publish` like the Publish and Deploy workflow, except it publishes the project for each of the operating systems: Windows, Linux, and MacOS on x64 architectures using a simple bash script that also zips the files into files with names like the following: `Chirp-<tag>-<os>-x64`. The Files as well as the source code is then added to a new _Chirp!_ release on GitHub with the chosen tag as the version number.
 
 ## Team work
 

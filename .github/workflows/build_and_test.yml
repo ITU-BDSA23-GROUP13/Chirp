@@ -1,10 +1,10 @@
-name: .NET Build and Test
+name: Build and Test
 
 on:
   push:
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
 
     steps:

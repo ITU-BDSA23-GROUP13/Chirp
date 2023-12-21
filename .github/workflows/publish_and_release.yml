@@ -1,11 +1,11 @@
-name: .NET Publish and Release
+name: Publish and Release
 
 on:
   push:
     tags:
       - "v*.*.*"
 jobs:
-  build:
+  release:
     runs-on: ubuntu-latest
     permissions:
       contents: write
