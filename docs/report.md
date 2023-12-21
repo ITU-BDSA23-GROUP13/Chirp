@@ -24,7 +24,7 @@ The AspNetUserTokens stores tokens such as two-factor-authentication keys and re
 
 ## Architecture — In the small
 The following diagram illustrates _Chirp!_ overall architecture.
-![Onion architecture as a diagram.](.images/onion_architecture.png)
+![Onion architecture as a diagram.](./images/onion_architecture.png)
 
 Each layer only depends on the layer it encapsulates, i.e. Chirp.Infrastructure depends on Chirp.Core but not Chirp.Web.
 
@@ -43,9 +43,9 @@ The layer Chirp.Web handles connecting to the database, reacts to requests, and 
 # Process
 
 ## Build, test, release, and deployment
-![Build and Test workflow as an Activity diagram.](.images/build_and_test.png)
-![Build and Deploy workflow as an Activity diagram.](.images/build_and_deploy.png)
-![Publish and Release as an Activity diagram.](.images/publish_and_release.png)
+![Build and Test workflow as an Activity diagram.](./images/build_and_test.png)
+![Build and Deploy workflow as an Activity diagram.](./images/build_and_deploy.png)
+![Publish and Release as an Activity diagram.](./images/publish_and_release.png)
 
 ## Team work
 
