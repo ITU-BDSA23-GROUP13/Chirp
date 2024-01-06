@@ -3,7 +3,7 @@ using Chirp.Infrastructure;
 using Chirp.Web;
 
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Data.SqlClient;
+// using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,21 +25,21 @@ builder.Services.AddScoped<ICheepRepository, CheepRepository>();
 builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
 builder.Services.AddDbContext<ChirpContext>(options =>
 {
-    try
-    {
-        // https://stackoverflow.com/questions/63777518/add-credentials-to-connection-string-from-code
-        var connString = builder.Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING") ?? throw new NullReferenceException("AZURE_SQL_CONNECTIONSTRING not set");
-        var connStringBuilder = new SqlConnectionStringBuilder(connString);
-        connStringBuilder.Password = Environment.GetEnvironmentVariable("CHIRP_SQL_PASSWORD") ?? throw new NullReferenceException("CHIRP_SQL_PASSWORD not set");
-        options.UseSqlServer(connStringBuilder.ConnectionString);
-    }
-    catch(Exception e)
-    {
-        Console.WriteLine($"Could not create connection string for the SQL server: \"{e.Message}\". Using Sqlite database instead.");
+    // try
+    // {
+    //     // https://stackoverflow.com/questions/63777518/add-credentials-to-connection-string-from-code
+    //     var connString = builder.Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING") ?? throw new NullReferenceException("AZURE_SQL_CONNECTIONSTRING not set");
+    //     var connStringBuilder = new SqlConnectionStringBuilder(connString);
+    //     connStringBuilder.Password = Environment.GetEnvironmentVariable("CHIRP_SQL_PASSWORD") ?? throw new NullReferenceException("CHIRP_SQL_PASSWORD not set");
+    //     options.UseSqlServer(connStringBuilder.ConnectionString);
+    // }
+    // catch(Exception e)
+    // {
+    //     Console.WriteLine($"Could not create connection string for the SQL server: \"{e.Message}\". Using Sqlite database instead.");
         var path = Environment.GetEnvironmentVariable("CHIRP_LOCAL_DB") ?? Path.Join(Path.GetTempPath(), "chirp.db");
         Console.WriteLine($"Using local Sqlite database at {path}");
         options.UseSqlite($"Data Source={path}");
-    }
+    // }
 });
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();

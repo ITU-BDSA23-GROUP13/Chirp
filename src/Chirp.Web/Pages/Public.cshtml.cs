@@ -76,7 +76,7 @@ public class PublicModel : PageModel
             if (cheep.Timestamp.Year != now.Year)
             {
                 // Mon, June 15 '09, 1:45 PM
-                timestamp = cheep.Timestamp.ToString(@"ddd, MMMM d 'yy, ") + cheep.Timestamp.ToString("t");
+                timestamp = cheep.Timestamp.ToString(@"ddd, MMMM d yy, ") + cheep.Timestamp.ToString("t");
             }
             else if (cheep.Timestamp.Month != now.Month || cheep.Timestamp.Day != now.Day)
             {
