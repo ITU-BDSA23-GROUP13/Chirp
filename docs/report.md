@@ -150,7 +150,7 @@ Requirements to run _Chirp!_ locally:
 ### Building from source
 1) Clone the repository
 ```bash
-git clone https://github.com/ITU-BDSA23-GROUP13/Chirp.git
+git clone --single-branch --branch chirp_web https://github.com/ITU-BDSA23-GROUP13/Chirp.git
 ```
 2) Change directory to the repository
 ```bash
