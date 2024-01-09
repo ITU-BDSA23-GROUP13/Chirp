@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy ASP.Net Core app to Azure Web App - bdsagroup13chirprazor2
+name: Publish and Deploy 2
 
 on:
   push:
@@ -22,8 +22,11 @@ jobs:
           dotnet-version: '7.x'
           include-prerelease: true
 
-      - name: dotnet publish
-        run: dotnet publish src/Chirp.Web/Chirp.Web.csproj -c Release -o ${{env.DOTNET_ROOT}}/myapp
+      - name: Build project
+        run: dotnet build src/Chirp.Web/Chirp.Web.csproj --configuration Release
+
+      - name: Publish project
+        run: dotnet publish src/Chirp.Web/Chirp.Web.csproj --no-build -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
